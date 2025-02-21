@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import LoginForm from './components/Login-form';
+import CafeHome from './components/Home-page';
+
 
 function App() {
   return (
@@ -10,6 +12,8 @@ function App() {
         </nav>
         <Routes>
           <Route path="/" element={<LoginForm />} />
+          <Route path="/home" element={<CafeHome />} />
+
           {/* Aquí puedes agregar más rutas según sea necesario */}
         </Routes>
       </div>
