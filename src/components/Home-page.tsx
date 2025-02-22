@@ -5,7 +5,7 @@ import BottomNavBar from "./Bottom-navbar"
 
 export default function CafeHome() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-16">
       {/* Main Content */}
       <main className="pb-16">
         {" "}

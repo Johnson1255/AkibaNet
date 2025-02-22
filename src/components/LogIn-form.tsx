@@ -38,8 +38,8 @@ export default function LoginForm() {
           </div>
 
           <div className="text-center">
-            <Link to="/register" className="text-black hover:underline">
-              Don't have an account yet? Register
+            <Link to="/signup" className="text-black hover:underline">
+              Don't have an account yet? Sign up
             </Link>
           </div>
         </CardContent>

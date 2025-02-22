@@ -106,10 +106,12 @@ export default function AdditionalServices() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-50 pb-16">
         {/* Header */}
         <header className="p-4 flex items-center justify-between bg-white">
-          <Button variant="ghost" size="icon" className="rounded-full">
+          <Button variant="ghost" size="icon" className="rounded-full"
+            onClick={() => window.history.back()}
+          >
             <ArrowLeft className="h-6 w-6" />
           </Button>
           <h1 className="text-2xl font-normal">Additional Services</h1>

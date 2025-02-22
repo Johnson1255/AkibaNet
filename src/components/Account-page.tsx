@@ -53,18 +53,6 @@ export default function AccountPage() {
         </Button>
       </div>
 
-      {/* Membership */}
-      <div className="px-6 py-4">
-        <h2 className="text-2xl font-bold mb-4">Membership</h2>
-        <div className="bg-black text-white rounded-xl p-4">
-          <h3 className="text-lg">Platinum Master Pro Max Plus Deluxe</h3>
-          <p className="text-gray-300">Valid until: 2026-06-30</p>
-        </div>
-        <Button variant="ghost" className="w-full mt-2 text-gray-500">
-          Manage and Renew <ChevronRight className="ml-2 h-4 w-4" />
-        </Button>
-      </div>
-
       {/* Settings */}
       <div className="px-6 py-4">
         <h2 className="text-2xl font-bold mb-4">Settings</h2>

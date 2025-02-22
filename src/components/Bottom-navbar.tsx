@@ -6,10 +6,10 @@ export default function BottomNavBar() {
     <>
       <nav className="fixed bottom-0 left-0 right-0 bg-gray-100 border-t mt-8">
         <div className="flex justify-around items-center h-16">
-          <Link to="/" className="p-2">
+          <Link to="/home" className="p-2">
             <Home className="w-6 h-6" />
           </Link>
-          <Link to="/reserve" className="p-2 bg-gray-300">
+          <Link to="/reserve" className="p-2">
             <Coffee className="w-6 h-6" />
           </Link>
           <Link to="/account" className="p-2">
