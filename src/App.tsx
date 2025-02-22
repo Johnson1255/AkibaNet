@@ -3,7 +3,8 @@ import LoginForm from "./components/Login-form";
 import CafeHome from "./components/Home-page";
 import RoomSelection from "./components/Room-selection";
 import RoomDetails from "./components/Room-details";
-import BottomNavBar from "./components/Bottom-navbar";
+import AdditionalServices from "./components/Additional-services";
+import AccountPage from "./components/Account-page";
 
 function App() {
   return (
@@ -22,8 +23,9 @@ function AppRoutes() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/reserve" element={<RoomSelection />} />
         <Route path="/room-details" element={<RoomDetails />} />
+        <Route path="/additional-services" element={<AdditionalServices />} />
+        <Route path="/account" element={<AccountPage />} />
       </Routes>
-      {location.pathname !== "/login" && <BottomNavBar />}
     </div>
   );
 }

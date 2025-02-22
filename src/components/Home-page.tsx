@@ -1,6 +1,7 @@
 import { HelpCircle, Coffee } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Link } from "react-router-dom"
+import BottomNavBar from "./Bottom-navbar"
 
 export default function CafeHome() {
   return (
@@ -53,6 +54,7 @@ export default function CafeHome() {
           </div>
         </div>
       </main>
+      <BottomNavBar />
     </div>
   )
 }

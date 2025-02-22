@@ -12,7 +12,7 @@ export default function BottomNavBar() {
           <Link to="/reserve" className="p-2 bg-gray-300">
             <Coffee className="w-6 h-6" />
           </Link>
-          <Link to="/profile" className="p-2">
+          <Link to="/account" className="p-2">
             <User className="w-6 h-6" />
           </Link>
           <Link to="/help" className="p-2">

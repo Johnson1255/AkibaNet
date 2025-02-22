@@ -117,6 +117,9 @@ export default function RoomDetails() {
                     <Button
                         variant="outline"
                         className="w-full rounded-full h-12 bg-gray-100 border-0"
+                        onClick={() => {
+                            window.location.href = "/additional-services";
+                        }}
                     >
                         Add services
                         <Plus className="ml-2 h-5 w-5" />

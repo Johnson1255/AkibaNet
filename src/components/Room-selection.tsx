@@ -9,6 +9,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import TimePicker from "./time-picker";
+import BottomNavBar from "./Bottom-navbar";
 
 interface Room {
   id: number;
@@ -21,10 +22,10 @@ export default function RoomSelection() {
     new Date()
   );
   const [selectedTime, setSelectedTime] = useState<string>("10:00 pm");
-const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
+  const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
     id: i + 1,
-    status: [3, 17, 22, 24, 29, 32].includes(i + 1) ? "disabled" : "available"
-}));
+    status: [3, 17, 22, 24, 29, 32].includes(i + 1) ? "disabled" : "available",
+  }));
 
   const handleRoomSelect = (roomId: number) => {
     setSelectedRoom(roomId === selectedRoom ? null : roomId);
@@ -39,7 +40,6 @@ const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
         </Button>
         <h1 className="text-2xl font-normal">Select a Room</h1>
         <div className="w-6" /> {/* Spacer for alignment */}
-
       </header>
 
       {/* Time and Date Selection */}
@@ -52,7 +52,18 @@ const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             {/* Implement a time picker here */}
-            <TimePicker date={selectedDate} setDate={(date: Date) => setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }))} />
+            <TimePicker
+              date={selectedDate}
+              setDate={(date: Date) =>
+                setSelectedTime(
+                  date.toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: true,
+                  })
+                )
+              }
+            />
           </PopoverContent>
         </Popover>
         <Popover>
@@ -65,7 +76,7 @@ const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
           <PopoverContent className="w-auto p-0">
             <Calendar
               mode="single"
-              disabled={date => date < new Date()}
+              disabled={(date) => date < new Date()}
               selected={selectedDate}
               onSelect={setSelectedDate}
               initialFocus
@@ -102,7 +113,7 @@ const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
                     : ""
                 }
               `}
-              disabled={ room.status === "disabled"}
+              disabled={room.status === "disabled"}
               onClick={() => handleRoomSelect(room.id)}
             >
               {room.id}
@@ -130,11 +141,12 @@ const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
           <ArrowRight className="w-6 h-6" />
         </Button>
       </div>
+      <BottomNavBar />
     </div>
   );
 }
 
-"use client";
+("use client");
 
 interface TimeSelectorProps {
   date?: Date;
@@ -143,17 +155,6 @@ interface TimeSelectorProps {
 
 export function TimeSelector({ date, setDate }: TimeSelectorProps) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
-
-  const calculatePrice = (hours: number): number => {
-    const basePricePerHour = 500; // Precio base por hora en yenes
-    let totalPrice = 0;
-  
-    for (let i = 1; i <= hours; i++) {
-      totalPrice += basePricePerHour - Math.floor((i - 1) / 3) * 50;
-    }
-  
-    return totalPrice;
-  };
 
   const handleTimeChange = (value: string) => {
     if (date) {
