@@ -3,7 +3,7 @@ import LoginForm from "./components/Login-form";
 import CafeHome from "./components/Home-page";
 import RoomSelection from "./components/Room-selection";
 import RoomDetails from "./components/Room-details";
-import BottomNavBar from "./components/bottom-nav";
+import BottomNavBar from "./components/Bottom-navbar";
 
 function App() {
   return (
