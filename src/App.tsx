@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import LoginForm from "./components/Login-form";
 import CafeHome from "./components/Home-page";
 import RoomSelection from "./components/Room-selection";
@@ -8,39 +8,23 @@ import BottomNavBar from "./components/bottom-nav";
 function App() {
   return (
     <Router>
-      <div className="min-h-screen">
-        <Routes>
-          <Route path="/" element={<LoginForm />} />
-          <Route
-            path="/home"
-            element={
-              <>
-                <CafeHome />
-                <BottomNavBar />
-              </>
-            }
-          />
-          <Route
-            path="/reserve"
-            element={
-              <>
-                <RoomSelection />
-                <BottomNavBar />
-              </>
-            }
-          />
-          <Route
-            path="/room"
-            element={
-              <>
-                <RoomDetails />
-                <BottomNavBar />
-              </>
-            }
-          />
-        </Routes>
-      </div>
+      <AppRoutes />
     </Router>
+  );
+}
+
+function AppRoutes() {
+  const location = useLocation();
+  return (
+    <div className="min-h-screen pb-16">
+      <Routes>
+        <Route path="/" element={<CafeHome />} />
+        <Route path="/login" element={<LoginForm />} />
+        <Route path="/reserve" element={<RoomSelection />} />
+        <Route path="/room-details" element={<RoomDetails />} />
+      </Routes>
+      {location.pathname !== "/login" && <BottomNavBar />}
+    </div>
   );
 }
 
