@@ -7,10 +7,12 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import TimePicker from "./time-picker";
 
 interface Room {
   id: number;
-  status: "available" | "booked" | "selected" | "disabled";
+  status: "available" | "selected" | "disabled";
 }
 
 export default function RoomSelection() {
@@ -19,16 +21,10 @@ export default function RoomSelection() {
     new Date()
   );
   const [selectedTime, setSelectedTime] = useState<string>("10:00 pm");
-  const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
+const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
     id: i + 1,
-    status: [3, 17, 22, 24, 29, 32].includes(i + 1)
-      ? "booked"
-      : [19].includes(i + 1)
-      ? "disabled"
-      : [14].includes(i + 1)
-      ? "selected"
-      : "available",
-  }));
+    status: [3, 17, 22, 24, 29, 32].includes(i + 1) ? "disabled" : "available"
+}));
 
   const handleRoomSelect = (roomId: number) => {
     setSelectedRoom(roomId === selectedRoom ? null : roomId);
@@ -56,15 +52,7 @@ export default function RoomSelection() {
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
             {/* Implement a time picker here */}
-            <div className="p-4">
-              <Button onClick={() => setSelectedTime("10:00 pm")}>
-                10:00 pm
-              </Button>
-              <Button onClick={() => setSelectedTime("11:00 pm")}>
-                11:00 pm
-              </Button>
-              {/* Add more time options as needed */}
-            </div>
+            <TimePicker date={selectedDate} setDate={(date: Date) => setSelectedTime(date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }))} />
           </PopoverContent>
         </Popover>
         <Popover>
@@ -77,6 +65,7 @@ export default function RoomSelection() {
           <PopoverContent className="w-auto p-0">
             <Calendar
               mode="single"
+              disabled={date => date < new Date()}
               selected={selectedDate}
               onSelect={setSelectedDate}
               initialFocus
@@ -96,29 +85,24 @@ export default function RoomSelection() {
               key={room.id}
               variant="outline"
               className={`
-            aspect-square text-lg font-normal
-            ${
-              room.status === "booked"
-                ? "bg-gray-400 text-gray-500 hover:bg-gray-400"
-                : ""
-            }
-            ${
-              room.status === "selected" || selectedRoom === room.id
-                ? "bg-black text-white hover:bg-black"
-                : ""
-            }
-            ${
-              room.status === "disabled"
-                ? "bg-gray-200 text-gray-400 hover:bg-gray-200"
-                : ""
-            }
-            ${
-              room.status === "available" && selectedRoom !== room.id
-                ? "bg-gray-100 hover:bg-gray-200"
-                : ""
-            }
-          `}
-              disabled={room.status === "booked" || room.status === "disabled"}
+                aspect-square text-lg font-normal
+                ${
+                  room.status === "selected" || selectedRoom === room.id
+                    ? "bg-black text-white hover:bg-black"
+                    : ""
+                }
+                ${
+                  room.status === "disabled"
+                    ? "bg-gray-200 text-gray-400 hover:bg-gray-200"
+                    : ""
+                }
+                ${
+                  room.status === "available" && selectedRoom !== room.id
+                    ? "bg-gray-100 hover:bg-gray-200"
+                    : ""
+                }
+              `}
+              disabled={ room.status === "disabled"}
               onClick={() => handleRoomSelect(room.id)}
             >
               {room.id}
@@ -147,5 +131,54 @@ export default function RoomSelection() {
         </Button>
       </div>
     </div>
+  );
+}
+
+"use client";
+
+interface TimeSelectorProps {
+  date?: Date;
+  setDate: (date: Date) => void;
+}
+
+export function TimeSelector({ date, setDate }: TimeSelectorProps) {
+  const hours = Array.from({ length: 24 }, (_, i) => i);
+
+  const calculatePrice = (hours: number): number => {
+    const basePricePerHour = 500; // Precio base por hora en yenes
+    let totalPrice = 0;
+  
+    for (let i = 1; i <= hours; i++) {
+      totalPrice += basePricePerHour - Math.floor((i - 1) / 3) * 50;
+    }
+  
+    return totalPrice;
+  };
+
+  const handleTimeChange = (value: string) => {
+    if (date) {
+      const newDate = new Date(date);
+      newDate.setHours(parseInt(value));
+      setDate(newDate);
+    }
+  };
+
+  return (
+    <ScrollArea className="w-64 sm:w-auto">
+      <div className="flex sm:flex-col p-2">
+        {hours.map((hour) => (
+          <Button
+            key={hour}
+            size="icon"
+            variant={date && date.getHours() === hour ? "default" : "ghost"}
+            className="sm:w-full shrink-0 aspect-square"
+            onClick={() => handleTimeChange(hour.toString())}
+          >
+            {hour}
+          </Button>
+        ))}
+      </div>
+      <ScrollBar orientation="horizontal" className="sm:hidden" />
+    </ScrollArea>
   );
 }
