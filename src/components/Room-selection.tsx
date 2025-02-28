@@ -7,9 +7,10 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useNavigate } from "react-router-dom";
 import TimePicker from "./time-picker";
 import BottomNavBar from "./Bottom-navbar";
+import { useReservation } from "../context/ReservationContext";
 
 interface Room {
   id: number;
@@ -17,11 +18,16 @@ interface Room {
 }
 
 export default function RoomSelection() {
+  // Usar el contexto de reserva
+  const { updateRoomDetails } = useReservation();
+  const navigate = useNavigate();
+  
   const [selectedRoom, setSelectedRoom] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
     new Date()
   );
   const [selectedTime, setSelectedTime] = useState<string>("10:00 pm");
+  
   const rooms: Room[] = Array.from({ length: 35 }, (_, i) => ({
     id: i + 1,
     status: [3, 17, 22, 24, 29, 32].includes(i + 1) ? "disabled" : "available",
@@ -29,6 +35,38 @@ export default function RoomSelection() {
 
   const handleRoomSelect = (roomId: number) => {
     setSelectedRoom(roomId === selectedRoom ? null : roomId);
+  };
+
+  // Actualizar el contexto cuando cambia la fecha o la hora
+  const handleDateChange = (date: Date | undefined) => {
+    setSelectedDate(date);
+    if (date) {
+      updateRoomDetails({ 
+        selectedDate: date.toLocaleDateString() 
+      });
+    }
+  };
+
+  const handleTimeChange = (time: string) => {
+    setSelectedTime(time);
+    updateRoomDetails({ selectedTime: time });
+  };
+
+  // Función para navegar a la página de detalles de la sala
+  const goToRoomDetails = (roomId: number) => {
+    if (roomId) {
+      // Actualizar el contexto con la información seleccionada
+      updateRoomDetails({
+        roomId: roomId,
+        selectedDate: selectedDate?.toLocaleDateString(),
+        selectedTime: selectedTime
+      });
+      
+      console.log("Navigating to room details with roomId:", roomId); // Debugging
+      
+      // Usar React Router para navegar - cambia esto
+      navigate(`/room-details/${roomId}`);
+    }
   };
 
   return (
@@ -39,7 +77,7 @@ export default function RoomSelection() {
           variant="ghost"
           size="icon"
           className="rounded-full"
-          onClick={() => window.history.back()}
+          onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-6 w-6" />
         </Button>
@@ -59,15 +97,14 @@ export default function RoomSelection() {
             {/* Implement a time picker here */}
             <TimePicker
               date={selectedDate}
-              setDate={(date: Date) =>
-                setSelectedTime(
-                  date.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: true,
-                  })
-                )
-              }
+              setDate={(date: Date) => {
+                const timeString = date.toLocaleTimeString([], {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                });
+                handleTimeChange(timeString);
+              }}
             />
           </PopoverContent>
         </Popover>
@@ -83,7 +120,7 @@ export default function RoomSelection() {
               mode="single"
               disabled={(date) => date < new Date()}
               selected={selectedDate}
-              onSelect={setSelectedDate}
+              onSelect={handleDateChange}
               initialFocus
             />
           </PopoverContent>
@@ -135,8 +172,7 @@ export default function RoomSelection() {
           disabled={!selectedRoom}
           onClick={() => {
             if (selectedRoom) {
-              // Navigate to room details page
-              window.location.href = `/room-details?room=${selectedRoom}`;
+              goToRoomDetails(selectedRoom);
             }
           }}
         >
@@ -148,43 +184,5 @@ export default function RoomSelection() {
       </div>
       <BottomNavBar />
     </div>
-  );
-}
-
-("use client");
-
-interface TimeSelectorProps {
-  date?: Date;
-  setDate: (date: Date) => void;
-}
-
-export function TimeSelector({ date, setDate }: TimeSelectorProps) {
-  const hours = Array.from({ length: 24 }, (_, i) => i);
-
-  const handleTimeChange = (value: string) => {
-    if (date) {
-      const newDate = new Date(date);
-      newDate.setHours(parseInt(value));
-      setDate(newDate);
-    }
-  };
-
-  return (
-    <ScrollArea className="w-64 sm:w-auto">
-      <div className="flex sm:flex-col p-2">
-        {hours.map((hour) => (
-          <Button
-            key={hour}
-            size="icon"
-            variant={date && date.getHours() === hour ? "default" : "ghost"}
-            className="sm:w-full shrink-0 aspect-square"
-            onClick={() => handleTimeChange(hour.toString())}
-          >
-            {hour}
-          </Button>
-        ))}
-      </div>
-      <ScrollBar orientation="horizontal" className="sm:hidden" />
-    </ScrollArea>
   );
 }
