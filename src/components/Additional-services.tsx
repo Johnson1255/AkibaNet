@@ -1,24 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
-
-interface Service {
-  id: string;
-  name: string;
-  description?: string;
-  price: number;
-  isConsole?: boolean;
-}
+import { useReservation, Service } from "../context/ReservationContext";
 
 export default function AdditionalServices() {
+  // Usar el contexto de reserva
+  const { reservation, updateSelectedServices, updateRoomDetails, saveReservation } = useReservation();
+  
+  // Estado local que se sincroniza con el estado global
   const [selectedServices, setSelectedServices] = useState<Set<string>>(
-    new Set(["refrigerator"])
+    reservation.selectedServices || new Set(["refrigerator"])
   );
-  const baseHours = 3;
+  
+  // El número de horas se obtiene del contexto global
+  const baseHours = reservation.hours || 3;
   const hourlyRate = 800;
+
+  // Sincronizar el estado local con el contexto cuando cambia
+  useEffect(() => {
+    updateSelectedServices(selectedServices);
+  }, [selectedServices, updateSelectedServices]);
 
   const services: Service[] = [
     { id: "headset", name: "Premium gaming headsets", price: 150 },
@@ -62,7 +66,31 @@ export default function AdditionalServices() {
     const servicesTotal = [...services, ...consoles]
       .filter((service) => selectedServices.has(service.id))
       .reduce((sum, service) => sum + service.price, 0);
-    return servicesTotal + baseHours * hourlyRate;
+    
+    const total = servicesTotal + baseHours * hourlyRate;
+    return total;
+  };
+
+  // Manejar el botón "Confirm and Pay"
+  const handleConfirmAndPay = async () => {
+    // Calcular el precio total
+    const total = calculateTotal();
+    
+    // Actualizar el contexto con el precio total
+    updateRoomDetails({ 
+      totalPrice: total 
+    });
+    
+    // Guardar la reserva
+    const success = await saveReservation();
+    
+    if (success) {
+      // Redirigir a la página de confirmación
+      window.location.href = "/confirmation";
+    } else {
+      // Manejar error
+      alert("Error al guardar la reserva. Inténtalo de nuevo.");
+    }
   };
 
   const renderServiceCard = (service: Service) => (
@@ -156,7 +184,10 @@ export default function AdditionalServices() {
               <span className="whitespace-nowrap">¥ {calculateTotal()}</span>
             </div>
           </div>
-          <Button className="w-full h-14 rounded-none bg-black text-white hover:bg-black/90">
+          <Button 
+            className="w-full h-14 rounded-none bg-black text-white hover:bg-black/90"
+            onClick={handleConfirmAndPay}
+          >
             Confirm and Pay
           </Button>
         </div>
