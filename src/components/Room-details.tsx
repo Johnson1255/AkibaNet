@@ -1,15 +1,58 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, ArrowRight, Image, Clock, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import BottomNavBar from "./Bottom-navbar";
+import { useReservation } from "../context/ReservationContext";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 
 export default function RoomDetails() {
-  const [sliderValue, setSliderValue] = useState([2]); // 2 represents 1 hour (2 * 0.5 hours)
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = useParams();
+  
+  // Obtener el roomId de los parámetros de URL
+  let roomId: number | null = null;
+  
+  // Intentar obtener el roomId de los parámetros de ruta primero
+  if (params.roomId) {
+    roomId = parseInt(params.roomId);
+  } else {
+    // Si no está en los parámetros de ruta, buscar en query params
+    const searchParams = new URLSearchParams(location.search);
+    const roomIdParam = searchParams.get('room');
+    if (roomIdParam) {
+      roomId = parseInt(roomIdParam);
+    }
+  }
+  
+  // Usar el contexto de reserva
+  const { reservation, updateRoomDetails } = useReservation();
+  
+  // Usar un estado local para el slider
+  const [sliderValue, setSliderValue] = useState([2]); // 2 representa 1 hora
+
+  // Al cargar el componente, actualizar el contexto con el roomId
+  useEffect(() => {
+    if (roomId) {
+      console.log("Room ID from URL:", roomId); // Debugging
+      updateRoomDetails({ roomId });
+    } else {
+      console.log("No Room ID found in URL"); // Debugging
+    }
+  }, [roomId]);
+
+  // Debugging para ver si los cambios son aplicados
+  useEffect(() => {
+    console.log("Current reservation state:", reservation);
+  }, [reservation]);
 
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
+    const hours = value[0] * 0.5;
+    const price = calculatePrice(hours);
+    updateRoomDetails({ hours, price });
   };
 
   const calculatePrice = (hours: number) => {
@@ -22,6 +65,36 @@ export default function RoomDetails() {
   const hours = sliderValue[0] * 0.5;
   const price = calculatePrice(hours);
 
+  // Manejar el botón "Confirm and Pay"
+  const handleConfirmAndPay = () => {
+    // Actualizar el precio final en el contexto
+    updateRoomDetails({ 
+      hours, 
+      price,
+      totalPrice: price 
+    });
+    
+    // Navegar a la página de confirmación usando React Router
+    navigate("/confirmation");
+  };
+
+  // Si no hay roomId, mostrar un mensaje o redireccionar
+  if (!roomId) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <h1 className="text-2xl mb-4">No Room Selected</h1>
+        <p className="mb-4">Please select a room from the room selection page.</p>
+        <Button
+          variant="default"
+          className="rounded-full bg-black text-white"
+          onClick={() => navigate("/reserve")}
+        >
+          Go to Room Selection
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-white pb-16">
       {/* Header */}
@@ -30,17 +103,17 @@ export default function RoomDetails() {
           variant="ghost"
           size="icon"
           className="rounded-full"
-          onClick={() => window.history.back()}
+          onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-6 w-6" />
         </Button>
-        <h1 className="text-2xl font-normal">Gaming Room #14</h1>
+        <h1 className="text-2xl font-normal">Gaming Room #{roomId}</h1>
         <div className="w-6" /> {/* Spacer for alignment */}
       </header>
 
       {/* Room Preview */}
       <div className="px-4 mb-4 relative">
-        <Card className="bg-gray-100 p-8 flex items-center justify-between rounded-2xl  min-h-40">
+        <Card className="bg-gray-100 p-8 flex items-center justify-between rounded-2xl min-h-40">
           <Image className="w-12 h-12 mx-auto" />
           <Button
             variant="outline"
@@ -80,8 +153,12 @@ export default function RoomDetails() {
             <Button
               variant="outline"
               className="w-full rounded-full bg-gray-100 border-0"
+              onClick={() => {
+                // Aquí podrías abrir un selector de hora
+                updateRoomDetails({ selectedTime: reservation.selectedTime });
+              }}
             >
-              <span>10:00 pm</span>
+              <span>{reservation.selectedTime}</span>
             </Button>
           </div>
 
@@ -91,8 +168,12 @@ export default function RoomDetails() {
             <Button
               variant="outline"
               className="w-full rounded-full bg-gray-100 border-0"
+              onClick={() => {
+                // Aquí podrías abrir un selector de fecha
+                updateRoomDetails({ selectedDate: reservation.selectedDate });
+              }}
             >
-              <span>Today</span>
+              <span>{reservation.selectedDate || "Today"}</span>
             </Button>
           </div>
         </div>
@@ -101,9 +182,9 @@ export default function RoomDetails() {
           <div className="text-right mb-2">¥{price}</div>
           <Slider
             defaultValue={sliderValue}
-            min={2} // 1 hour
-            max={24} // 12 hours
-            step={1} // 30 minutes
+            min={2} // 1 hora
+            max={24} // 12 horas
+            step={1} // 30 minutos
             className="mb-2"
             onValueChange={handleSliderChange}
           />
@@ -118,7 +199,9 @@ export default function RoomDetails() {
             variant="outline"
             className="w-full rounded-full h-12 bg-gray-100 border-0"
             onClick={() => {
-              window.location.href = "/additional-services";
+              // Guardar los datos antes de navegar
+              updateRoomDetails({ hours, price });
+              navigate("/additional-services");
             }}
           >
             Add services
@@ -128,6 +211,7 @@ export default function RoomDetails() {
           <Button
             variant="default"
             className="w-full rounded-full h-12 bg-black text-white hover:bg-black/90"
+            onClick={handleConfirmAndPay}
           >
             Confirm and Pay
           </Button>

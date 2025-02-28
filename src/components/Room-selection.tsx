@@ -7,7 +7,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { useNavigate } from "react-router-dom";
 import TimePicker from "./time-picker";
 import BottomNavBar from "./Bottom-navbar";
 import { useReservation } from "../context/ReservationContext";
@@ -20,6 +20,7 @@ interface Room {
 export default function RoomSelection() {
   // Usar el contexto de reserva
   const { updateRoomDetails } = useReservation();
+  const navigate = useNavigate();
   
   const [selectedRoom, setSelectedRoom] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(
@@ -51,6 +52,23 @@ export default function RoomSelection() {
     updateRoomDetails({ selectedTime: time });
   };
 
+  // Función para navegar a la página de detalles de la sala
+  const goToRoomDetails = (roomId: number) => {
+    if (roomId) {
+      // Actualizar el contexto con la información seleccionada
+      updateRoomDetails({
+        roomId: roomId,
+        selectedDate: selectedDate?.toLocaleDateString(),
+        selectedTime: selectedTime
+      });
+      
+      console.log("Navigating to room details with roomId:", roomId); // Debugging
+      
+      // Usar React Router para navegar - cambia esto
+      navigate(`/room-details/${roomId}`);
+    }
+  };
+
   return (
     <div className="bg-gray-100 pb-16">
       {/* Header */}
@@ -59,7 +77,7 @@ export default function RoomSelection() {
           variant="ghost"
           size="icon"
           className="rounded-full"
-          onClick={() => window.history.back()}
+          onClick={() => navigate(-1)}
         >
           <ArrowLeft className="h-6 w-6" />
         </Button>
@@ -154,15 +172,7 @@ export default function RoomSelection() {
           disabled={!selectedRoom}
           onClick={() => {
             if (selectedRoom) {
-              // Actualizar el contexto con la información seleccionada
-              updateRoomDetails({
-                roomId: selectedRoom,
-                selectedDate: selectedDate?.toLocaleDateString(),
-                selectedTime: selectedTime
-              });
-              
-              // Navigate to room details page
-              window.location.href = `/room-details?room=${selectedRoom}`;
+              goToRoomDetails(selectedRoom);
             }
           }}
         >

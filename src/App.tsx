@@ -27,6 +27,7 @@ function AppRoutes() {
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/reserve" element={<RoomSelection />} />
+        <Route path="/room-details/:roomId" element={<RoomDetails />} />
         <Route path="/room-details" element={<RoomDetails />} />
         <Route path="/additional-services" element={<AdditionalServices />} />
         <Route path="/account" element={<AccountPage />} />
