@@ -1,4 +1,4 @@
-import { HelpCircle, Coffee } from "lucide-react"
+import { HelpCircle, Coffee, Pizza } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Link } from "react-router-dom"
 import BottomNavBar from "./Bottom-navbar"
@@ -13,7 +13,7 @@ export default function CafeHome() {
         {/* Welcome Section */}
         <div className="px-6 py-8">
           <h1 className="text-2xl font-normal text-center leading-tight">
-            Welcome back Esteban,
+            Welcome back Papu,
             <br />
             what do you want to do today?
           </h1>
@@ -29,7 +29,7 @@ export default function CafeHome() {
             <span>Reserve</span>
           </Link>
           <Link to="/food" className="flex flex-col items-center p-4 bg-gray-100 rounded-2xl">
-            <span className="h-8 mb-2" />
+            <Pizza className="h-8 w-8 mb-2" />
             <span>Food</span>
           </Link>
         </div>
