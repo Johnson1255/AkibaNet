@@ -1,17 +1,47 @@
 import { Link, useNavigate } from "react-router-dom"
 import { Heart } from "lucide-react"
-
+import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [error, setError] = useState("")
+  
 
-  const handleLogin = () => {
-    // Aquí puedes agregar la lógica de autenticación si es necesario
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setError('')
+
+    if (!email || !password) {
+      setError('Por favor, ingresa tu correo electrónico y contraseña.')
+      return
+    }
+
+    try {
+      const response = await fetch('http://localhost:3000/api/login', {//Hay que cambiar la dirección de la DB
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
+
+      if (response.ok) {
+        console.log(response);
+        navigate('/profile/usuario')
+      } else {
+        const data = await response.json()
+        setError(data.message || 'Correo electrónico o contraseña inválidos')
+      }
+    } catch (error) {
+      setError('Error de conexión. Por favor, inténtalo de nuevo.')
+    }
     navigate('/home');
-  };
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between py-8 px-4">
@@ -20,14 +50,28 @@ export default function LoginForm() {
           <div className="flex justify-center">
             <div className="w-24 h-24 rounded-full bg-gray-200" />
           </div>
-
-          <div className="space-y-4">
-            <Input type="text" placeholder="Email / Telephone" className="h-12 bg-gray-100 border-0" />
-            <Input type="password" placeholder="Password" className="h-12 bg-gray-100 border-0" />
-          </div>
-
-          <Button className="w-full bg-black text-white hover:bg-black/90 rounded-full h-12" onClick={handleLogin}>Login</Button>
-
+  
+          <form onSubmit={handleLogin} className="space-y-4">
+            <Input
+              type="text"
+              placeholder="Email / Telephone"
+              className="h-12 bg-gray-100 border-0"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              className="h-12 bg-gray-100 border-0"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+  
+            <Button type="submit" className="w-full bg-black text-white hover:bg-black/90 rounded-full h-12">
+              Login
+            </Button>
+          </form>
+  
           <div className="space-y-3">
             <Button variant="secondary" className="w-full bg-gray-100 hover:bg-gray-200 text-black rounded-full h-12">
               Login with Google
@@ -36,7 +80,7 @@ export default function LoginForm() {
               Login with Instagram
             </Button>
           </div>
-
+  
           <div className="text-center">
             <Link to="/signup" className="text-black hover:underline">
               Don't have an account yet? Sign up
@@ -44,7 +88,7 @@ export default function LoginForm() {
           </div>
         </CardContent>
       </Card>
-
+  
       <CardFooter className="text-gray-500 text-sm text-center">
         <div className="space-y-1">
           <p>© 2023 Papus Developers INC. All rights reserved.</p>
@@ -54,5 +98,6 @@ export default function LoginForm() {
         </div>
       </CardFooter>
     </div>
-  )
+  );
+  
 }
