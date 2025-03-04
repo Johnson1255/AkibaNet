@@ -17,7 +17,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useToast } from "@/hooks/use-toast";
 import BottomNavBar from "./Bottom-navbar";
 
 
@@ -52,7 +51,6 @@ export default function MyReservation() {
     seconds: 0,
   });
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { toast } = useToast();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -101,10 +99,6 @@ export default function MyReservation() {
       status: ReservationStatus.Cancelled,
     }));
     setIsDialogOpen(false);
-    toast({
-      title: "Reservation Cancelled",
-      description: "Your reservation has been successfully cancelled.",
-    });
   };
 
   return (

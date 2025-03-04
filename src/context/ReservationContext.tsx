@@ -11,11 +11,9 @@ export interface Service {
 
 interface RoomDetails {
   roomId?: number;
-  hours?: number;
-  price?: number;
-  totalPrice?: number;
   selectedDate?: string;
   selectedTime?: string;
+  hourlyRate?: number; // Añadimos esta nueva propiedad
 }
 
 interface Reservation {
