@@ -1,126 +1,134 @@
+import { Link, useNavigate } from "react-router-dom";
+import { Heart } from "lucide-react";
 import { useState } from "react";
-import { ArrowLeft, CalendarIcon } from "lucide-react";
-import { format, subYears } from "date-fns";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
+import { register, login as loginService } from "@/services/authService";
+import { useAuth } from "@/context/AuthContext";
 
 export default function SignUpPage() {
-  const [date, setDate] = useState<Date>();
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Calculate the date 18 years ago from today
-  const maxDate = subYears(new Date(), 18);
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    setIsLoading(true);
+
+    if (!name || !email || !password) {
+      setError("Por favor, completa todos los campos obligatorios.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // Registrar al usuario
+      const userData = await register({ name, email, password, phone });
+      
+      try {
+        // Intentar iniciar sesión automáticamente
+        const loginResponse = await loginService({ email, password });
+        
+        // Si el login es exitoso, guardar datos de sesión
+        login(loginResponse.token, loginResponse.user);
+        navigate("/home");
+      } catch (loginError) {
+        // Si falla el login automático, redirigir al login manual
+        console.error("Error en login automático:", loginError);
+        setError("Registro exitoso. Por favor inicia sesión manualmente.");
+        
+        // Esperar 2 segundos y redirigir a la página de login
+        setTimeout(() => {
+          navigate("/login", { state: { email } }); // Pasamos el email para prellenarlo en el form
+        }, 2000);
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Error al crear la cuenta. Por favor intenta de nuevo.");
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="p-4 flex items-center justify-between">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="rounded-full"
-          onClick={() => window.history.back()}
-        >
-          <ArrowLeft className="h-6 w-6" />
-        </Button>
-        <h1 className="text-2xl font-normal">Register</h1>
-        <div className="w-10" /> {/* Spacer for alignment */}
-      </header>
+    <div className="min-h-screen flex flex-col items-center justify-between py-8 px-4">
+      <Card className="w-full max-w-sm border-0 shadow-none">
+        <CardContent className="space-y-6 pt-8">
+          <div className="text-center">
+            <h1 className="text-2xl font-bold">Create Account</h1>
+          </div>
 
-      <div className="max-w-md mx-auto p-6 space-y-8">
-        <div className="space-y-2">
-          <h2 className="text-2xl font-bold text-center">
-            Create your account
-          </h2>
-          <p className="text-gray-500 text-center">
-            Enter your information to register
+          <form onSubmit={handleSignUp} className="space-y-4">
+            <Input
+              type="text"
+              placeholder="Full Name"
+              className="h-12 bg-gray-100 border-0"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              disabled={isLoading}
+            />
+            <Input
+              type="email"
+              placeholder="Email Address"
+              className="h-12 bg-gray-100 border-0"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={isLoading}
+            />
+            <Input
+              type="text"
+              placeholder="Phone Number (optional)"
+              className="h-12 bg-gray-100 border-0"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              disabled={isLoading}
+            />
+            <Input
+              type="password"
+              placeholder="Password"
+              className="h-12 bg-gray-100 border-0"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              disabled={isLoading}
+            />
+
+            {error && <div className={`text-sm ${error.includes("exitoso") ? "text-green-500" : "text-red-500"}`}>{error}</div>}
+
+            <Button
+              type="submit"
+              className="w-full bg-black text-white hover:bg-black/90 rounded-full h-12"
+              disabled={isLoading}
+            >
+              {isLoading ? "Creating Account..." : "Sign Up"}
+            </Button>
+          </form>
+
+          <div className="text-center">
+            <Link to="/login" className="text-black hover:underline">
+              Already have an account? Log in
+            </Link>
+          </div>
+        </CardContent>
+      </Card>
+
+      <CardFooter className="text-gray-500 text-sm text-center">
+        <div className="space-y-1">
+          <p>© 2023 Papus Developers INC. All rights reserved.</p>
+          <p className="flex items-center justify-center gap-1">
+            Designed with <Heart className="w-4 h-4 fill-current" /> in Japan.
           </p>
         </div>
-
-        <form className="space-y-6">
-          {/* Name Field */}
-          <div className="space-y-2">
-            <Label htmlFor="name">Full Name</Label>
-            <Input
-              id="name"
-              placeholder="Enter your full name"
-              className="h-12"
-              required
-            />
-          </div>
-
-          {/* Email Field */}
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="Enter your email"
-              className="h-12"
-              required
-            />
-          </div>
-
-          {/* Telephone Field */}
-          <div className="space-y-2">
-            <Label htmlFor="telephone">Telephone</Label>
-            <Input
-              id="telephone"
-              type="tel"
-              placeholder="Enter your telephone number"
-              className="h-12"
-              required
-            />
-          </div>
-
-          {/* Date of Birth Field */}
-          <div className="space-y-2">
-            <Label htmlFor="dob">Date of Birth</Label>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  id="dob"
-                  variant={"outline"}
-                  className={cn(
-                    "w-full h-12 justify-start text-left font-normal",
-                    !date && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? format(date, "PPP") : <span>Pick a date</span>}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  mode="single"
-                  selected={date}
-                  onSelect={setDate}
-                  disabled={(date) => date > maxDate || date > new Date()}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-            <p className="text-sm text-muted-foreground">
-              You must be at least 18 years old to register
-            </p>
-          </div>
-
-          {/* Submit Button */}
-          <Button
-            type="submit"
-            className="w-full h-12 bg-black text-white hover:bg-black/90"
-          >
-            Create Account
-          </Button>
-        </form>
-      </div>
+      </CardFooter>
     </div>
   );
 }
