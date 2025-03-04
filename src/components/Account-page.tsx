@@ -1,12 +1,51 @@
-import { ArrowLeft, User, ChevronRight, LogOut } from "lucide-react"
+import { ArrowLeft, User as UserIcon, ChevronRight, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
 import BottomNavBar from "./Bottom-navbar"
+import { useAuth } from "../context/AuthContext"
+import { useNavigate } from "react-router-dom"
+import { useEffect } from "react"
+import { getUserProfile } from "../services/authService"
 
 export default function AccountPage() {
+  const { user, token, login, logout } = useAuth();
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      // Solo hacer la petición si tenemos token pero no tenemos los datos completos del usuario
+      if (token && (!user?.name || !user?.email)) {
+        try {
+          const profileData = await getUserProfile(token);
+          
+          // Actualizar los datos del usuario con la información completa
+          if (profileData) {
+            login(token, profileData);
+          }
+        } catch (error) {
+          console.error("Error al obtener perfil del usuario:", error);
+          // Si hay un error, usamos los datos que ya tenemos en localStorage
+        }
+      }
+    };
+    
+    fetchUserProfile();
+  }, [token, user, login]);
+  
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  }
+
+  // Generar URL del avatar usando robohash con el nombre del usuario o un valor predeterminado
+  const generateAvatarUrl = () => {
+    const seed = user?.name || "Usuario";
+    return `https://robohash.org/${encodeURIComponent(seed)}.png?set=set3`;
+  };
+
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white pb-16">
       {/* Header */}
       <header className="p-4 flex items-center justify-between">
         <Button variant="ghost" size="icon" className="rounded-full">
@@ -18,12 +57,22 @@ export default function AccountPage() {
 
       {/* Profile Section */}
       <div className="px-6 py-4 flex items-center gap-4">
-        <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
-          <User className="w-8 h-8 text-gray-400" />
+        <div className="w-16 h-16 bg-gray-100 rounded-full overflow-hidden">
+          <img 
+            src={generateAvatarUrl()} 
+            alt="Avatar de perfil" 
+            className="w-full h-full object-cover"
+            onError={(e) => {
+              // Si hay error al cargar la imagen, mostrar icono predeterminado
+              const target = e.target as HTMLImageElement;
+              target.style.display = 'none';
+              target.parentElement!.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg class="w-8 h-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg></div>';
+            }}
+          />
         </div>
         <div>
-          <h2 className="text-xl font-normal">Esteban Quiceno</h2>
-          <p className="text-gray-500">tilin.insano@yopmail.com</p>
+          <h2 className="text-xl font-normal">{user?.name || "Usuario"}</h2>
+          <p className="text-gray-500">{user?.email || "Correo no disponible"}</p>
         </div>
       </div>
 
@@ -67,18 +116,22 @@ export default function AccountPage() {
             <span className="text-lg">Notifications</span>
             <Switch />
           </div>
-          <div className="flex items-center justify-between py-2 border-b">
+          {/* <div className="flex items-center justify-between py-2 border-b">
             <span className="text-lg">Payment Methods</span>
             <Button variant="ghost" className="text-gray-500">
               ****5831 <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
 
       {/* Log Out Button */}
       <div className="px-6 py-4">
-        <Button variant="default" className="w-full bg-black text-white rounded-xl h-12">
+        <Button 
+          variant="default" 
+          className="w-full bg-black text-white rounded-xl h-12"
+          onClick={handleLogout}
+        >
           Log Out <LogOut className="ml-2 h-4 w-4" />
         </Button>
       </div>

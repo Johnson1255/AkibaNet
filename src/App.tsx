@@ -1,5 +1,7 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ReservationProvider } from './context/ReservationContext';
+import { AuthProvider } from './context/AuthContext';
+import { PrivateRoute, PublicRoute } from './components/PrivateRoute';
 
 import LoginForm from "./components/LogIn-form";
 import CafeHome from "./components/Home-page";
@@ -15,19 +17,30 @@ import HelpServicesPage from "./components/Help-Services-page";
 function App() {
   return (
     <Router>
-      <ReservationProvider>
-        <AppRoutes />
-      </ReservationProvider>
+      <AuthProvider>
+        <ReservationProvider>
+          <AppRoutes />
+        </ReservationProvider>
+      </AuthProvider>
     </Router>
   );
 }
 
 function AppRoutes() {
   return (
-      <Routes>
-        <Route path="/home" element={<CafeHome />} />
+    <Routes>
+      {/* Ruta raíz que redirige a home o login según autenticación */}
+      <Route path="/" element={<Navigate to="/home" replace />} />
+
+      {/* Rutas públicas - solo accesibles si NO está autenticado */}
+      <Route element={<PublicRoute />}>
         <Route path="/login" element={<LoginForm />} />
         <Route path="/signup" element={<SignUpPage />} />
+      </Route>
+      
+      {/* Rutas privadas - solo accesibles si está autenticado */}
+      <Route element={<PrivateRoute />}>
+        <Route path="/home" element={<CafeHome />} />
         <Route path="/reserve" element={<RoomSelection />} />
         <Route path="/room-details/:roomId" element={<RoomDetails />} />
         <Route path="/room-details" element={<RoomDetails />} />
@@ -36,7 +49,8 @@ function AppRoutes() {
         <Route path="/my-reservation" element={<MyReservationPage />} />
         <Route path="/help-services" element={<HelpServicesPage />} />
         <Route path="/confirmation" element={<Confirmation />} />
-      </Routes>
+      </Route>
+    </Routes>
   );
 }
 

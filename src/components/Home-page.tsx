@@ -2,25 +2,26 @@ import { HelpCircle, Coffee, Pizza } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Link } from "react-router-dom"
 import BottomNavBar from "./Bottom-navbar"
+import { useAuth } from "@/context/AuthContext"
 
 export default function CafeHome() {
+  const { user } = useAuth();
+  
   return (
     <div className="min-h-screen bg-white pb-16">
       {/* Main Content */}
       <main className="pb-16">
-        {" "}
-        {/* Add padding bottom to account for navigation */}
         {/* Welcome Section */}
         <div className="px-6 py-8">
           <h1 className="text-2xl font-normal text-center leading-tight">
-            Welcome back Papu,
+            Welcome back {user?.name || 'Usuario'},
             <br />
             what do you want to do today?
           </h1>
         </div>
         {/* Action Buttons */}
         <div className="grid grid-cols-3 gap-4 px-6 mb-8">
-          <Link to="/help" className="flex flex-col items-center p-4 bg-gray-100 rounded-2xl">
+          <Link to="/help-services" className="flex flex-col items-center p-4 bg-gray-100 rounded-2xl">
             <HelpCircle className="w-8 h-8 mb-2" />
             <span>Help</span>
           </Link>
