@@ -7,9 +7,10 @@ import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { getUserProfile } from "../services/authService"
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next"
 
 export default function AccountPage() {
+  const { t, i18n } = useTranslation();
   const { user, token, login, logout } = useAuth();
   const navigate = useNavigate();
   
@@ -41,15 +42,12 @@ export default function AccountPage() {
 
   // Generar URL del avatar usando robohash con el nombre del usuario o un valor predeterminado
   const generateAvatarUrl = () => {
-    const seed = user?.name || "Usuario";
+    const seed = user?.name || t('account.profile.defaultUser');
     return `https://robohash.org/${encodeURIComponent(seed)}.png?set=set3`;
   };
 
-  const { t, i18n } = useTranslation();
-
-  // Función para abrir un selector de idioma
+  // Función para cambiar el idioma
   const handleLanguageChange = () => {
-    // Cambia entre español e inglés
     const newLang = i18n.language === 'en' ? 'es' : 'en';
     i18n.changeLanguage(newLang);
   };
@@ -61,7 +59,7 @@ export default function AccountPage() {
         <Button variant="ghost" size="icon" className="rounded-full">
           <ArrowLeft className="h-6 w-6" />
         </Button>
-        <h1 className="text-2xl font-normal">Account</h1>
+        <h1 className="text-2xl font-normal">{t('account.title')}</h1>
         <div className="w-10" /> {/* Spacer for alignment */}
       </header>
 
@@ -81,8 +79,8 @@ export default function AccountPage() {
           />
         </div>
         <div>
-          <h2 className="text-xl font-normal">{user?.name || "Usuario"}</h2>
-          <p className="text-gray-500">{user?.email || "Correo no disponible"}</p>
+          <h2 className="text-xl font-normal">{user?.name || t('account.profile.defaultUser')}</h2>
+          <p className="text-gray-500">{user?.email || t('errors.emailNotAvailable')}</p>
         </div>
       </div>
 
@@ -90,31 +88,31 @@ export default function AccountPage() {
 
       {/* Reservation History */}
       <div className="px-6 py-4">
-        <h2 className="text-2xl font-bold mb-4">Reservation history</h2>
+        <h2 className="text-2xl font-bold mb-4">{t('reservation.history')}</h2>
         <div className="space-y-3">
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">Gaming Room #24</h3>
-              <p className="text-gray-500">2025-01-15 | 2 hours</p>
+              <p className="text-gray-500">2025-01-15 | 2 {t('reservation.hours')}</p>
             </div>
             <span className="text-lg">¥ 1700</span>
           </div>
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">Gaming Room #5</h3>
-              <p className="text-gray-500">2025-01-18 | 2 hours</p>
+              <p className="text-gray-500">2025-01-18 | 2 {t('reservation.hours')}</p>
             </div>
             <span className="text-lg">¥ 1700</span>
           </div>
         </div>
         <Button variant="ghost" className="w-full mt-2 text-gray-500">
-          View all reservations <ChevronRight className="ml-2 h-4 w-4" />
+          {t('reservation.viewAll')} <ChevronRight className="ml-2 h-4 w-4" />
         </Button>
       </div>
 
       {/* Settings */}
       <div className="px-6 py-4">
-        <h2 className="text-2xl font-bold mb-4">Settings</h2>
+        <h2 className="text-2xl font-bold mb-4">{t('settings.title')}</h2>
         <div className="space-y-4">
           <div className="flex items-center justify-between py-2 border-b">
             <span className="text-lg">{t('settings.language')}</span>
@@ -123,11 +121,11 @@ export default function AccountPage() {
             </Button>
           </div>
           <div className="flex items-center justify-between py-2 border-b">
-            <span className="text-lg">Notifications</span>
+            <span className="text-lg">{t('settings.notifications')}</span>
             <Switch />
           </div>
           {/* <div className="flex items-center justify-between py-2 border-b">
-            <span className="text-lg">Payment Methods</span>
+            <span className="text-lg">{t('settings.paymentMethods')}</span>
             <Button variant="ghost" className="text-gray-500">
               ****5831 <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
@@ -142,7 +140,7 @@ export default function AccountPage() {
           className="w-full bg-black text-white rounded-xl h-12"
           onClick={handleLogout}
         >
-          Log Out <LogOut className="ml-2 h-4 w-4" />
+          {t('buttons.logout')} <LogOut className="ml-2 h-4 w-4" />
         </Button>
       </div>
       <BottomNavBar />
