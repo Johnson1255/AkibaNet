@@ -7,6 +7,7 @@ import { useAuth } from "../context/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { getUserProfile } from "../services/authService"
+import { useTranslation } from 'react-i18next';
 
 export default function AccountPage() {
   const { user, token, login, logout } = useAuth();
@@ -42,6 +43,15 @@ export default function AccountPage() {
   const generateAvatarUrl = () => {
     const seed = user?.name || "Usuario";
     return `https://robohash.org/${encodeURIComponent(seed)}.png?set=set3`;
+  };
+
+  const { t, i18n } = useTranslation();
+
+  // Función para abrir un selector de idioma
+  const handleLanguageChange = () => {
+    // Cambia entre español e inglés
+    const newLang = i18n.language === 'en' ? 'es' : 'en';
+    i18n.changeLanguage(newLang);
   };
 
   return (
@@ -107,9 +117,9 @@ export default function AccountPage() {
         <h2 className="text-2xl font-bold mb-4">Settings</h2>
         <div className="space-y-4">
           <div className="flex items-center justify-between py-2 border-b">
-            <span className="text-lg">Language</span>
-            <Button variant="ghost" className="text-gray-500">
-              English <ChevronRight className="ml-2 h-4 w-4" />
+            <span className="text-lg">{t('settings.language')}</span>
+            <Button variant="ghost" className="text-gray-500" onClick={handleLanguageChange}>
+              {i18n.language === 'en' ? 'English' : 'Español'} <ChevronRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
           <div className="flex items-center justify-between py-2 border-b">

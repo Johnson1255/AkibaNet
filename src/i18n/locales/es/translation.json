@@ -1,0 +1,26 @@
+{
+    "account": {
+      "title": "Cuenta",
+      "profile": {
+        "defaultUser": "Usuario"
+      }
+    },
+    "reservation": {
+      "history": "Historial de reservas",
+      "viewAll": "Ver todas las reservas",
+      "hour": "hora",
+      "hours": "horas"
+    },
+    "settings": {
+      "title": "Configuración",
+      "language": "Idioma",
+      "notifications": "Notificaciones",
+      "paymentMethods": "Métodos de pago"
+    },
+    "buttons": {
+      "logout": "Cerrar Sesión"
+    },
+    "errors": {
+      "emailNotAvailable": "Correo no disponible"
+    }
+  }
