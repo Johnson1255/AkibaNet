@@ -1,26 +1,56 @@
 {
-    "account": {
-      "title": "Cuenta",
-      "profile": {
-        "defaultUser": "Usuario"
-      }
-    },
-    "reservation": {
-      "history": "Historial de reservas",
-      "viewAll": "Ver todas las reservas",
-      "hour": "hora",
-      "hours": "horas"
-    },
-    "settings": {
-      "title": "Configuración",
-      "language": "Idioma",
-      "notifications": "Notificaciones",
-      "paymentMethods": "Métodos de pago"
-    },
-    "buttons": {
-      "logout": "Cerrar Sesión"
-    },
-    "errors": {
-      "emailNotAvailable": "Correo no disponible"
+  "account": {
+    "title": "Cuenta",
+    "profile": {
+      "defaultUser": "Usuario"
     }
+  },
+  "reservation": {
+    "history": "Historial de reservas",
+    "viewAll": "Ver todas las reservas",
+    "hour": "hora",
+    "hours": "horas"
+  },
+  "settings": {
+    "title": "Configuración",
+    "language": "Idioma",
+    "notifications": "Notificaciones",
+    "paymentMethods": "Métodos de pago"
+  },
+  "buttons": {
+    "logout": "Cerrar Sesión"
+  },
+  "errors": {
+    "emailNotAvailable": "Correo no disponible"
+  },
+  "home": {
+    "welcome": "Bienvenido de nuevo {{name}},",
+    "whatToDo": "¿qué quieres hacer hoy?",
+    "actionButtons": {
+      "help": "Ayuda",
+      "reserve": "Reservar",
+      "food": "Comida"
+    },
+    "news": {
+      "title": "Últimas noticias y ofertas",
+      "gaming": {
+        "title": "Juega hasta que te duelan los ojos (¡y luego un poco más!)",
+        "description": "¡Reserva 5 horas en una Sala de Juegos y la 6ª es gratis! 🎮😎"
+      },
+      "art": {
+        "title": "¿Eres un artista? ¡Nosotros también (en nuestros sueños)!",
+        "description": "¡Reserva una Sala de Lectura/Dibujo y obtén un kit de arte gratis! 🎨✨"
+      },
+      "lol": {
+        "title": "¿Eres un Gran Maestro en LoL?",
+        "description": "¡Demuéstralo y reclama tu Monster gratis! 🎮⚡"
+      }
+    }
+  },
+  "navigation": {
+    "home": "Inicio",
+    "search": "Buscar",
+    "account": "Cuenta",
+    "reservations": "Reservas"
   }
+}

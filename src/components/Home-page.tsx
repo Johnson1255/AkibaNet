@@ -3,9 +3,14 @@ import { Card } from "@/components/ui/card"
 import { Link } from "react-router-dom"
 import BottomNavBar from "./Bottom-navbar"
 import { useAuth } from "@/context/AuthContext"
+import { useTranslation } from "react-i18next"
 
 export default function CafeHome() {
   const { user } = useAuth();
+  const { t } = useTranslation();
+  
+  // Nombre del usuario o valor predeterminado
+  const userName = user?.name || t('account.profile.defaultUser');
   
   return (
     <div className="min-h-screen bg-white pb-16">
@@ -14,43 +19,42 @@ export default function CafeHome() {
         {/* Welcome Section */}
         <div className="px-6 py-8">
           <h1 className="text-2xl font-normal text-center leading-tight">
-            Welcome back {user?.name || 'Usuario'},
-            <br />
-            what do you want to do today?
+            {t('home.welcome', { name: userName })}<br />
+            {t('home.whatToDo')}
           </h1>
         </div>
         {/* Action Buttons */}
         <div className="grid grid-cols-3 gap-4 px-6 mb-8">
           <Link to="/help-services" className="flex flex-col items-center p-4 bg-gray-100 rounded-2xl">
             <HelpCircle className="w-8 h-8 mb-2" />
-            <span>Help</span>
+            <span>{t('home.actionButtons.help')}</span>
           </Link>
           <Link to="/reserve" className="flex flex-col items-center p-4 bg-gray-100 rounded-2xl">
             <Coffee className="w-8 h-8 mb-2" />
-            <span>Reserve</span>
+            <span>{t('home.actionButtons.reserve')}</span>
           </Link>
           <Link to="/food" className="flex flex-col items-center p-4 bg-gray-100 rounded-2xl">
             <Pizza className="h-8 w-8 mb-2" />
-            <span>Food</span>
+            <span>{t('home.actionButtons.food')}</span>
           </Link>
         </div>
         {/* News Section */}
         <div className="px-6">
-          <h2 className="text-2xl font-bold mb-4">Latest news and offers</h2>
+          <h2 className="text-2xl font-bold mb-4">{t('home.news.title')}</h2>
           <div className="space-y-4">
             <Card className="p-6 rounded-3xl border-2">
-              <h3 className="text-xl font-bold italic mb-2">Gaming until your eyes hurt (and then some more)</h3>
-              <p className="text-lg">Book 5 hours in a Gaming Room and the 6th is free! 🎮😎</p>
+              <h3 className="text-xl font-bold italic mb-2">{t('home.news.gaming.title')}</h3>
+              <p className="text-lg">{t('home.news.gaming.description')}</p>
             </Card>
 
             <Card className="p-6 rounded-3xl border-2">
-              <h3 className="text-xl font-bold italic mb-2">Are you an artist? So are we (in our dreams)!</h3>
-              <p className="text-lg">Book a Reading/Drawing Room and get a free art kit! 🎨✨</p>
+              <h3 className="text-xl font-bold italic mb-2">{t('home.news.art.title')}</h3>
+              <p className="text-lg">{t('home.news.art.description')}</p>
             </Card>
 
             <Card className="p-6 rounded-3xl border-2">
-              <h3 className="text-xl font-bold italic mb-2">Are you a Grandmaster in LoL?</h3>
-              <p className="text-lg">Prove it and claim your free Monster! 🎮⚡</p>
+              <h3 className="text-xl font-bold italic mb-2">{t('home.news.lol.title')}</h3>
+              <p className="text-lg">{t('home.news.lol.description')}</p>
             </Card>
           </div>
         </div>
@@ -59,4 +63,3 @@ export default function CafeHome() {
     </div>
   )
 }
-
