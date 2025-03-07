@@ -28,14 +28,44 @@ const ActiveReservationPage: React.FC = () => {
     }
   }, [navigate]);
 
-  const cancelReservation = () => {
-    if (activeReservation) {
-      const updatedReservation = { ...activeReservation, status: 'cancelled' };
+  const cancelReservation = async () => {
+    if (!activeReservation) return;
+  
+    try {
+      // Crear la reserva con estado actualizado
+      const updatedReservation = {
+        ...activeReservation,
+        status: 'cancelled',
+        updatedAt: new Date().toISOString() // Actualizar timestamp
+      };
+      const token = localStorage.getItem('token');
+      // Enviar la actualización a la base de datos
+      const response = await fetch(`http://localhost:3000/api/bookings/${activeReservation.id}/cancel`, {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ status: 'cancelled' }) // Enviar el estado actualizado
+      });      
+  
+      if (!response.ok) {
+        throw new Error('Error al actualizar la reserva en la base de datos');
+      }
+  
+      // Guardar la reserva actualizada en localStorage
       localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
+  
+      // Ahora que ya se guardó en la DB, eliminarla de localStorage
       localStorage.removeItem('lastReservation');
+      // Redirigir al usuario a la página de selección de habitación
       navigate('/reserve');
+    } catch (error) {
+      console.error('Error al cancelar la reserva:', error);
+      alert('Hubo un problema al cancelar la reserva. Inténtalo de nuevo.');
     }
   };
+  
 
   if (!activeReservation) {
     return <div>Loading...</div>;
