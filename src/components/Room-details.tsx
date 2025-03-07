@@ -142,10 +142,13 @@ export default function RoomDetails() {
     try {
       const storedUser = localStorage.getItem("user");
       let userId = null;
+  
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser);
         userId = parsedUser.id;
       }
+  
+      console.log("User ID:", userId); //
   
       const startDateTime = parseDateTime(reservation.selectedDate!, reservation.selectedTime!);
       const basePrice = room.hourlyRate * hours;
@@ -159,25 +162,28 @@ export default function RoomDetails() {
         services: [],
         products: []
       };
-      console.log("Sending reservation payload:", reservationPayload);
+  
+      console.log("Reservation payload:", reservationPayload);
   
       const response = await fetch("http://localhost:3000/api/bookings", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(reservationPayload),
       });
   
       if (!response.ok) {
-        throw new Error(t('reservation.errors.bookingError', 'Error al crear la reserva'));
+        throw new Error("Error al crear la reserva");
       }
   
       const savedBooking = await response.json();
       localStorage.setItem('lastReservation', JSON.stringify(savedBooking));
       navigate("/confirmation");
     } catch (error) {
-      console.error(t('reservation.errors.confirmError', 'Error al confirmar reserva:'), error);
+      console.error("Error al confirmar reserva:", error);
     }
-  };
+  };  
 
   // Si está cargando, mostrar indicador
   if (loading) {
