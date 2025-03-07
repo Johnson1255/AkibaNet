@@ -141,23 +141,34 @@ export default function RoomDetails() {
   
     try {
       const storedUser = localStorage.getItem("user");
-      let userId = null;
+      const token = localStorage.getItem("token");
   
-      if (storedUser) {
-        const parsedUser = JSON.parse(storedUser);
-        userId = parsedUser.id;
+      if (!storedUser) {
+        throw new Error("No hay usuario guardado en localStorage.");
       }
   
-      console.log("User ID:", userId); //
+      if (!token) {
+        throw new Error("No se encontró un token de autenticación. Inicia sesión nuevamente.");
+      }
   
-      const startDateTime = parseDateTime(reservation.selectedDate!, reservation.selectedTime!);
+      const parsedUser = JSON.parse(storedUser);
+      const userId = parsedUser.id;
+  
+      console.log("User ID:", userId);
+      console.log("Auth Token:", token);
+  
+      if (!reservation.selectedDate || !reservation.selectedTime) {
+        throw new Error("Falta seleccionar fecha y hora para la reserva.");
+      }
+  
+      const startDateTime = parseDateTime(reservation.selectedDate, reservation.selectedTime);
       const basePrice = room.hourlyRate * hours;
   
       const reservationPayload = {
         userId, 
-        roomId: room.id,
+        roomId: Number(room.id), // 
         startTime: startDateTime.toISOString(),
-        hours,
+        duration: hours,
         basePrice,
         services: [],
         products: []
@@ -169,21 +180,25 @@ export default function RoomDetails() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify(reservationPayload),
       });
   
+      const responseData = await response.json();
+      console.log("API Response:", responseData); // 🔥 Verificamos qué responde el backend
+  
       if (!response.ok) {
-        throw new Error("Error al crear la reserva");
+        throw new Error(`Error al crear la reserva: ${responseData.error || "Error desconocido"}`);
       }
   
-      const savedBooking = await response.json();
-      localStorage.setItem('lastReservation', JSON.stringify(savedBooking));
+      localStorage.setItem("lastReservation", JSON.stringify(responseData));
       navigate("/confirmation");
     } catch (error) {
       console.error("Error al confirmar reserva:", error);
     }
-  };  
+  };
+  
 
   // Si está cargando, mostrar indicador
   if (loading) {
