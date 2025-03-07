@@ -24,7 +24,7 @@ const ActiveReservationPage: React.FC = () => {
     if (savedReservation) {
       setActiveReservation(JSON.parse(savedReservation));
     } else {
-      navigate('/room-select');
+      navigate('/reserve');
     }
   }, [navigate]);
 
@@ -40,7 +40,7 @@ const ActiveReservationPage: React.FC = () => {
       localStorage.setItem('activeReservation', JSON.stringify(updatedReservation));
       
       // Redirigir al usuario a la página de selección de habitación
-      navigate('/room-select');
+      navigate('/reserve');
     }
   };
 

@@ -266,7 +266,7 @@ export default function MyReservation() {
             <Button
               variant="default"
               className="w-full h-12 bg-black text-white hover:bg-black/90"
-              onClick={() => navigate("/room-selection")}
+              onClick={() => navigate("/reserve")}
             >
               Make a New Reservation
             </Button>

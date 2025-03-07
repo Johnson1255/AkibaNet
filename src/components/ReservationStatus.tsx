@@ -27,7 +27,7 @@ const ReservationStatus: React.FC<ReservationStatusProps> = ({ reservation }) =>
     return (
       <div className="p-5 rounded-lg shadow-md mx-auto my-5 max-w-md text-center bg-gray-50 border border-gray-200">
         <p className="text-lg mb-4">No tienes ninguna reserva pendiente</p>
-        <Link to="/room-select" className="inline-block px-5 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition-colors">
+        <Link to="/reserve" className="inline-block px-5 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition-colors">
           Reservar una sala
         </Link>
       </div>
@@ -55,7 +55,7 @@ const ReservationStatus: React.FC<ReservationStatusProps> = ({ reservation }) =>
       {timeInfo.status === ReservationTimeStatus.COMPLETED && (
         <div className="bg-gray-50 border border-gray-200 p-7 rounded-lg">
           <p className="text-lg mb-4">Tu reserva ha finalizado</p>
-          <Link to="/room-select" className="inline-block px-5 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition-colors">
+          <Link to="/reserve" className="inline-block px-5 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition-colors">
             Hacer una nueva reserva
           </Link>
         </div>

@@ -54,7 +54,7 @@ export default function Confirmation() {
         };
         
         // Almacenar la reserva activa en localStorage
-        localStorage.setItem('activeReservation', JSON.stringify(activeReservation));
+        localStorage.setItem('lastReservation', JSON.stringify(activeReservation));
       }
     }
   }, []);

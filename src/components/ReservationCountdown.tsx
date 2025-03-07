@@ -64,7 +64,7 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
         <h2 className="text-2xl font-medium mb-3">No tienes ninguna reserva</h2>
         <p className="text-gray-600 mb-5">Haz una nueva reserva para comenzar</p>
         <button
-          onClick={() => navigate('/room-select')}
+          onClick={() => navigate('/reserve')}
           className="inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
         >
           Reservar una sala
@@ -79,7 +79,7 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
         <h2 className="text-2xl font-medium mb-3">Tu reserva ha finalizado</h2>
         <p className="text-gray-600 mb-5">Gracias por usar nuestro servicio</p>
         <button
-          onClick={() => navigate('/room-select')}
+          onClick={() => navigate('/reserve')}
           className="inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
         >
           Hacer una nueva reserva

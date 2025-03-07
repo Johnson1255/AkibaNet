@@ -58,7 +58,7 @@ export default function RoomDetails() {
   const [error, setError] = useState<string | null>(null);
   
   // Estado para el slider con valores por defecto
-  const [sliderValue, setSliderValue] = useState<number[]>([2]); // Valor inicial por defecto
+  const [sliderValue, setSliderValue] = useState<number[]>([1]); // Valor inicial por defecto
 
   // Cargar los detalles de la habitación desde la API
   useEffect(() => {
@@ -78,7 +78,7 @@ export default function RoomDetails() {
         
         // Inicializar el slider con los valores minHours de la habitación
         if (roomData.minHours) {
-          setSliderValue([roomData.minHours * 2]); // Multiplicamos por 2 porque cada paso del slider es media hora
+          setSliderValue([roomData.minHours]); // Usar valores enteros
           
           // Actualizar el contexto con los valores iniciales
           const initialHours = roomData.minHours;
@@ -110,14 +110,14 @@ export default function RoomDetails() {
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
     if (room) {
-      const hours = value[0] * 0.5; // Convertir el valor del slider a horas
+      const hours = value[0]; // Usar valores enteros
       const price = calculatePrice(hours, room.hourlyRate);
       updateRoomDetails({ hours, price });
     }
   };
 
   // Calcular horas y precio actuales basados en el valor del slider
-  const hours = room ? sliderValue[0] * 0.5 : 0;
+  const hours = room ? sliderValue[0] : 0;
   const price = room ? calculatePrice(hours, room.hourlyRate) : 0;
 
   // Función auxiliar para parsear "MM/DD/YYYY" y "hh:mm am/pm"
@@ -329,9 +329,9 @@ export default function RoomDetails() {
           <Slider
             defaultValue={sliderValue}
             value={sliderValue}
-            min={room.minHours * 2} // Convertimos horas a pasos (1 hora = 2 pasos)
-            max={room.maxHours * 2}
-            step={1} // Cada paso es media hora
+            min={room.minHours} // Usar valores enteros
+            max={room.maxHours}
+            step={1} // Paso de 1 hora
             className="mb-2"
             onValueChange={handleSliderChange}
           />

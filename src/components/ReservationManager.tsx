@@ -26,7 +26,7 @@ const ReservationManager: React.FC<ReservationManagerProps> = ({ children }) => 
           
           // Si estamos en la página de selección de sala, redirigir al usuario
           const currentPath = window.location.pathname;
-          if (currentPath === '/room-select' || currentPath === '/reserve') {
+          if (currentPath === '/reserve' || currentPath === '/reserve') {
             navigate('/active-reservation');
           }
         } else {

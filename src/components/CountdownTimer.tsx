@@ -55,7 +55,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
         <h2 className="text-2xl font-medium mb-3">Tu reserva ha finalizado</h2>
         <p className="text-gray-600 mb-5">No tienes ninguna reserva pendiente</p>
         <button
-          onClick={() => navigate('/room-select')}
+          onClick={() => navigate('/reserve')}
           className="inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
         >
           Hacer una nueva reserva
