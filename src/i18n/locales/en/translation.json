@@ -110,5 +110,9 @@
     },
     "gotReservation": "You do not have any current reservation, please make one to order food",
     "button": "Go to reserve page"
+  },
+  "room":{
+    "name": "Select a room",
+    "fetchError": "Error fetching room data"
   }
 }

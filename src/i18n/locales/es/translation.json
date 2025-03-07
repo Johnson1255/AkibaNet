@@ -110,5 +110,9 @@
         }
       }
     }
+  },
+  "room":{
+    "name": "Elige una habitación",
+    "fetchError": "Error al cargar la información de las habitaciones."
   }
 }
