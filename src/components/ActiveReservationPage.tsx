@@ -30,17 +30,9 @@ const ActiveReservationPage: React.FC = () => {
 
   const cancelReservation = () => {
     if (activeReservation) {
-      // Actualizar el estado de la reserva a cancelado
-      const updatedReservation = {
-        ...activeReservation,
-        status: 'cancelled'
-      };
-      
-      // Guardar la reserva actualizada en lastReservation
+      const updatedReservation = { ...activeReservation, status: 'cancelled' };
       localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
       localStorage.removeItem('lastReservation');
-      
-      // Redirigir al usuario a la página de selección de habitación
       navigate('/reserve');
     }
   };
@@ -50,13 +42,14 @@ const ActiveReservationPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-16">
-      <header className="p-4 bg-white border-b">
+    <div className="min-h-screen bg-background text-foreground pb-16">
+      {/* Header */}
+      <header className="p-4 bg-background border-b border-border">
         <h1 className="text-2xl font-medium text-center">Active Reservation</h1>
       </header>
 
       <div className="p-4">
-        <Card className="p-4 mb-4">
+        <Card className="p-4 mb-4 bg-card text-card-foreground">
           <div className="bg-yellow-100 p-3 rounded-lg mb-4 flex items-start">
             <Info className="h-5 w-5 text-yellow-700 mr-2 mt-0.5" />
             <p className="text-yellow-700 text-sm">
@@ -67,12 +60,12 @@ const ActiveReservationPage: React.FC = () => {
           <h2 className="text-xl font-semibold mb-3">Room #{activeReservation.roomId}</h2>
           
           <div className="flex items-center mb-4">
-            <Clock className="h-5 w-5 text-gray-500 mr-2" />
+            <Clock className="h-5 w-5 text-muted-foreground mr-2" />
             <div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 Start: {new Date(activeReservation.startTime).toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-muted-foreground">
                 End: {new Date(activeReservation.endTime).toLocaleString()}
               </div>
             </div>
@@ -82,7 +75,7 @@ const ActiveReservationPage: React.FC = () => {
           
           <Button
             variant="outline"
-            className="w-full mt-4"
+            className="w-full mt-4 border border-border"
             onClick={cancelReservation}
           >
             Cancel Reservation
@@ -90,7 +83,7 @@ const ActiveReservationPage: React.FC = () => {
         </Card>
         
         <Button 
-          className="w-full rounded-full h-12 bg-black text-white hover:bg-black/90"
+          className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
           onClick={() => navigate('/home')}
         >
           Back to Home

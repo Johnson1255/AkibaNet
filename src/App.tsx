@@ -14,7 +14,6 @@ import Confirmation from "./components/Confirmation";
 import HelpServicesPage from "./components/Help-Services-page";
 import FoodPage from "./components/FoodPage";
 import ActiveReservationPage from './components/ActiveReservationPage';
-import ReservationManager from './components/ReservationManager';
 
 function App() {
   return (
@@ -45,7 +44,6 @@ function AppRoutes() {
         <Route path="/home" element={<CafeHome />} />
         <Route path="/reserve" element={<RoomSelection />} />
         <Route path="/room-details/:roomId" element={<RoomDetails />} />
-        <Route path="/room-details" element={<RoomDetails />} />
         <Route path="/additional-services" element={<AdditionalServices />} />
         <Route path="/account" element={<AccountPage />} />
         <Route path="/help-services" element={<HelpServicesPage />} />

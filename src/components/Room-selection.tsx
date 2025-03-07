@@ -19,6 +19,7 @@ import TimePicker from "./time-picker";
 import BottomNavBar from "./Bottom-navbar";
 import { useReservation } from "../context/ReservationContext";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "../context/ThemeContext";
 
 // Nuevos tipos para las habitaciones
 interface Equipment {
@@ -43,6 +44,7 @@ export default function RoomSelection() {
   const { updateRoomDetails } = useReservation();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const { theme } = useTheme();
 
   // Función para obtener la siguiente hora en bloques de 15 minutos
   const getNextQuarterHour = (date: Date) => {
@@ -172,7 +174,7 @@ export default function RoomSelection() {
   };
 
   return (
-    <div className="bg-gray-100 pb-16">
+    <div className="min-h-screen bg-background text-foreground pb-16">
       {/* Header */}
       <header className="p-4 flex items-center justify-between">
         <Button
@@ -188,10 +190,10 @@ export default function RoomSelection() {
       </header>
 
       {/* Time, Date and Category Selection */}
-      <div className="bg-gray-200 p-4 flex gap-3">
+      <div className="bg-secondary p-4 flex gap-3">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-white">
+          <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-background">
             {selectedTime}
             <ChevronDown className="h-4 w-4 ml-2" />
           </Button>
@@ -215,7 +217,7 @@ export default function RoomSelection() {
 
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-white">
+            <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-background">
               {selectedDate?.toLocaleDateString() || "Select date"}{" "}
               <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
@@ -258,7 +260,7 @@ export default function RoomSelection() {
         {loading ? (
           <div className="text-center">Cargando habitaciones...</div>
         ) : error ? (
-          <div className="text-center text-red-500">{error}</div>
+          <div className="text-center text-destructive">{error}</div>
         ) : (
           <div className="grid grid-cols-5 gap-4">
             {rooms.map((room) => (
@@ -267,9 +269,9 @@ export default function RoomSelection() {
                 variant="outline"
                 className={`
                   aspect-square text-lg font-normal flex flex-col gap-1
-                  ${selectedRoom === room.id ? "bg-black text-white hover:bg-black" : ""}
-                  ${room.status !== "available" ? "bg-gray-200 text-gray-400 hover:bg-gray-200" : ""}
-                  ${room.status === "available" && selectedRoom !== room.id ? "bg-gray-100 hover:bg-gray-200" : ""}
+                  ${selectedRoom === room.id ? "bg-primary text-primary-foreground hover:bg-primary/90" : ""}
+                  ${room.status !== "available" ? "bg-muted text-muted-foreground hover:bg-muted" : ""}
+                  ${room.status === "available" && selectedRoom !== room.id ? "bg-secondary hover:bg-secondary/80" : ""}
                 `}
                 disabled={room.status !== "available"}
                 onClick={() => handleRoomSelect(room.id)}
@@ -285,7 +287,7 @@ export default function RoomSelection() {
       <div className="px-6 py-4 flex justify-between">
         <Button
           variant="default"
-          className="flex-1 rounded-full bg-black text-white h-12"
+          className="flex-1 rounded-full bg-primary text-primary-foreground h-12"
           disabled={!selectedRoom}
           onClick={() => {
             if (selectedRoom) {

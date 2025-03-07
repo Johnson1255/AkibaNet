@@ -8,6 +8,7 @@ import ImageCarousel from "./ImageCarousel";
 import { useReservation } from "../context/ReservationContext";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "../context/ThemeContext";
 
 // Definir interfaces para los datos recibidos de la API
 interface Equipment {
@@ -33,6 +34,7 @@ export default function RoomDetails() {
   const location = useLocation();
   const params = useParams();
   const { t } = useTranslation(); // Hook para traducciones
+  const { theme } = useTheme();
   
   // Obtener el roomId de los parámetros de URL
   let roomId: string | null = null;
@@ -242,7 +244,7 @@ export default function RoomDetails() {
   // Si está cargando, mostrar indicador
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center">
         <h2 className="text-xl mb-4">{t('reservation.loading', 'Cargando detalles de la habitación...')}</h2>
       </div>
     );
@@ -251,11 +253,11 @@ export default function RoomDetails() {
   // Si hay un error, mostrarlo
   if (error) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <h2 className="text-xl text-red-500 mb-4">{t('reservation.errors.error', 'Error:')} {error}</h2>
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center">
+        <h2 className="text-xl text-destructive mb-4">{t('reservation.errors.error', 'Error:')} {error}</h2>
         <Button
           variant="default"
-          className="rounded-full bg-black text-white"
+          className="rounded-full bg-primary text-primary-foreground"
           onClick={() => navigate("/reserve")}
         >
           {t('reservation.backToRooms', 'Volver a la selección de habitaciones')}
@@ -267,12 +269,12 @@ export default function RoomDetails() {
   // Si no hay roomId o no se encontró la habitación, mostrar un mensaje
   if (!roomId || !room) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center">
         <h1 className="text-2xl mb-4">{t('reservation.roomNotFound', 'No se encontró la habitación')}</h1>
         <p className="mb-4">{t('reservation.selectPrompt', 'Por favor, seleccione una habitación desde la página de selección.')}</p>
         <Button
           variant="default"
-          className="rounded-full bg-black text-white"
+          className="rounded-full bg-primary text-primary-foreground"
           onClick={() => navigate("/reserve")}
         >
           {t('reservation.goToRoomSelection', 'Ir a selección de habitaciones')}
@@ -292,7 +294,7 @@ export default function RoomDetails() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-16">
+    <div className="min-h-screen bg-background text-foreground pb-16">
       {/* Header */}
       <header className="p-4 flex items-center justify-between">
         <Button
@@ -317,7 +319,7 @@ export default function RoomDetails() {
 
       {/* Details */}
       <div className="px-4 mb-6">
-        <Card className="p-6 rounded-2xl">
+        <Card className="p-6 rounded-2xl bg-card text-card-foreground">
           <h2 className="text-xl font-bold mb-4">{t('reservation.details', 'Details')}</h2>
           <ul className="space-y-4">
             <li>{t('reservation.capacity', 'Capacidad')}: {room.capacity} {t('reservation.people', 'personas')}</li>
@@ -344,7 +346,7 @@ export default function RoomDetails() {
           <div className="flex-1">
             <Button
               variant="outline"
-              className="w-full rounded-full bg-gray-100 border-0"
+              className="w-full rounded-full bg-secondary hover:bg-secondary/80"
               onClick={() => {
                 // Aquí podrías abrir un selector de hora
                 updateRoomDetails({ selectedTime: reservation.selectedTime });
@@ -359,7 +361,7 @@ export default function RoomDetails() {
           <div className="flex-1">
             <Button
               variant="outline"
-              className="w-full rounded-full bg-gray-100 border-0"
+              className="w-full rounded-full bg-secondary hover:bg-secondary/80"
               onClick={() => {
                 // Aquí podrías abrir un selector de fecha
                 updateRoomDetails({ selectedDate: reservation.selectedDate });
@@ -381,11 +383,11 @@ export default function RoomDetails() {
             className="mb-2"
             onValueChange={handleSliderChange}
           />
-          <div className="text-sm text-gray-500 flex justify-between">
+          <div className="text-sm text-muted-foreground flex justify-between">
             <span>{room.minHours} {getHourText(room.minHours)} {t('reservation.minimum', 'mínimo')}</span>
             <span>{room.maxHours} {getHourText(room.maxHours)} {t('reservation.maximum', 'máximo')}</span>
           </div>
-          <div className="text-sm text-gray-500 text-center mt-2">
+          <div className="text-sm text-muted-foreground text-center mt-2">
             ¥{price.toFixed(2)} {t('reservation.for', 'por')} {hours} {getHourText(hours)}.
           </div>
         </div>
@@ -394,7 +396,7 @@ export default function RoomDetails() {
         <div className="space-y-3 pt-4">
           <Button
             variant="outline"
-            className="w-full rounded-full h-12 bg-gray-100 border-0"
+            className="w-full rounded-full h-12 bg-secondary hover:bg-secondary/80"
             onClick={() => {
               // Guardar los datos antes de navegar
               updateRoomDetails({ hours, price });
@@ -407,7 +409,7 @@ export default function RoomDetails() {
 
           <Button
             variant="default"
-            className="w-full rounded-full h-12 bg-black text-white hover:bg-black/90"
+            className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={handleConfirmAndPay}
           >
             {t('reservation.confirmAndPay', 'Confirm and Pay')}

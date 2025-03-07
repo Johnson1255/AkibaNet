@@ -22,6 +22,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import BottomNavBar from "./Bottom-navbar";
 import { useTranslation } from "react-i18next";
+import { useTheme } from "../context/ThemeContext";
 
 /**
  * Componente que renderiza la página de servicios de ayuda.
@@ -38,6 +39,9 @@ export default function HelpServicesPage() {
 
   /** Hook para manejar traducciones */
   const { t } = useTranslation();
+
+  /** Hook para manejar el tema */
+  const { theme } = useTheme();
 
   /** Lista de servicios disponibles */
   const services = [
@@ -103,9 +107,9 @@ export default function HelpServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-20">
+    <div className="min-h-screen bg-background text-foreground pb-20">
       {/* Encabezado */}
-      <header className="p-4 flex items-center justify-between">
+      <header className="p-4 flex items-center justify-between bg-background border-b border-border">
         <Button onClick={() => navigate(-1)} variant="ghost" size="icon" className="rounded-full">
           <ArrowLeft className="h-6 w-6" />
         </Button>
@@ -119,7 +123,7 @@ export default function HelpServicesPage() {
           {services.map((service) => (
             <Card
               key={service.id} 
-              className={`p-6 bg-gray-100 border-0 flex flex-col items-center justify-center space-y-2
+              className={`p-6 bg-card text-card-foreground border-0 flex flex-col items-center justify-center space-y-2
                 ${service.fullWidth ? "col-span-2" : ""}`}
             >
               {service.icon}
@@ -131,10 +135,10 @@ export default function HelpServicesPage() {
 
       {/* Sección de Comentarios */}
       <div className="p-4 mt-8">
-        <Card className="bg-gray-100 border-0 p-6">
+        <Card className="bg-card text-card-foreground border-0 p-6">
           <Textarea
             placeholder={t("help.requestPlaceholder")}
-            className="bg-transparent border-0 resize-none min-h-[200px] text-lg placeholder:text-gray-500"
+            className="bg-transparent border-0 resize-none min-h-[200px] text-lg placeholder:text-muted-foreground"
             value={comments}
             onChange={(e) => setComments(e.target.value)}
           />
@@ -143,7 +147,7 @@ export default function HelpServicesPage() {
 
       {/* Botón de Enviar */}
       <div className="p-4 flex justify-center">
-        <Button onClick={handleSendRequest} className="bg-gray-100 hover:bg-gray-200 text-black rounded-xl h-12 px-8">
+        <Button onClick={handleSendRequest} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-12 px-8">
           <Send className="mr-2 h-4 w-4" /> {t("help.sendRequest")}
         </Button>
       </div>

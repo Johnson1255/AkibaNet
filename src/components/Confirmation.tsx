@@ -65,11 +65,11 @@ export default function Confirmation() {
   // Si no hay reservación guardada, mostrar mensaje de error o redireccionar
   if (!savedReservation) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center">
         <h2 className="text-xl mb-4">{t('confirmation.notFound')}</h2>
         <Button 
           variant="default"
-          className="rounded-full bg-black text-white"
+          className="rounded-full bg-primary text-primary-foreground"
           onClick={() => window.location.href = "/reserve"}
         >
           {t('confirmation.newReservation')}
@@ -80,9 +80,9 @@ export default function Confirmation() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 pb-16">
+      <div className="min-h-screen bg-background text-foreground pb-16">
         {/* Header */}
-        <header className="p-4 flex items-center justify-between bg-white">
+        <header className="p-4 flex items-center justify-between bg-background border-b border-border">
           <Button
             variant="ghost"
             size="icon"
@@ -100,40 +100,48 @@ export default function Confirmation() {
           <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
             <Check className="h-8 w-8 text-white" />
           </div>
+
           <h2 className="text-2xl font-bold mb-2">{t('confirmation.success')}</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             {t('confirmation.successMessage')}
           </p>
         </div>
 
         {/* Detalles de la Reserva */}
-        <Card className="m-4 p-4">
+        <Card className="m-4 p-4 bg-card text-card-foreground">
           <h3 className="text-xl font-semibold mb-4">{t('confirmation.details')}</h3>
           
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-600">{t('confirmation.room')}:</span>
+              <span className="text-muted-foreground">{t('confirmation.room')}:</span>
               <span className="font-medium">#{savedReservation.roomId}</span>
             </div>
             
             <div className="flex justify-between">
-              <span className="text-gray-600">{t('confirmation.date')}:</span>
+
+              <span className="text-muted-foreground">{t('confirmation.date')}:</span>
+
               <span className="font-medium">{savedReservation.selectedDate}</span>
             </div>
             
             <div className="flex justify-between">
-              <span className="text-gray-600">{t('confirmation.time')}:</span>
+
+              <span className="text-muted-foreground">{t('confirmation.time')}:</span>
+
               <span className="font-medium">{savedReservation.selectedTime}</span>
             </div>
             
             <div className="flex justify-between">
-              <span className="text-gray-600">{t('confirmation.duration')}:</span>
+
+              <span className="text-muted-foreground">{t('confirmation.duration')}:</span>
               <span className="font-medium">{savedReservation.hours} {t('confirmation.hours')}</span>
+
             </div>
 
             {savedReservation?.id && (
               <div className="flex justify-between">
-                <span className="text-gray-600">{t('confirmation.bookingId')}:</span>
+
+                <span className="text-muted-foreground">{t('confirmation.bookingId')}:</span>
                 <span className="font-medium">{savedReservation.id}</span>
               </div>
             )}
@@ -172,7 +180,7 @@ export default function Confirmation() {
         {/* Acciones */}
         <div className="p-4 space-y-4">
           <Button 
-            className="w-full rounded-full h-12 bg-black text-white hover:bg-black/90"
+            className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={() => window.location.href = "/home"}
           >
             {t('confirmation.backToHome')}
@@ -180,7 +188,7 @@ export default function Confirmation() {
           
           <Button 
             variant="outline"
-            className="w-full rounded-full h-12"
+            className="w-full rounded-full h-12 border border-border"
             onClick={() => window.location.href = "/account"}
           >
             {t('confirmation.viewReservations')}
