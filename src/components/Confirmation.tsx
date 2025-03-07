@@ -4,68 +4,61 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
-import { useReservation, Service } from "../context/ReservationContext";
 
+// Tipo de datos para la reserva recibida del API
 interface ReservationDetails {
-  roomId?: number;
+  id?: string;
+  roomId?: string;
   hours?: number;
-  price?: number;
+  basePrice?: number;
   totalPrice?: number;
-  selectedDate?: string;
+  startTime?: string;
+  endTime?: string;
+  status?: string;
+  selectedDate?: string; 
   selectedTime?: string;
-  selectedServices: string[];
+  services?: Array<{serviceId: string, quantity: number, price: number}>;
 }
 
 export default function Confirmation() {
-  const { reservation } = useReservation();
   const [savedReservation, setSavedReservation] = useState<ReservationDetails | null>(null);
-  const [services, setServices] = useState<Service[]>([]);
 
   useEffect(() => {
     // Cargar los datos de la reserva guardada en localStorage
     const savedData = localStorage.getItem('lastReservation');
     if (savedData) {
-      setSavedReservation(JSON.parse(savedData));
+      const parsedData = JSON.parse(savedData);
+      
+      // Convertir la fecha y hora ISO a formatos legibles
+      if (parsedData.startTime) {
+        const startDate = new Date(parsedData.startTime);
+        parsedData.selectedDate = startDate.toLocaleDateString();
+        parsedData.selectedTime = startDate.toLocaleTimeString([], { 
+          hour: '2-digit', 
+          minute: '2-digit',
+          hour12: true 
+        });
+      }
+      
+      setSavedReservation(parsedData);
     }
-
-    // Definir los servicios disponibles (igual que en Additional-services)
-    setServices([
-      { id: "headset", name: "Premium gaming headsets", price: 150 },
-      {
-        id: "streaming",
-        name: "Streaming Setup",
-        description: "webcam and microphone for streamers.",
-        price: 500,
-      },
-      {
-        id: "refrigerator",
-        name: "Small refrigerator",
-        description: "For cold drinks and snacks",
-        price: 500,
-      },
-      {
-        id: "chair",
-        name: "Ergonomic gaming chair",
-        description: "Adjustable and comfortable for long sessions.",
-        price: 500,
-      },
-      { id: "ps5", name: "Playstation 5", price: 100 },
-      { id: "dreamcast", name: "Sega Dreamcast", price: 250 },
-      { id: "n64", name: "Nintengod 64", price: 350 },
-    ]);
   }, []);
 
-  // Usar los datos del contexto si no hay datos guardados en localStorage
-  const reservationData = savedReservation || {
-    roomId: reservation.roomId,
-    hours: reservation.hours,
-    totalPrice: reservation.totalPrice,
-    selectedDate: reservation.selectedDate,
-    selectedTime: reservation.selectedTime,
-    selectedServices: Array.from(reservation.selectedServices),
-  };
-
-  const hourlyRate = 800;
+  // Si no hay reservación guardada, mostrar mensaje de error o redireccionar
+  if (!savedReservation) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <h2 className="text-xl mb-4">No se encontró información de la reserva</h2>
+        <Button 
+          variant="default"
+          className="rounded-full bg-black text-white"
+          onClick={() => window.location.href = "/reserve"}
+        >
+          Realizar una nueva reserva
+        </Button>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -102,46 +95,51 @@ export default function Confirmation() {
           <div className="space-y-2">
             <div className="flex justify-between">
               <span className="text-gray-600">Room:</span>
-              <span className="font-medium">#{reservationData.roomId}</span>
+              <span className="font-medium">#{savedReservation.roomId}</span>
             </div>
             
             <div className="flex justify-between">
               <span className="text-gray-600">Date:</span>
-              <span className="font-medium">{reservationData.selectedDate}</span>
+              <span className="font-medium">{savedReservation.selectedDate}</span>
             </div>
             
             <div className="flex justify-between">
               <span className="text-gray-600">Time:</span>
-              <span className="font-medium">{reservationData.selectedTime}</span>
+              <span className="font-medium">{savedReservation.selectedTime}</span>
             </div>
             
             <div className="flex justify-between">
               <span className="text-gray-600">Duration:</span>
-              <span className="font-medium">{reservationData.hours} hour(s)</span>
+              <span className="font-medium">{savedReservation.hours} hour(s)</span>
             </div>
+
+            {savedReservation?.id && (
+              <div className="flex justify-between">
+                <span className="text-gray-600">Booking ID:</span>
+                <span className="font-medium">{savedReservation.id}</span>
+              </div>
+            )}
           </div>
           
           <Separator className="my-4" />
           
           {/* Services */}
-          <h4 className="font-medium mb-2">Additional Services:</h4>
+          <h4 className="font-medium mb-2">Services:</h4>
           <div className="space-y-2">
-            {reservationData.selectedServices.map((serviceId) => {
-              const service = services.find(s => s.id === serviceId);
-              if (!service) return null;
-              
-              return (
-                <div key={serviceId} className="flex justify-between">
-                  <span>{service.name}</span>
+            <div className="flex justify-between">
+              <span>Room ({savedReservation.hours} hour(s))</span>
+              <span>¥{savedReservation.basePrice}</span>
+            </div>
+            
+            {/* Si hay servicios adicionales, mostrarlos aquí */}
+            {savedReservation.services && savedReservation.services.length > 0 && 
+              savedReservation.services.map((service, index) => (
+                <div key={index} className="flex justify-between">
+                  <span>{service.quantity}x Service #{service.serviceId}</span>
                   <span>¥{service.price}</span>
                 </div>
-              );
-            })}
-            
-            <div className="flex justify-between">
-              <span>Room ({reservationData.hours} hour(s))</span>
-              <span>¥{(reservationData.hours || 0) * hourlyRate}</span>
-            </div>
+              )
+            )}
           </div>
           
           <Separator className="my-4" />
@@ -149,7 +147,7 @@ export default function Confirmation() {
           {/* Total */}
           <div className="flex justify-between font-bold text-lg">
             <span>TOTAL</span>
-            <span>¥{reservationData.totalPrice}</span>
+            <span>¥{savedReservation.totalPrice || savedReservation.basePrice}</span>
           </div>
         </Card>
         

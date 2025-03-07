@@ -9,8 +9,41 @@
     "history": "Reservation history",
     "viewAll": "View all reservations",
     "hour": "hour",
-    "hours": "hours"
+    "hours": "hours",
+    "room": "Room",
+    "details": "Details",
+    "capacity": "Capacity",
+    "people": "people",
+    "hourlyRate": "Hourly rate",
+    "equipment": "Equipment",
+    "units": "units",
+    "unit": "unit",
+    "selectTime": "Select time",
+    "today": "Today",
+    "minimum": "minimum",
+    "maximum": "maximum",
+    "for": "for",
+    "addServices": "Add services",
+    "confirmAndPay": "Confirm and Pay",
+    "loading": "Loading room details...",
+    "roomNotFound": "Room not found",
+    "selectPrompt": "Please select a room from the selection page.",
+    "goToRoomSelection": "Go to room selection",
+    "backToRooms": "Back to room selection",
+    "roomTypes": {
+      "gaming": "Gaming",
+      "thinking": "Thinking",
+      "working": "Working"
+    },
+    "errors": {
+      "error": "Error:",
+      "roomLoadError": "Error loading room details: {{statusText}}",
+      "unknownError": "Unknown error",
+      "bookingError": "Error creating booking",
+      "confirmError": "Error confirming reservation:"
+    }
   },
+  
   "settings": {
     "title": "Settings",
     "language": "Language",
