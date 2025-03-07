@@ -52,5 +52,19 @@
     "search": "Search",
     "account": "Account",
     "reservations": "Reservations"
+  },
+  "help": {
+    "help": "Help & Services",
+    "food": "Drinks, Food & Snacks",
+    "wifiSupport": "Wifi Support",
+    "gamingSupport": "Gaming Support",
+    "cleaningService": "Cleaning Service",
+    "roomService": "Room Service",
+    "requestPlaceholder": "Any specific requests or comments?",
+    "sendRequest": "Send Request",
+    "noRequest": "Please enter a request before sending.",
+    "susccesfullRequest": "Request sent successfully!",
+    "failedRequest": "Failed to send request.",
+    "error": "an unknown error has ocurred"
   }
 }
