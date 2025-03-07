@@ -1,11 +1,31 @@
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight, Image, Clock, Plus } from "lucide-react";
+import { ArrowLeft, Plus, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import BottomNavBar from "./Bottom-navbar";
+import ImageCarousel from "./ImageCarousel";
 import { useReservation } from "../context/ReservationContext";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+
+// Definir interfaces para los datos recibidos de la API
+interface Equipment {
+  type: string;
+  name: string;
+  quantity: number;
+}
+
+interface Room {
+  id: string;
+  capacity: number;
+  hourlyRate: number;
+  status: string;
+  minHours: number;
+  maxHours: number;
+  equipment: Equipment[];
+  images: string[];
+  category?: string;
+}
 
 export default function RoomDetails() {
   const navigate = useNavigate();
@@ -13,57 +33,90 @@ export default function RoomDetails() {
   const params = useParams();
   
   // Obtener el roomId de los parámetros de URL
-  let roomId: number | null = null;
+  let roomId: string | null = null;
   
   // Intentar obtener el roomId de los parámetros de ruta primero
   if (params.roomId) {
-    roomId = parseInt(params.roomId);
+    roomId = params.roomId;
   } else {
     // Si no está en los parámetros de ruta, buscar en query params
     const searchParams = new URLSearchParams(location.search);
     const roomIdParam = searchParams.get('room');
     if (roomIdParam) {
-      roomId = parseInt(roomIdParam);
+      roomId = roomIdParam;
     }
   }
   
   // Usar el contexto de reserva
   const { reservation, updateRoomDetails } = useReservation();
   
-  // Usar un estado local para el slider
-  const [sliderValue, setSliderValue] = useState([2]); // 2 representa 1 hora
+  // Estado para la habitación seleccionada
+  const [room, setRoom] = useState<Room | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  
+  // Estado para el slider con valores por defecto
+  const [sliderValue, setSliderValue] = useState<number[]>([2]); // Valor inicial por defecto
 
-  // Al cargar el componente, actualizar el contexto con el roomId
+  // Cargar los detalles de la habitación desde la API
   useEffect(() => {
-    if (roomId) {
-      console.log("Room ID from URL:", roomId); // Debugging
-      updateRoomDetails({ roomId });
-    } else {
-      console.log("No Room ID found in URL"); // Debugging
-    }
+    const fetchRoomDetails = async () => {
+      if (!roomId) return;
+      
+      try {
+        setLoading(true);
+        const response = await fetch(`http://localhost:3000/api/rooms/${roomId}`);
+        
+        if (!response.ok) {
+          throw new Error(`Error al cargar los detalles de la habitación: ${response.statusText}`);
+        }
+        
+        const roomData = await response.json();
+        setRoom(roomData);
+        
+        // Inicializar el slider con los valores minHours de la habitación
+        if (roomData.minHours) {
+          setSliderValue([roomData.minHours * 2]); // Multiplicamos por 2 porque cada paso del slider es media hora
+          
+          // Actualizar el contexto con los valores iniciales
+          const initialHours = roomData.minHours;
+          const initialPrice = calculatePrice(initialHours, roomData.hourlyRate);
+          updateRoomDetails({ 
+            roomId: Number(roomId), 
+            hours: initialHours,
+            price: initialPrice,
+            hourlyRate: roomData.hourlyRate
+          });
+        }
+      } catch (err) {
+        console.error("Error fetching room details:", err);
+        setError(err instanceof Error ? err.message : 'Error desconocido');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchRoomDetails();
   }, [roomId]);
 
-  // Debugging para ver si los cambios son aplicados
-  useEffect(() => {
-    console.log("Current reservation state:", reservation);
-  }, [reservation]);
+  // Función para calcular el precio
+  const calculatePrice = (hours: number, hourlyRate: number) => {
+    return hours * hourlyRate;
+  };
 
+  // Manejar cambios en el slider
   const handleSliderChange = (value: number[]) => {
     setSliderValue(value);
-    const hours = value[0] * 0.5;
-    const price = calculatePrice(hours);
-    updateRoomDetails({ hours, price });
+    if (room) {
+      const hours = value[0] * 0.5; // Convertir el valor del slider a horas
+      const price = calculatePrice(hours, room.hourlyRate);
+      updateRoomDetails({ hours, price });
+    }
   };
 
-  const calculatePrice = (hours: number) => {
-    const basePricePerHour = 800;
-    const discountPerThreeHours = 50;
-    const discount = Math.floor(hours / 3) * discountPerThreeHours;
-    return hours * (basePricePerHour - discount);
-  };
-
-  const hours = sliderValue[0] * 0.5;
-  const price = calculatePrice(hours);
+  // Calcular horas y precio actuales basados en el valor del slider
+  const hours = room ? sliderValue[0] * 0.5 : 0;
+  const price = room ? calculatePrice(hours, room.hourlyRate) : 0;
 
   // Manejar el botón "Confirm and Pay"
   const handleConfirmAndPay = () => {
@@ -78,22 +131,52 @@ export default function RoomDetails() {
     navigate("/confirmation");
   };
 
-  // Si no hay roomId, mostrar un mensaje o redireccionar
-  if (!roomId) {
+  // Si está cargando, mostrar indicador
+  if (loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <h1 className="text-2xl mb-4">No Room Selected</h1>
-        <p className="mb-4">Please select a room from the room selection page.</p>
+        <h2 className="text-xl mb-4">Cargando detalles de la habitación...</h2>
+      </div>
+    );
+  }
+
+  // Si hay un error, mostrarlo
+  if (error) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <h2 className="text-xl text-red-500 mb-4">Error: {error}</h2>
         <Button
           variant="default"
           className="rounded-full bg-black text-white"
           onClick={() => navigate("/reserve")}
         >
-          Go to Room Selection
+          Volver a la selección de habitaciones
         </Button>
       </div>
     );
   }
+
+  // Si no hay roomId o no se encontró la habitación, mostrar un mensaje
+  if (!roomId || !room) {
+    return (
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <h1 className="text-2xl mb-4">No se encontró la habitación</h1>
+        <p className="mb-4">Por favor, seleccione una habitación desde la página de selección.</p>
+        <Button
+          variant="default"
+          className="rounded-full bg-black text-white"
+          onClick={() => navigate("/reserve")}
+        >
+          Ir a selección de habitaciones
+        </Button>
+      </div>
+    );
+  }
+
+  // Determinar el tipo de habitación a mostrar
+  const roomCategory = room.category || 
+    (room.id.startsWith("1") ? "Gaming" : 
+    (room.id.startsWith("2") ? "Thinking" : "Working"));
 
   return (
     <div className="min-h-screen bg-white pb-16">
@@ -107,21 +190,16 @@ export default function RoomDetails() {
         >
           <ArrowLeft className="h-6 w-6" />
         </Button>
-        <h1 className="text-2xl font-normal">Gaming Room #{roomId}</h1>
+        <h1 className="text-2xl font-normal">{roomCategory} Room #{room.id}</h1>
         <div className="w-6" /> {/* Spacer for alignment */}
       </header>
 
-      {/* Room Preview */}
-      <div className="px-4 mb-4 relative">
-        <Card className="bg-gray-100 p-8 flex items-center justify-between rounded-2xl min-h-40">
-          <Image className="w-12 h-12 mx-auto" />
-          <Button
-            variant="outline"
-            className="rounded-full bg-gray-100 border-0 absolute right-8 top-1/2 transform -translate-y-1/2"
-          >
-            <ArrowRight className="w-6 h-6" />
-          </Button>
-        </Card>
+      {/* Room Preview - Ahora usando ImageCarousel */}
+      <div className="px-4 mb-4">
+        <ImageCarousel 
+          images={room.images} 
+          alt={`${roomCategory} Room ${room.id}`} 
+        />
       </div>
 
       {/* Details */}
@@ -129,17 +207,16 @@ export default function RoomDetails() {
         <Card className="p-6 rounded-2xl">
           <h2 className="text-xl font-bold mb-4">Details</h2>
           <ul className="space-y-4">
-            <li>Size: 4m² (private and comfortable space).</li>
+            <li>Capacidad: {room.capacity} personas</li>
+            <li>Tarifa por hora: ¥{room.hourlyRate.toFixed(2)}</li>
             <li>
-              Included:
+              Equipamiento:
               <ul className="ml-6 space-y-2 mt-2">
-                <li>
-                  High-speed Wi-Fi: Ultra-fast connection for gaming and
-                  streaming.
-                </li>
-                <li>
-                  Gaming PC: High-performance setup (technical specs available).
-                </li>
+                {room.equipment.map((item, index) => (
+                  <li key={index}>
+                    {item.name}: {item.quantity} {item.quantity > 1 ? "unidades" : "unidad"}
+                  </li>
+                ))}
               </ul>
             </li>
           </ul>
@@ -158,7 +235,7 @@ export default function RoomDetails() {
                 updateRoomDetails({ selectedTime: reservation.selectedTime });
               }}
             >
-              <span>{reservation.selectedTime}</span>
+              <span>{reservation.selectedTime || "Select time"}</span>
             </Button>
           </div>
 
@@ -179,17 +256,22 @@ export default function RoomDetails() {
         </div>
 
         <div>
-          <div className="text-right mb-2">¥{price}</div>
+          <div className="text-right mb-2">¥{price.toFixed(2)}</div>
           <Slider
             defaultValue={sliderValue}
-            min={2} // 1 hora
-            max={24} // 12 horas
-            step={1} // 30 minutos
+            value={sliderValue}
+            min={room.minHours * 2} // Convertimos horas a pasos (1 hora = 2 pasos)
+            max={room.maxHours * 2}
+            step={1} // Cada paso es media hora
             className="mb-2"
             onValueChange={handleSliderChange}
           />
-          <div className="text-sm text-gray-500">
-            ¥{price} for {hours} hour(s). Max. 12 hours
+          <div className="text-sm text-gray-500 flex justify-between">
+            <span>{room.minHours} hora(s) mínimo</span>
+            <span>{room.maxHours} hora(s) máximo</span>
+          </div>
+          <div className="text-sm text-gray-500 text-center mt-2">
+            ¥{price.toFixed(2)} por {hours} hora(s).
           </div>
         </div>
 
