@@ -20,7 +20,7 @@ const ActiveReservationPage: React.FC = () => {
   const [activeReservation, setActiveReservation] = useState<Reservation | null>(null);
 
   useEffect(() => {
-    const savedReservation = localStorage.getItem('activeReservation');
+    const savedReservation = localStorage.getItem('lastReservation');
     if (savedReservation) {
       setActiveReservation(JSON.parse(savedReservation));
     } else {
