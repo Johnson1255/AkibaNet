@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 
 // Definimos los tipos de datos para nuestro contexto
 export interface Service {
@@ -27,6 +27,7 @@ interface Reservation {
   selectedDate?: string;
   selectedTime?: string;
   selectedServices: Set<string>;
+  hourlyRate?: number; // Añadimos la propiedad faltante
 }
 
 interface ReservationContextProps {
@@ -60,6 +61,7 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({ childr
     hours: 1, // Valor por defecto: 1 hora
     price: 800, // Precio base
     totalPrice: 800,
+    hourlyRate: 800, // Valor por defecto para hourlyRate
     selectedDate: new Date().toLocaleDateString(),
     selectedTime: '10:00 pm',
     selectedServices: new Set(['refrigerator']), // Por defecto incluye refrigerador
@@ -74,12 +76,21 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({ childr
   };
 
   // Función para actualizar servicios seleccionados
-  const updateSelectedServices = (services: Set<string>) => {
-    setReservation(prev => ({
-      ...prev,
-      selectedServices: services,
-    }));
-  };
+  const updateSelectedServices = useCallback((services: Set<string>) => {
+    setReservation(prevState => {
+      // Solo actualizar si los servicios son diferentes
+      if (!prevState.selectedServices || 
+          Array.from(services).length !== Array.from(prevState.selectedServices).length ||
+          !Array.from(services).every(id => prevState.selectedServices?.has(id))) {
+        return {
+          ...prevState,
+          selectedServices: services
+        };
+      }
+      // Devolver el estado anterior si no hay cambios
+      return prevState;
+    });
+  }, [setReservation]);
 
   // Función para guardar la reserva en la base de datos o API
   const saveReservation = async (): Promise<boolean> => {

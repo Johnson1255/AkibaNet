@@ -1,59 +1,138 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
-import { useReservation, Service } from "../context/ReservationContext";
 import { useTranslation } from "react-i18next";
+import { useReservation } from "../context/ReservationContext";
+import { useTheme } from "../context/ThemeContext";
+import { useNavigate } from "react-router-dom";
+
+// Interfaces para los datos
+interface ServiceSpecifications {
+  brand?: string;
+  model?: string;
+  features?: string[];
+  options?: string[];
+  contents?: string[];
+  details?: string;
+  speed?: string;
+  resolution?: string;
+}
+
+interface ApiService {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  available: boolean;
+  stock: number;
+  specifications: ServiceSpecifications;
+  category: string;
+}
+
+interface ServicesByCategory {
+  gaming: ApiService[];
+  working: ApiService[];
+  thinking: ApiService[];
+}
+        
+     
 
 export default function AdditionalServices() {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   
   // Usar el contexto de reserva
-  const { reservation, updateSelectedServices, updateRoomDetails, saveReservation } = useReservation();
+  const { reservation, updateSelectedServices, updateRoomDetails } = useReservation();
   
+  // Estado para los servicios obtenidos de la API
+  const [servicesByCategory, setServicesByCategory] = useState<ServicesByCategory>({
+    gaming: [],
+    working: [],
+    thinking: []
+  });
+  
+  // Estado para controlar la carga
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   // Estado local que se sincroniza con el estado global
-  const [selectedServices, setSelectedServices] = useState<Set<string>>(
-    reservation.selectedServices || new Set(["refrigerator"])
-  );
+  // Cambiado para inicializar correctamente sin causar re-renderizaciones innecesarias
+  const [selectedServices, setSelectedServices] = useState<Set<string>>(() => {
+    return new Set(Array.from(reservation.selectedServices || []));
+  });
   
-  // El número de horas se obtiene del contexto global
+  // Obtener datos de la habitación desde el contexto de reserva
+  const roomId = reservation.roomId;
   const baseHours = reservation.hours || 3;
-  const hourlyRate = 800;
+  const hourlyRate = reservation.hourlyRate || 800;
+  const baseRoomPrice = baseHours * hourlyRate;
+  
+  // Verificar si tenemos la información necesaria
+  useEffect(() => {
+    if (!roomId || !reservation.selectedDate || !reservation.selectedTime) {
+      alert("Se requiere seleccionar una habitación, fecha y hora antes de agregar servicios");
+      navigate("/reserve");
+    }
+  }, [roomId, reservation.selectedDate, reservation.selectedTime, navigate]);
+
+  // Obtener los servicios de la API
+  useEffect(() => {
+    const fetchServices = async () => {
+      setIsLoading(true);
+      try {
+        const response = await fetch('http://localhost:3000/api/services');
+        
+        if (!response.ok) {
+          throw new Error('Error al obtener los servicios');
+        }
+        
+        const services: ApiService[] = await response.json();
+        
+        // Organizar los servicios por categoría
+        const categorized: ServicesByCategory = {
+          gaming: [],
+          working: [],
+          thinking: []
+        };
+        
+        services.forEach(service => {
+          if (categorized[service.category as keyof ServicesByCategory]) {
+            categorized[service.category as keyof ServicesByCategory].push(service);
+          }
+        });
+        
+        setServicesByCategory(categorized);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Error desconocido');
+        console.error('Error fetching services:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchServices();
+  }, []);
 
   // Sincronizar el estado local con el contexto cuando cambia
+  // Usamos useCallback para evitar regenerar esta función en cada renderización
+  const syncSelectedServices = useCallback(() => {
+    const servicesArray = Array.from(selectedServices);
+    // Solo actualizar si hay cambios reales para evitar bucles infinitos
+    if (!reservation.selectedServices || 
+        servicesArray.length !== reservation.selectedServices.size || 
+        !servicesArray.every(id => reservation.selectedServices?.has(id))) {
+      updateSelectedServices(selectedServices);
+    }
+  }, [selectedServices, reservation.selectedServices, updateSelectedServices]);
+
+  // Ejecutar la sincronización solo cuando cambian los servicios seleccionados
   useEffect(() => {
-    updateSelectedServices(selectedServices);
-  }, [selectedServices, updateSelectedServices]);
+    syncSelectedServices();
+  }, [syncSelectedServices]);
 
-  const services: Service[] = [
-    { id: "headset", name: t("services.headset.name", "Premium gaming headsets"), price: 150 },
-    {
-      id: "streaming",
-      name: t("services.streaming.name", "Streaming Setup"),
-      description: t("services.streaming.description", "webcam and microphone for streamers."),
-      price: 500,
-    },
-    {
-      id: "refrigerator",
-      name: t("services.refrigerator.name", "Small refrigerator"),
-      description: t("services.refrigerator.description", "For cold drinks and snacks"),
-      price: 500,
-    },
-    {
-      id: "chair",
-      name: t("services.chair.name", "Ergonomic gaming chair"),
-      description: t("services.chair.description", "Adjustable and comfortable for long sessions."),
-      price: 500,
-    },
-  ];
-
-  const consoles: Service[] = [
-    { id: "ps5", name: t("consoles.ps5", "Playstation 5"), price: 100, isConsole: true },
-    { id: "dreamcast", name: t("consoles.dreamcast", "Sega Dreamcast"), price: 250, isConsole: true },
-    { id: "n64", name: t("consoles.n64", "Nintengod 64"), price: 350, isConsole: true },
-  ];
 
   const toggleService = (serviceId: string) => {
     const newSelected = new Set(selectedServices);
@@ -66,41 +145,160 @@ export default function AdditionalServices() {
   };
 
   const calculateTotal = () => {
-    const servicesTotal = [...services, ...consoles]
-      .filter((service) => selectedServices.has(service.id))
-      .reduce((sum, service) => sum + service.price, 0);
+    let servicesTotal = 0;
     
-    const total = servicesTotal + baseHours * hourlyRate;
+    // Calcular el precio de los servicios seleccionados
+    selectedServices.forEach(serviceId => {
+      for (const category in servicesByCategory) {
+        const service = servicesByCategory[category as keyof ServicesByCategory].find(s => s.id === serviceId);
+        if (service) {
+          servicesTotal += service.price;
+          break;
+        }
+      }
+    });
+    
+    // Usar el precio base de la habitación del contexto
+    const total = servicesTotal + baseRoomPrice;
     return total;
   };
 
-  // Manejar el botón "Confirm and Pay"
+  // Función auxiliar parseDateTime (similar a Room-details.tsx)
+  function parseDateTime(dateStr: string, timeStr: string): Date {
+    const dateParts = dateStr.split("/");
+    if (dateParts.length !== 3) {
+      throw new Error(`Formato de fecha inválido: ${dateStr}. Se esperaba DD/MM/YYYY`);
+    }
+    const day = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1;
+    const year = parseInt(dateParts[2]);
+    const cleanedTimeStr = timeStr
+      .replace("p. m.", "pm")
+      .replace("a. m.", "am")
+      .replace(/\s+/g, "");
+    const timeMatch = cleanedTimeStr.match(/(\d+):(\d+)(am|pm)/i);
+    if (!timeMatch) {
+      throw new Error(`Formato de hora inválido: ${timeStr}. Se esperaba hh:mm am/pm`);
+    }
+    let hour = parseInt(timeMatch[1]);
+    const minute = parseInt(timeMatch[2]);
+    const amPm = timeMatch[3].toLowerCase();
+    if (amPm === "pm" && hour !== 12) {
+      hour += 12;
+    } else if (amPm === "am" && hour === 12) {
+      hour = 0;
+    }
+    return new Date(year, month, day, hour, minute);
+  }
+
+  // Modificar handleConfirmAndPay para utilizar la lógica de reserva de Room-details.tsx
   const handleConfirmAndPay = async () => {
-    // Calcular el precio total
-    const total = calculateTotal();
+    if (!reservation.selectedDate || !reservation.selectedTime || !roomId) {
+      alert("Falta información necesaria para la reserva: habitación, fecha u hora.");
+      navigate("/reserve");
+      return;
+    }
     
-    // Actualizar el contexto con el precio total
-    updateRoomDetails({ 
-      totalPrice: total 
-    });
-    
-    // Guardar la reserva
-    const success = await saveReservation();
-    
-    if (success) {
-      // Redirigir a la página de confirmación
-      window.location.href = "/confirmation";
-    } else {
-      // Manejar error
+    try {
+      // Verificación de usuario y token
+      const storedUser = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
+      
+      if (!storedUser) {
+        throw new Error("No hay usuario guardado. Inicie sesión nuevamente.");
+      }
+      
+      if (!token) {
+        throw new Error("No se encontró un token de autenticación. Inicie sesión nuevamente.");
+      }
+      
+      const parsedUser = JSON.parse(storedUser);
+      const userId = parsedUser.id;
+
+      // Cálculo de fechas de inicio y fin
+      const startDateTime = parseDateTime(reservation.selectedDate, reservation.selectedTime);
+      const endDateTime = new Date(startDateTime.getTime() + baseHours * 60 * 60 * 1000);
+      
+      console.log("Fecha inicio:", startDateTime.toISOString());
+      console.log("Fecha fin:", endDateTime.toISOString());
+
+      // Cálculo de precios 
+      let servicesTotal = 0;
+      const selectedServicesList: string[] = [];
+      
+      selectedServices.forEach(serviceId => {
+        selectedServicesList.push(serviceId);
+        for (const category in servicesByCategory) {
+          const service = servicesByCategory[category as keyof ServicesByCategory].find(s => s.id === serviceId);
+          if (service) {
+            servicesTotal += service.price;
+            break;
+          }
+        }
+      });
+      
+      const totalPrice = baseRoomPrice + servicesTotal;
+      
+      // Actualizar el contexto con el precio total
+      updateRoomDetails({ 
+        totalPrice: totalPrice
+      });
+
+      // Creación del payload para la API
+      const reservationPayload = {
+        userId,
+        roomId: roomId,
+        startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
+        duration: baseHours,
+        basePrice: baseRoomPrice,
+        totalPrice: totalPrice,
+        status: 'pending',
+        services: selectedServicesList,
+        products: []
+      };
+
+      console.log("Payload de reserva:", reservationPayload);
+
+      // Llamada a la API para crear la reserva
+      const response = await fetch("http://localhost:3000/api/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(reservationPayload),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Error al crear la reserva: ${responseData.error || "Error desconocido"}`);
+      }
+
+      // Guardar la reserva en localStorage con formato consistente
+      localStorage.setItem("lastReservation", JSON.stringify({
+        ...responseData,
+        startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
+        status: 'pending',
+        services: selectedServicesList
+      }));
+      
+      navigate("/confirmation");
+    } catch (error) {
+      console.error("Error al confirmar reserva:", error);
       alert(t("reservation.errors.bookingError", "Error al guardar la reserva. Inténtalo de nuevo."));
     }
   };
 
-  const renderServiceCard = (service: Service) => (
+  const renderServiceCard = (service: ApiService) => (
     <Card
       key={service.id}
       className={`p-4 flex items-center justify-between ${
-        selectedServices.has(service.id) ? "bg-gray-800 text-white" : "bg-white"
+        selectedServices.has(service.id)
+          ? "bg-primary text-primary-foreground"
+          : "bg-card text-card-foreground"
       }`}
     >
       <div>
@@ -135,13 +333,50 @@ export default function AdditionalServices() {
     </Card>
   );
 
+  // Obtener todos los servicios seleccionados
+  const getSelectedServices = (): ApiService[] => {
+    const selected: ApiService[] = [];
+    selectedServices.forEach(serviceId => {
+      for (const category in servicesByCategory) {
+        const service = servicesByCategory[category as keyof ServicesByCategory].find(s => s.id === serviceId);
+        if (service) {
+          selected.push(service);
+          break;
+        }
+      }
+    });
+    return selected;
+  };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <p className="text-xl">Cargando servicios...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+        <p className="text-xl text-red-500">Error: {error}</p>
+        <Button className="mt-4" onClick={() => window.location.reload()}>
+          Reintentar
+        </Button>
+      </div>
+    );
+  }
+
   return (
     <>
-      <div className="min-h-screen bg-gray-50 pb-16">
+      <div className="min-h-screen bg-background pb-16">
         {/* Header */}
-        <header className="p-4 flex items-center justify-between bg-white">
-          <Button variant="ghost" size="icon" className="rounded-full"
-            onClick={() => window.history.back()}
+        <header className="p-4 flex items-center justify-between bg-card">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="rounded-full"
+            onClick={() => navigate(-1)}
           >
             <ArrowLeft className="h-6 w-6" />
           </Button>
@@ -149,42 +384,56 @@ export default function AdditionalServices() {
           <div className="w-10" /> {/* Spacer for alignment */}
         </header>
 
-        {/* Services List */}
-        <div className="p-4 space-y-4">
-          {services.map(renderServiceCard)}
+        {/* Room information summary */}
+        <div className="p-4 bg-muted/30">
+          <h2 className="text-lg font-medium">Room #{roomId}</h2>
+          <div className="text-sm text-muted-foreground">
+            <p>{reservation.selectedDate} - {reservation.selectedTime}</p>
+            <p>{baseHours} hours - ¥{baseRoomPrice}</p>
+          </div>
+        </div>
 
-          <div className="mt-8">
-            <h2 className="text-2xl mb-4">{t("services.consoleRental", "Console rental")}</h2>
-            <div className="space-y-4">{consoles.map(renderServiceCard)}</div>
-            <p className="text-sm text-gray-500 mt-2">
-              {t("services.consoleNote", "* Each console has its own library of games available")}
-            </p>
+        {/* Services List */}
+        <div className="p-4 space-y-8">
+          {/* Gaming Services */}
+          <div>
+            <h2 className="text-2xl mb-4">Gaming Services</h2>
+            <div className="space-y-4">
+              {servicesByCategory.gaming.map(renderServiceCard)}
+            </div>
+          </div>
+
+          {/* Thinking Services */}
+          <div>
+            <h2 className="text-2xl mb-4">Thinking Services</h2>
+            <div className="space-y-4">
+              {servicesByCategory.thinking.map(renderServiceCard)}
+            </div>
+          </div>
+
+          {/* Working Services */}
+          <div>
+            <h2 className="text-2xl mb-4">Working Services</h2>
+            <div className="space-y-4">
+              {servicesByCategory.working.map(renderServiceCard)}
+            </div>
           </div>
         </div>
 
         {/* Order Summary */}
         <div className="bottom-0 left-0 right-0">
-          <div className="bg-gray-200 p-4 space-y-2">
-            {Array.from(selectedServices).map((serviceId) => {
-              const service = [...services, ...consoles].find(
-                (s) => s.id === serviceId
-              );
-              if (!service) return null;
-              return (
-                <div key={serviceId} className="flex justify-between">
-                  <span>1 x {service.name}</span>
-                  <span className="whitespace-nowrap">¥ {service.price}</span>
-                </div>
-              );
-            })}
+          <div className="bg-secondary p-4 space-y-2">
             <div className="flex justify-between">
-              <span>
-                {baseHours} x {baseHours === 1 
-                  ? t("reservation.hour", "hour") 
-                  : t("reservation.hours", "hours")}
-              </span>
-              <span className="whitespace-nowrap">¥ {baseHours * hourlyRate}</span>
+              <span>Room #{roomId}</span>
+              <span className="whitespace-nowrap">¥ {baseRoomPrice}</span>
+
             </div>
+            {getSelectedServices().map((service) => (
+              <div key={service.id} className="flex justify-between">
+                <span>1 x {service.name}</span>
+                <span className="whitespace-nowrap">¥ {service.price}</span>
+              </div>
+            ))}
             <Separator />
             <div className="flex justify-between font-bold">
               <span>TOTAL</span>
@@ -192,7 +441,7 @@ export default function AdditionalServices() {
             </div>
           </div>
           <Button 
-            className="w-full h-14 rounded-none bg-black text-white hover:bg-black/90"
+            className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={handleConfirmAndPay}
           >
             {t("reservation.confirmAndPay", "Confirm and Pay")}
