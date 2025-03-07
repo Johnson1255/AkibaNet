@@ -79,17 +79,17 @@ export default function HelpServicesPage() {
       alert(t("help.noRequest"));
       return;
     }
+    const token = localStorage.getItem('token');
 
     try {
       const requestBody = {
-        user_id: "a5d90c68-e574-4d7d-90a4-4da6fe0fa1f5", // Cambia esto según el usuario
-        date: new Date().toISOString(),
-        description: comments, // Se corrigió el nombre de la clave
+        description: comments
       };
 
       const response = await fetch("http://localhost:3000/api/requests", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json",
+          'Authorization': `Bearer ${token}` },
         body: JSON.stringify(requestBody),
       });
 
