@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import TimePicker from "./time-picker";
 import BottomNavBar from "./Bottom-navbar";
 import { useReservation } from "../context/ReservationContext";
+import { useTranslation } from "react-i18next";
 
 // Nuevos tipos para las habitaciones
 interface Equipment {
@@ -41,6 +42,8 @@ interface Room {
 export default function RoomSelection() {
   const { updateRoomDetails } = useReservation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
+
   // Función para obtener la siguiente hora en bloques de 15 minutos
   const getNextQuarterHour = (date: Date) => {
     const minutes = date.getMinutes();
@@ -172,7 +175,7 @@ export default function RoomSelection() {
         >
           <ArrowLeft className="h-6 w-6" />
         </Button>
-        <h1 className="text-2xl font-normal">Select a Room</h1>
+        <h1 className="text-2xl font-normal">{t("room.name")}</h1>
         <div className="w-6" /> {/* Spacer for alignment */}
       </header>
 
@@ -282,7 +285,7 @@ export default function RoomSelection() {
         >
           {selectedRoom
             ? `Room ${selectedRoom} - ${selectedTime}, ${selectedDate?.toLocaleDateString()}`
-            : "Select a room"}
+            : t("room.name")}
           <ArrowRight className="w-6 h-6" />
         </Button>
       </div>
