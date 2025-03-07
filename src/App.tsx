@@ -11,7 +11,6 @@ import AdditionalServices from "./components/Additional-services";
 import AccountPage from "./components/Account-page";
 import SignUpPage from "./components/SignUp-page";
 import Confirmation from "./components/Confirmation";
-import MyReservationPage from "./components/My-Reservation-page";
 import HelpServicesPage from "./components/Help-Services-page";
 import FoodPage from "./components/FoodPage";
 import ActiveReservationPage from './components/ActiveReservationPage';
@@ -49,11 +48,9 @@ function AppRoutes() {
         <Route path="/room-details" element={<RoomDetails />} />
         <Route path="/additional-services" element={<AdditionalServices />} />
         <Route path="/account" element={<AccountPage />} />
-        <Route path="/my-reservation" element={<MyReservationPage />} />
         <Route path="/help-services" element={<HelpServicesPage />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/food" element={<FoodPage/>} />
-        <Route path="/my-reservations" element={<MyReservationPage />} />
         <Route path="/active-reservation" element={<ActiveReservationPage />} />
       </Route>
     </Routes>
