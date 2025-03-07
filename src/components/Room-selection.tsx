@@ -60,6 +60,26 @@ export default function RoomSelection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Verificar si hay una reserva activa
+  useEffect(() => {
+    const checkActiveReservation = () => {
+      const savedReservation = localStorage.getItem('activeReservation');
+      
+      if (savedReservation) {
+        const reservation = JSON.parse(savedReservation);
+        const now = new Date();
+        const endTime = new Date(reservation.endTime);
+        
+        // Si la reserva aún no ha terminado, redirigir al usuario
+        if (now < endTime && reservation.status !== 'cancelled') {
+          navigate('/active-reservation');
+        }
+      }
+    };
+    
+    checkActiveReservation();
+  }, [navigate]);
+
   // Categorías disponibles
   const categories = [
     { id: "all", name: "Todas las salas" },

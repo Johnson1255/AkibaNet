@@ -14,6 +14,8 @@ import Confirmation from "./components/Confirmation";
 import MyReservationPage from "./components/My-Reservation-page";
 import HelpServicesPage from "./components/Help-Services-page";
 import FoodPage from "./components/FoodPage";
+import ActiveReservationPage from './components/ActiveReservationPage';
+import ReservationManager from './components/ReservationManager';
 
 function App() {
   return (
@@ -51,6 +53,8 @@ function AppRoutes() {
         <Route path="/help-services" element={<HelpServicesPage />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/food" element={<FoodPage/>} />
+        <Route path="/my-reservations" element={<MyReservationPage />} />
+        <Route path="/active-reservation" element={<ActiveReservationPage />} />
       </Route>
     </Routes>
   );

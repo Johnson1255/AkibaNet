@@ -41,6 +41,21 @@ export default function Confirmation() {
       }
       
       setSavedReservation(parsedData);
+      
+      // Guardar la reserva como activa
+      if (parsedData.startTime && parsedData.endTime) {
+        const activeReservation = {
+          id: parsedData.id || `res-${Date.now()}`,
+          startTime: parsedData.startTime,
+          endTime: parsedData.endTime,
+          roomId: parsedData.roomId || '',
+          userId: 'current-user', // Esto debería venir de tu sistema de autenticación
+          status: 'pending'
+        };
+        
+        // Almacenar la reserva activa en localStorage
+        localStorage.setItem('activeReservation', JSON.stringify(activeReservation));
+      }
     }
   }, []);
 
