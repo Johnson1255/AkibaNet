@@ -56,7 +56,7 @@ export default function AccountPage() {
     <div className="min-h-screen bg-white pb-16">
       {/* Header */}
       <header className="p-4 flex items-center justify-between">
-        <Button variant="ghost" size="icon" className="rounded-full">
+        <Button onClick={() => navigate(-1)} variant="ghost" size="icon" className="rounded-full">
           <ArrowLeft className="h-6 w-6" />
         </Button>
         <h1 className="text-2xl font-normal">{t('account.title')}</h1>

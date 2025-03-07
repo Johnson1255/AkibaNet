@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
   Wifi,
@@ -14,6 +15,7 @@ import BottomNavBar from "./Bottom-navbar";
 
 export default function HelpServicesPage() {
   const [comments, setComments] = useState("");
+  const navigate = useNavigate();
 
   const services = [
     {
@@ -75,8 +77,9 @@ export default function HelpServicesPage() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="p-4 flex items-center justify-between">
-        <Button variant="ghost" size="icon" className="rounded-full">
+        <Button onClick={() => navigate(-1)} variant="ghost" size="icon" className="rounded-full">
           <ArrowLeft className="h-6 w-6" />
+          
         </Button>
         <h1 className="text-2xl font-normal">Help & Services</h1>
         <div className="w-10" /> {/* Spacer for alignment */}

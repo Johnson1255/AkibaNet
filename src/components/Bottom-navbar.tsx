@@ -15,7 +15,7 @@ export default function BottomNavBar() {
           <Link to="/account" className="p-2">
             <User className="w-6 h-6" />
           </Link>
-          <Link to="/help" className="p-2">
+          <Link to="/help-services" className="p-2">
             <HelpCircle className="w-6 h-6" />
           </Link>
         </div>

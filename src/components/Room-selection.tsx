@@ -158,29 +158,31 @@ export default function RoomSelection() {
 
       {/* Time, Date and Category Selection */}
       <div className="bg-gray-200 p-4 flex gap-3">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-white">
+            {selectedTime}
+            <ChevronDown className="h-4 w-4 ml-2" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0">
+          <TimePicker
+            date={selectedDate}
+            setDate={(date: Date) => {
+              const timeString = date.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: true,
+              });
+              handleTimeChange(timeString);
+            }}
+          />
+        </PopoverContent>
+      </Popover>
+
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="rounded-full bg-white">
-              {selectedTime} <ChevronDown className="ml-2 h-4 w-4" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-auto p-0">
-            <TimePicker
-              date={selectedDate}
-              setDate={(date: Date) => {
-                const timeString = date.toLocaleTimeString([], {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                });
-                handleTimeChange(timeString);
-              }}
-            />
-          </PopoverContent>
-        </Popover>
-        <Popover>
-          <PopoverTrigger asChild>
-            <Button variant="outline" className="rounded-full bg-white">
+            <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-white">
               {selectedDate?.toLocaleDateString() || "Select date"}{" "}
               <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
@@ -245,7 +247,7 @@ export default function RoomSelection() {
           </div>
         )}
       </div>
-
+      
       {/* Selected Room and Action */}
       <div className="px-6 py-4 flex justify-between">
         <Button
