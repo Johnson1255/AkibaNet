@@ -62,11 +62,11 @@ export default function Confirmation() {
   // Si no hay reservación guardada, mostrar mensaje de error o redireccionar
   if (!savedReservation) {
     return (
-      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center">
         <h2 className="text-xl mb-4">No se encontró información de la reserva</h2>
         <Button 
           variant="default"
-          className="rounded-full bg-black text-white"
+          className="rounded-full bg-primary text-primary-foreground"
           onClick={() => window.location.href = "/reserve"}
         >
           Realizar una nueva reserva
@@ -77,9 +77,9 @@ export default function Confirmation() {
 
   return (
     <>
-      <div className="min-h-screen bg-gray-50 pb-16">
+      <div className="min-h-screen bg-background text-foreground pb-16">
         {/* Header */}
-        <header className="p-4 flex items-center justify-between bg-white">
+        <header className="p-4 flex items-center justify-between bg-background border-b border-border">
           <Button
             variant="ghost"
             size="icon"
@@ -98,39 +98,39 @@ export default function Confirmation() {
             <Check className="h-8 w-8 text-white" />
           </div>
           <h2 className="text-2xl font-bold mb-2">¡Reservation Confirmed!</h2>
-          <p className="text-gray-600">
+          <p className="text-muted-foreground">
             Your reservation has been successfully completed. Here are the details:
           </p>
         </div>
 
         {/* Reservation Details */}
-        <Card className="m-4 p-4">
+        <Card className="m-4 p-4 bg-card text-card-foreground">
           <h3 className="text-xl font-semibold mb-4">Reservation Details</h3>
           
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-gray-600">Room:</span>
+              <span className="text-muted-foreground">Room:</span>
               <span className="font-medium">#{savedReservation.roomId}</span>
             </div>
             
             <div className="flex justify-between">
-              <span className="text-gray-600">Date:</span>
+              <span className="text-muted-foreground">Date:</span>
               <span className="font-medium">{savedReservation.selectedDate}</span>
             </div>
             
             <div className="flex justify-between">
-              <span className="text-gray-600">Time:</span>
+              <span className="text-muted-foreground">Time:</span>
               <span className="font-medium">{savedReservation.selectedTime}</span>
             </div>
             
             <div className="flex justify-between">
-              <span className="text-gray-600">Duration:</span>
+              <span className="text-muted-foreground">Duration:</span>
               <span className="font-medium">{savedReservation.hours} hour(s)</span>
             </div>
 
             {savedReservation?.id && (
               <div className="flex justify-between">
-                <span className="text-gray-600">Booking ID:</span>
+                <span className="text-muted-foreground">Booking ID:</span>
                 <span className="font-medium">{savedReservation.id}</span>
               </div>
             )}
@@ -169,7 +169,7 @@ export default function Confirmation() {
         {/* Actions */}
         <div className="p-4 space-y-4">
           <Button 
-            className="w-full rounded-full h-12 bg-black text-white hover:bg-black/90"
+            className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={() => window.location.href = "/home"}
           >
             Back to Home
@@ -177,7 +177,7 @@ export default function Confirmation() {
           
           <Button 
             variant="outline"
-            className="w-full rounded-full h-12"
+            className="w-full rounded-full h-12 border border-border"
             onClick={() => window.location.href = "/account"}
           >
             View My Reservations

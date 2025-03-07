@@ -53,12 +53,12 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   if (isCompleted && type === 'end') {
     return (
-      <div className="rounded-xl bg-white border p-6 shadow-sm text-center">
+      <div className="rounded-xl bg-card border border-border p-6 shadow-sm text-center">
         <h2 className="text-2xl font-medium mb-3">Tu reserva ha finalizado</h2>
-        <p className="text-gray-600 mb-5">No tienes ninguna reserva pendiente</p>
+        <p className="text-muted-foreground mb-5">No tienes ninguna reserva pendiente</p>
         <button
           onClick={() => navigate('/reserve')}
-          className="inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+          className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
         >
           Hacer una nueva reserva
         </button>
@@ -67,18 +67,18 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   }
 
   return (
-    <div className={`rounded-xl border p-6 shadow-sm text-center ${type === 'start' ? 'bg-amber-50' : 'bg-green-50'}`}>
+    <div className={`rounded-xl border border-border p-6 shadow-sm text-center ${type === 'start' ? 'bg-secondary' : 'bg-card'}`}>
       <h2 className="text-2xl font-medium mb-3">
         {type === 'start' ? 'Tu reserva inicia en:' : 'Tu reserva termina en:'}
       </h2>
       
       {roomId && (
-        <p className="text-gray-600 mb-3">
+        <p className="text-muted-foreground mb-3">
           {type === 'start' ? `Para la sala: ${roomId}` : `Sala actual: ${roomId}`}
         </p>
       )}
       
-      <p className="text-gray-600 mb-2">
+      <p className="text-muted-foreground mb-2">
         {type === 'start' ? 'Fecha de inicio:' : 'Fecha de finalización:'} {formatDate(targetDate)}
       </p>
       

@@ -1,4 +1,4 @@
-import { ArrowLeft, User as UserIcon, ChevronRight, LogOut } from "lucide-react"
+import { ArrowLeft, User as UserIcon, ChevronRight, LogOut, Moon, Sun } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
@@ -8,10 +8,12 @@ import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { getUserProfile } from "../services/authService"
 import { useTranslation } from "react-i18next"
+import { useTheme } from "../context/ThemeContext"
 
 export default function AccountPage() {
   const { t, i18n } = useTranslation();
   const { user, token, login, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
   
   useEffect(() => {
@@ -53,7 +55,7 @@ export default function AccountPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white pb-16">
+    <div className="min-h-screen bg-background text-foreground pb-16">
       {/* Header */}
       <header className="p-4 flex items-center justify-between">
         <Button onClick={() => navigate(-1)} variant="ghost" size="icon" className="rounded-full">
@@ -121,8 +123,14 @@ export default function AccountPage() {
             </Button>
           </div>
           <div className="flex items-center justify-between py-2 border-b">
-            <span className="text-lg">{t('settings.notifications')}</span>
-            <Switch />
+            <span className="text-lg">{t('settings.theme')}</span>
+            <div className="flex items-center gap-2">
+              {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
+              <Switch
+                checked={theme === 'dark'}
+                onCheckedChange={toggleTheme}
+              />
+            </div>
           </div>
           {/* <div className="flex items-center justify-between py-2 border-b">
             <span className="text-lg">{t('settings.paymentMethods')}</span>
