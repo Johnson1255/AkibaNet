@@ -1,0 +1,70 @@
+{
+  "account": {
+    "title": "Account",
+    "profile": {
+      "defaultUser": "User"
+    }
+  },
+  "reservation": {
+    "history": "Reservation history",
+    "viewAll": "View all reservations",
+    "hour": "hour",
+    "hours": "hours"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "notifications": "Notifications",
+    "paymentMethods": "Payment Methods"
+  },
+  "buttons": {
+    "logout": "Log Out"
+  },
+  "errors": {
+    "emailNotAvailable": "Email not available"
+  },
+  "home": {
+    "welcome": "Welcome back {{name}},",
+    "whatToDo": "what do you want to do today?",
+    "actionButtons": {
+      "help": "Help",
+      "reserve": "Reserve",
+      "food": "Food"
+    },
+    "news": {
+      "title": "Latest news and offers",
+      "gaming": {
+        "title": "Gaming until your eyes hurt (and then some more)",
+        "description": "Book 5 hours in a Gaming Room and the 6th is free! 🎮😎"
+      },
+      "art": {
+        "title": "Are you an artist? So are we (in our dreams)!",
+        "description": "Book a Reading/Drawing Room and get a free art kit! 🎨✨"
+      },
+      "lol": {
+        "title": "Are you a Grandmaster in LoL?",
+        "description": "Prove it and claim your free Monster! 🎮⚡"
+      }
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "search": "Search",
+    "account": "Account",
+    "reservations": "Reservations"
+  },
+  "help": {
+    "help": "Help & Services",
+    "food": "Drinks, Food & Snacks",
+    "wifiSupport": "Wifi Support",
+    "gamingSupport": "Gaming Support",
+    "cleaningService": "Cleaning Service",
+    "roomService": "Room Service",
+    "requestPlaceholder": "Any specific requests or comments?",
+    "sendRequest": "Send Request",
+    "noRequest": "Please enter a request before sending.",
+    "susccesfullRequest": "Request sent successfully!",
+    "failedRequest": "Failed to send request.",
+    "error": "an unknown error has ocurred"
+  }
+}
