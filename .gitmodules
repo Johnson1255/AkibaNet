@@ -1,0 +1,3 @@
+[submodule "user-management-api"]
+	path = user-management-api
+	url = https://github.com/Nekstoreo/user-management-api
