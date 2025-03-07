@@ -123,7 +123,7 @@ export default function AccountPage() {
             </Button>
           </div>
           <div className="flex items-center justify-between py-2 border-b">
-            <span className="text-lg">{t('settings.theme')}</span>
+            <span className="text-lg">{t('settings.theme', 'Theme')}</span>
             <div className="flex items-center gap-2">
               {theme === 'dark' ? <Moon className="h-4 w-4" /> : <Sun className="h-4 w-4" />}
               <Switch

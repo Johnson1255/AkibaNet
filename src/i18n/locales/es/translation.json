@@ -48,7 +48,10 @@
     "title": "Configuración",
     "language": "Idioma",
     "notifications": "Notificaciones",
-    "paymentMethods": "Métodos de pago"
+    "paymentMethods": "Métodos de pago",
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro"
   },
   "buttons": {
     "logout": "Cerrar Sesión"
@@ -171,5 +174,20 @@
     "ps5": "Playstation 5",
     "dreamcast": "Sega Dreamcast",
     "n64": "Nintengod 64"
+  },
+  "confirmation": {
+    "title": "Confirmación",
+    "reservationConfirmed": "¡Reserva Confirmada!",
+    "successMessage": "Tu reserva ha sido completada con éxito. Aquí están los detalles:",
+    "details": "Detalles de la Reserva",
+    "date": "Fecha",
+    "time": "Hora",
+    "duration": "Duración",
+    "bookingId": "ID de Reserva",
+    "services": "Servicios",
+    "service": "Servicio",
+    "total": "TOTAL",
+    "backToHome": "Volver al Inicio",
+    "viewReservations": "Ver Mis Reservas"
   }
 }

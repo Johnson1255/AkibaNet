@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
-// Importa tu sistema de traducción (ajusta según tu implementación)
-import { useTranslation } from "react-i18next";
+// Importar el sistema de traducción (ajusta según tu implementación)
+import { useTranslation } from "react-i18next"; // Asumiendo que usas react-i18next
 
 // Tipo de datos para la reserva recibida del API
 interface ReservationDetails {
@@ -23,7 +23,8 @@ interface ReservationDetails {
 }
 
 export default function Confirmation() {
-  const { t } = useTranslation(); // Hook para traducción
+  // Obtener las traducciones
+  const { t } = useTranslation();
   const [savedReservation, setSavedReservation] = useState<ReservationDetails | null>(null);
 
   useEffect(() => {
@@ -57,7 +58,7 @@ export default function Confirmation() {
         };
         
         // Almacenar la reserva activa en localStorage
-        localStorage.setItem('lastReservation', JSON.stringify(activeReservation));
+        localStorage.setItem('activeReservation', JSON.stringify(activeReservation));
       }
     }
   }, []);
@@ -65,14 +66,14 @@ export default function Confirmation() {
   // Si no hay reservación guardada, mostrar mensaje de error o redireccionar
   if (!savedReservation) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center">
-        <h2 className="text-xl mb-4">{t('confirmation.notFound')}</h2>
+      <div className="min-h-screen bg-white flex flex-col items-center justify-center">
+        <h2 className="text-xl mb-4">{t("reservation.roomNotFound")}</h2>
         <Button 
           variant="default"
-          className="rounded-full bg-primary text-primary-foreground"
+          className="rounded-full bg-black text-white"
           onClick={() => window.location.href = "/reserve"}
         >
-          {t('confirmation.newReservation')}
+          {t("reservation.goToRoomSelection")}
         </Button>
       </div>
     );
@@ -80,9 +81,9 @@ export default function Confirmation() {
 
   return (
     <>
-      <div className="min-h-screen bg-background text-foreground pb-16">
+      <div className="min-h-screen bg-gray-50 pb-16">
         {/* Header */}
-        <header className="p-4 flex items-center justify-between bg-background border-b border-border">
+        <header className="p-4 flex items-center justify-between bg-white">
           <Button
             variant="ghost"
             size="icon"
@@ -91,57 +92,51 @@ export default function Confirmation() {
           >
             <ArrowLeft className="h-6 w-6" />
           </Button>
-          <h1 className="text-2xl font-normal">{t('confirmation.title')}</h1>
-          <div className="w-10" /> {/* Espaciador para alineación */}
+          <h1 className="text-2xl font-normal">{t("confirmation.title", "Confirmation")}</h1>
+          <div className="w-10" /> {/* Spacer for alignment */}
         </header>
 
-        {/* Mensaje de Confirmación */}
+        {/* Confirmation Message */}
         <div className="p-8 flex flex-col items-center text-center">
           <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mb-4">
             <Check className="h-8 w-8 text-white" />
           </div>
-
-          <h2 className="text-2xl font-bold mb-2">{t('confirmation.success')}</h2>
-          <p className="text-muted-foreground">
-            {t('confirmation.successMessage')}
+          <h2 className="text-2xl font-bold mb-2">{t("confirmation.reservationConfirmed", "¡Reservation Confirmed!")}</h2>
+          <p className="text-gray-600">
+            {t("confirmation.successMessage", "Your reservation has been successfully completed. Here are the details:")}
           </p>
         </div>
 
-        {/* Detalles de la Reserva */}
-        <Card className="m-4 p-4 bg-card text-card-foreground">
-          <h3 className="text-xl font-semibold mb-4">{t('confirmation.details')}</h3>
+        {/* Reservation Details */}
+        <Card className="m-4 p-4">
+          <h3 className="text-xl font-semibold mb-4">{t("confirmation.details", "Reservation Details")}</h3>
           
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span className="text-muted-foreground">{t('confirmation.room')}:</span>
+              <span className="text-gray-600">{t("reservation.room")}:</span>
               <span className="font-medium">#{savedReservation.roomId}</span>
             </div>
             
             <div className="flex justify-between">
-
-              <span className="text-muted-foreground">{t('confirmation.date')}:</span>
-
+              <span className="text-gray-600">{t("confirmation.date", "Date")}:</span>
               <span className="font-medium">{savedReservation.selectedDate}</span>
             </div>
             
             <div className="flex justify-between">
-
-              <span className="text-muted-foreground">{t('confirmation.time')}:</span>
-
+              <span className="text-gray-600">{t("confirmation.time", "Time")}:</span>
               <span className="font-medium">{savedReservation.selectedTime}</span>
             </div>
             
             <div className="flex justify-between">
-
-              <span className="text-muted-foreground">{t('confirmation.duration')}:</span>
-              <span className="font-medium">{savedReservation.hours} {t('confirmation.hours')}</span>
-
+              <span className="text-gray-600">{t("confirmation.duration", "Duration")}:</span>
+              <span className="font-medium">
+                {savedReservation.hours} {savedReservation.hours === 1 ? t("reservation.hour") : t("reservation.hours")}
+              </span>
             </div>
 
             {savedReservation?.id && (
               <div className="flex justify-between">
-
-                <span className="text-muted-foreground">{t('confirmation.bookingId')}:</span>
+                <span className="text-gray-600">{t("confirmation.bookingId", "Booking ID")}:</span>
                 <span className="font-medium">{savedReservation.id}</span>
               </div>
             )}
@@ -149,11 +144,13 @@ export default function Confirmation() {
           
           <Separator className="my-4" />
           
-          {/* Servicios */}
-          <h4 className="font-medium mb-2">{t('confirmation.services')}:</h4>
+          {/* Services */}
+          <h4 className="font-medium mb-2">{t("confirmation.services", "Services")}:</h4>
           <div className="space-y-2">
             <div className="flex justify-between">
-              <span>{t('confirmation.room')} ({savedReservation.hours} {t('confirmation.hours')})</span>
+              <span>
+                {t("reservation.room")} ({savedReservation.hours} {savedReservation.hours === 1 ? t("reservation.hour") : t("reservation.hours")})
+              </span>
               <span>¥{savedReservation.basePrice}</span>
             </div>
             
@@ -161,7 +158,7 @@ export default function Confirmation() {
             {savedReservation.services && savedReservation.services.length > 0 && 
               savedReservation.services.map((service, index) => (
                 <div key={index} className="flex justify-between">
-                  <span>{service.quantity}x {t('confirmation.service')} #{service.serviceId}</span>
+                  <span>{service.quantity}x {t("confirmation.service", "Service")} #{service.serviceId}</span>
                   <span>¥{service.price}</span>
                 </div>
               )
@@ -172,26 +169,26 @@ export default function Confirmation() {
           
           {/* Total */}
           <div className="flex justify-between font-bold text-lg">
-            <span>{t('confirmation.total')}</span>
+            <span>{t("confirmation.total", "TOTAL")}</span>
             <span>¥{savedReservation.totalPrice || savedReservation.basePrice}</span>
           </div>
         </Card>
         
-        {/* Acciones */}
+        {/* Actions */}
         <div className="p-4 space-y-4">
           <Button 
-            className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
+            className="w-full rounded-full h-12 bg-black text-white hover:bg-black/90"
             onClick={() => window.location.href = "/home"}
           >
-            {t('confirmation.backToHome')}
+            {t("confirmation.backToHome", "Back to Home")}
           </Button>
           
           <Button 
             variant="outline"
-            className="w-full rounded-full h-12 border border-border"
+            className="w-full rounded-full h-12"
             onClick={() => window.location.href = "/account"}
           >
-            {t('confirmation.viewReservations')}
+            {t("confirmation.viewReservations", "View My Reservations")}
           </Button>
         </div>
       </div>

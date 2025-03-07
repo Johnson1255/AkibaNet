@@ -48,7 +48,10 @@
     "title": "Settings",
     "language": "Language",
     "notifications": "Notifications",
-    "paymentMethods": "Payment Methods"
+    "paymentMethods": "Payment Methods",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark"
   },
   "buttons": {
     "logout": "Log Out"
@@ -171,5 +174,20 @@
     "ps5": "Playstation 5",
     "dreamcast": "Sega Dreamcast",
     "n64": "Nintengod 64"
+  },
+  "confirmation": {
+    "title": "Confirmation",
+    "reservationConfirmed": "Reservation Confirmed!",
+    "successMessage": "Your reservation has been successfully completed. Here are the details:",
+    "details": "Reservation Details",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration",
+    "bookingId": "Booking ID",
+    "services": "Services",
+    "service": "Service",
+    "total": "TOTAL",
+    "backToHome": "Back to Home",
+    "viewReservations": "View My Reservations"
   }
 }
