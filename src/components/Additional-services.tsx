@@ -5,8 +5,11 @@ import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
 import { useReservation, Service } from "../context/ReservationContext";
+import { useTranslation } from "react-i18next";
 
 export default function AdditionalServices() {
+  const { t } = useTranslation();
+  
   // Usar el contexto de reserva
   const { reservation, updateSelectedServices, updateRoomDetails, saveReservation } = useReservation();
   
@@ -25,31 +28,31 @@ export default function AdditionalServices() {
   }, [selectedServices, updateSelectedServices]);
 
   const services: Service[] = [
-    { id: "headset", name: "Premium gaming headsets", price: 150 },
+    { id: "headset", name: t("services.headset.name", "Premium gaming headsets"), price: 150 },
     {
       id: "streaming",
-      name: "Streaming Setup",
-      description: "webcam and microphone for streamers.",
+      name: t("services.streaming.name", "Streaming Setup"),
+      description: t("services.streaming.description", "webcam and microphone for streamers."),
       price: 500,
     },
     {
       id: "refrigerator",
-      name: "Small refrigerator",
-      description: "For cold drinks and snacks",
+      name: t("services.refrigerator.name", "Small refrigerator"),
+      description: t("services.refrigerator.description", "For cold drinks and snacks"),
       price: 500,
     },
     {
       id: "chair",
-      name: "Ergonomic gaming chair",
-      description: "Adjustable and comfortable for long sessions.",
+      name: t("services.chair.name", "Ergonomic gaming chair"),
+      description: t("services.chair.description", "Adjustable and comfortable for long sessions."),
       price: 500,
     },
   ];
 
   const consoles: Service[] = [
-    { id: "ps5", name: "Playstation 5", price: 100, isConsole: true },
-    { id: "dreamcast", name: "Sega Dreamcast", price: 250, isConsole: true },
-    { id: "n64", name: "Nintengod 64", price: 350, isConsole: true },
+    { id: "ps5", name: t("consoles.ps5", "Playstation 5"), price: 100, isConsole: true },
+    { id: "dreamcast", name: t("consoles.dreamcast", "Sega Dreamcast"), price: 250, isConsole: true },
+    { id: "n64", name: t("consoles.n64", "Nintengod 64"), price: 350, isConsole: true },
   ];
 
   const toggleService = (serviceId: string) => {
@@ -89,7 +92,7 @@ export default function AdditionalServices() {
       window.location.href = "/confirmation";
     } else {
       // Manejar error
-      alert("Error al guardar la reserva. Inténtalo de nuevo.");
+      alert(t("reservation.errors.bookingError", "Error al guardar la reserva. Inténtalo de nuevo."));
     }
   };
 
@@ -142,7 +145,7 @@ export default function AdditionalServices() {
           >
             <ArrowLeft className="h-6 w-6" />
           </Button>
-          <h1 className="text-2xl font-normal">Additional Services</h1>
+          <h1 className="text-2xl font-normal">{t("reservation.addServices", "Additional Services")}</h1>
           <div className="w-10" /> {/* Spacer for alignment */}
         </header>
 
@@ -151,10 +154,10 @@ export default function AdditionalServices() {
           {services.map(renderServiceCard)}
 
           <div className="mt-8">
-            <h2 className="text-2xl mb-4">Console rental</h2>
+            <h2 className="text-2xl mb-4">{t("services.consoleRental", "Console rental")}</h2>
             <div className="space-y-4">{consoles.map(renderServiceCard)}</div>
             <p className="text-sm text-gray-500 mt-2">
-              * Each console has its own library of games available
+              {t("services.consoleNote", "* Each console has its own library of games available")}
             </p>
           </div>
         </div>
@@ -175,7 +178,11 @@ export default function AdditionalServices() {
               );
             })}
             <div className="flex justify-between">
-              <span>{baseHours} x Hours</span>
+              <span>
+                {baseHours} x {baseHours === 1 
+                  ? t("reservation.hour", "hour") 
+                  : t("reservation.hours", "hours")}
+              </span>
               <span className="whitespace-nowrap">¥ {baseHours * hourlyRate}</span>
             </div>
             <Separator />
@@ -188,7 +195,7 @@ export default function AdditionalServices() {
             className="w-full h-14 rounded-none bg-black text-white hover:bg-black/90"
             onClick={handleConfirmAndPay}
           >
-            Confirm and Pay
+            {t("reservation.confirmAndPay", "Confirm and Pay")}
           </Button>
         </div>
       </div>

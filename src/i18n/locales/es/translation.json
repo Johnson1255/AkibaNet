@@ -43,25 +43,7 @@
       "confirmError": "Error al confirmar reserva:"
     }
   },
-  "confirmation": {
-    "title": "Confirmación",
-    "success": "¡Reserva Confirmada!",
-    "successMessage": "Tu reserva ha sido completada con éxito. Aquí están los detalles:",
-    "details": "Detalles de la Reserva",
-    "room": "Sala",
-    "date": "Fecha",
-    "time": "Hora",
-    "duration": "Duración",
-    "bookingId": "ID de Reserva",
-    "services": "Servicios",
-    "hours": "hora(s)",
-    "service": "Servicio",
-    "total": "TOTAL",
-    "backToHome": "Volver al Inicio",
-    "viewReservations": "Ver Mis Reservas",
-    "notFound": "No se encontró información de la reserva",
-    "newReservation": "Realizar una nueva reserva"
-  },
+  
   "settings": {
     "title": "Configuración",
     "language": "Idioma",
@@ -165,5 +147,29 @@
   "room":{
     "name": "Elige una habitación",
     "fetchError": "Error al cargar la información de las habitaciones."
+  },
+  "services": {
+    "headset": {
+      "name": "Auriculares premium para gaming"
+    },
+    "streaming": {
+      "name": "Equipo para streaming",
+      "description": "webcam y micrófono para streamers."
+    },
+    "refrigerator": {
+      "name": "Pequeño refrigerador",
+      "description": "Para bebidas frías y snacks"
+    },
+    "chair": {
+      "name": "Silla ergonómica para gaming",
+      "description": "Ajustable y cómoda para sesiones largas."
+    },
+    "consoleRental": "Alquiler de consolas",
+    "consoleNote": "* Cada consola tiene su propia biblioteca de juegos disponible"
+  },
+  "consoles": {
+    "ps5": "Playstation 5",
+    "dreamcast": "Sega Dreamcast",
+    "n64": "Nintengod 64"
   }
 }

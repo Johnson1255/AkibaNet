@@ -43,25 +43,7 @@
       "confirmError": "Error confirming reservation:"
     }
   },
-  "confirmation": {
-    "title": "Confirmation",
-    "success": "Reservation Confirmed!",
-    "successMessage": "Your reservation has been successfully completed. Here are the details:",
-    "details": "Reservation Details",
-    "room": "Room",
-    "date": "Date",
-    "time": "Time",
-    "duration": "Duration",
-    "bookingId": "Booking ID",
-    "services": "Services",
-    "hours": "hour(s)",
-    "service": "Service",
-    "total": "TOTAL",
-    "backToHome": "Back to Home",
-    "viewReservations": "View My Reservations",
-    "notFound": "Reservation information not found",
-    "newReservation": "Make a new reservation"
-  },
+  
   "settings": {
     "title": "Settings",
     "language": "Language",
@@ -116,13 +98,13 @@
     "noRequest": "Please enter a request before sending.",
     "susccesfullRequest": "Request sent successfully!",
     "failedRequest": "Failed to send request.",
-    "error": "An unknown error has occurred"
+    "error": "an unknown error has ocurred"
   },
   "food": {
     "name": "Food Menu",
     "snacks": "Snacks",
     "drinks": "Beverages",
-    "plates": "Plates",
+    "plates":"Plates",
     "food": {
       "plates": {
         "1": {
@@ -162,8 +144,32 @@
     "gotReservation": "You do not have any current reservation, please make one to order food",
     "button": "Go to reserve page"
   },
-  "room": {
+  "room":{
     "name": "Select a room",
     "fetchError": "Error fetching room data"
+  },
+  "services": {
+    "headset": {
+      "name": "Premium gaming headsets"
+    },
+    "streaming": {
+      "name": "Streaming Setup",
+      "description": "webcam and microphone for streamers."
+    },
+    "refrigerator": {
+      "name": "Small refrigerator",
+      "description": "For cold drinks and snacks"
+    },
+    "chair": {
+      "name": "Ergonomic gaming chair",
+      "description": "Adjustable and comfortable for long sessions."
+    },
+    "consoleRental": "Console rental",
+    "consoleNote": "* Each console has its own library of games available"
+  },
+  "consoles": {
+    "ps5": "Playstation 5",
+    "dreamcast": "Sega Dreamcast",
+    "n64": "Nintengod 64"
   }
 }
