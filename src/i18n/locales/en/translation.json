@@ -66,5 +66,49 @@
     "susccesfullRequest": "Request sent successfully!",
     "failedRequest": "Failed to send request.",
     "error": "an unknown error has ocurred"
+  },
+  "food": {
+    "name": "Food Menu",
+    "snacks": "Snacks",
+    "drinks": "Beverages",
+    "plates":"Plates",
+    "food": {
+      "plates": {
+        "1": {
+          "name": "Pizza",
+          "description": "Pepperoni pizza"
+        },
+        "2": {
+          "name": "Sushi",
+          "description": "Salmon sushi"
+        },
+        "3": {
+          "name": "Burger",
+          "description": "Classic burger (lettuce, tomato, cheese, beef patty)"
+        }
+      },
+      "drinks": {
+        "1": {
+          "name": "Coca-Cola",
+          "description": "Soft drink"
+        },
+        "2": {
+          "name": "Tea",
+          "description": "Hot tea"
+        }
+      },
+      "snacks": {
+        "1": {
+          "name": "Nachos",
+          "description": "Nachos with cheese"
+        },
+        "2": {
+          "name": "Pocky",
+          "description": "Biscuit sticks covered in chocolate"
+        }
+      }
+    },
+    "gotReservation": "You do not have any current reservation, please make one to order food",
+    "button": "Go to reserve page"
   }
 }
