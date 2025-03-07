@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
+import { useTranslation } from "react-i18next";
 import { useReservation } from "../context/ReservationContext";
 import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
@@ -36,9 +37,13 @@ interface ServicesByCategory {
   working: ApiService[];
   thinking: ApiService[];
 }
+        
+     
 
 export default function AdditionalServices() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  
   // Usar el contexto de reserva
   const { reservation, updateSelectedServices, updateRoomDetails } = useReservation();
   
@@ -127,6 +132,7 @@ export default function AdditionalServices() {
   useEffect(() => {
     syncSelectedServices();
   }, [syncSelectedServices]);
+
 
   const toggleService = (serviceId: string) => {
     const newSelected = new Set(selectedServices);
@@ -282,7 +288,7 @@ export default function AdditionalServices() {
       navigate("/confirmation");
     } catch (error) {
       console.error("Error al confirmar reserva:", error);
-      alert(error instanceof Error ? error.message : "Error al confirmar la reserva");
+      alert(t("reservation.errors.bookingError", "Error al guardar la reserva. Inténtalo de nuevo."));
     }
   };
 
@@ -374,8 +380,8 @@ export default function AdditionalServices() {
           >
             <ArrowLeft className="h-6 w-6" />
           </Button>
-          <h1 className="text-2xl font-normal text-foreground">Additional Services</h1>
-          <div className="w-6" /> {/* Spacer para alineamiento */}
+          <h1 className="text-2xl font-normal">{t("reservation.addServices", "Additional Services")}</h1>
+          <div className="w-10" /> {/* Spacer for alignment */}
         </header>
 
         {/* Room information summary */}
@@ -420,6 +426,7 @@ export default function AdditionalServices() {
             <div className="flex justify-between">
               <span>Room #{roomId}</span>
               <span className="whitespace-nowrap">¥ {baseRoomPrice}</span>
+
             </div>
             {getSelectedServices().map((service) => (
               <div key={service.id} className="flex justify-between">
@@ -437,7 +444,7 @@ export default function AdditionalServices() {
             className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={handleConfirmAndPay}
           >
-            Confirm and Pay
+            {t("reservation.confirmAndPay", "Confirm and Pay")}
           </Button>
         </div>
       </div>
