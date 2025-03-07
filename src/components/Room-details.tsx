@@ -154,9 +154,6 @@ export default function RoomDetails() {
       const parsedUser = JSON.parse(storedUser);
       const userId = parsedUser.id;
   
-      console.log("User ID:", userId);
-      console.log("Auth Token:", token);
-  
       if (!reservation.selectedDate || !reservation.selectedTime) {
         throw new Error("Falta seleccionar fecha y hora para la reserva.");
       }
@@ -174,8 +171,6 @@ export default function RoomDetails() {
         products: []
       };
   
-      console.log("Reservation payload:", reservationPayload);
-  
       const response = await fetch("http://localhost:3000/api/bookings", {
         method: "POST",
         headers: {
@@ -186,7 +181,6 @@ export default function RoomDetails() {
       });
   
       const responseData = await response.json();
-      console.log("API Response:", responseData); // 🔥 Verificamos qué responde el backend
   
       if (!response.ok) {
         throw new Error(`Error al crear la reserva: ${responseData.error || "Error desconocido"}`);
@@ -198,7 +192,6 @@ export default function RoomDetails() {
       console.error("Error al confirmar reserva:", error);
     }
   };
-  
 
   // Si está cargando, mostrar indicador
   if (loading) {
