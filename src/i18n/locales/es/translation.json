@@ -9,8 +9,41 @@
     "history": "Historial de reservas",
     "viewAll": "Ver todas las reservas",
     "hour": "hora",
-    "hours": "horas"
+    "hours": "horas",
+    "room": "Sala",
+    "details": "Detalles",
+    "capacity": "Capacidad",
+    "people": "personas",
+    "hourlyRate": "Tarifa por hora",
+    "equipment": "Equipamiento",
+    "units": "unidades",
+    "unit": "unidad",
+    "selectTime": "Seleccionar hora",
+    "today": "Hoy",
+    "minimum": "mínimo",
+    "maximum": "máximo",
+    "for": "por",
+    "addServices": "Añadir servicios",
+    "confirmAndPay": "Confirmar y Pagar",
+    "loading": "Cargando detalles de la habitación...",
+    "roomNotFound": "No se encontró la habitación",
+    "selectPrompt": "Por favor, seleccione una habitación desde la página de selección.",
+    "goToRoomSelection": "Ir a selección de habitaciones",
+    "backToRooms": "Volver a la selección de habitaciones",
+    "roomTypes": {
+      "gaming": "Juegos",
+      "thinking": "Lectura",
+      "working": "Trabajo"
+    },
+    "errors": {
+      "error": "Error:",
+      "roomLoadError": "Error al cargar los detalles de la habitación: {{statusText}}",
+      "unknownError": "Error desconocido",
+      "bookingError": "Error al crear la reserva",
+      "confirmError": "Error al confirmar reserva:"
+    }
   },
+  
   "settings": {
     "title": "Configuración",
     "language": "Idioma",

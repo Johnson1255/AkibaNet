@@ -7,6 +7,7 @@ import BottomNavBar from "./Bottom-navbar";
 import ImageCarousel from "./ImageCarousel";
 import { useReservation } from "../context/ReservationContext";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // Definir interfaces para los datos recibidos de la API
 interface Equipment {
@@ -31,6 +32,7 @@ export default function RoomDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
+  const { t } = useTranslation(); // Hook para traducciones
   
   // Obtener el roomId de los parámetros de URL
   let roomId: string | null = null;
@@ -68,7 +70,7 @@ export default function RoomDetails() {
         const response = await fetch(`http://localhost:3000/api/rooms/${roomId}`);
         
         if (!response.ok) {
-          throw new Error(`Error al cargar los detalles de la habitación: ${response.statusText}`);
+          throw new Error(t('reservation.errors.roomLoadError', 'Error al cargar los detalles de la habitación: {{statusText}}', { statusText: response.statusText }));
         }
         
         const roomData = await response.json();
@@ -90,14 +92,14 @@ export default function RoomDetails() {
         }
       } catch (err) {
         console.error("Error fetching room details:", err);
-        setError(err instanceof Error ? err.message : 'Error desconocido');
+        setError(err instanceof Error ? err.message : t('reservation.errors.unknownError', 'Error desconocido'));
       } finally {
         setLoading(false);
       }
     };
     
     fetchRoomDetails();
-  }, [roomId]);
+  }, [roomId, t]);
 
   // Función para calcular el precio
   const calculatePrice = (hours: number, hourlyRate: number) => {
@@ -166,14 +168,14 @@ export default function RoomDetails() {
       });
   
       if (!response.ok) {
-        throw new Error("Error al crear la reserva");
+        throw new Error(t('reservation.errors.bookingError', 'Error al crear la reserva'));
       }
   
       const savedBooking = await response.json();
       localStorage.setItem('lastReservation', JSON.stringify(savedBooking));
       navigate("/confirmation");
     } catch (error) {
-      console.error('Error al confirmar reserva:', error);
+      console.error(t('reservation.errors.confirmError', 'Error al confirmar reserva:'), error);
     }
   };
 
@@ -181,7 +183,7 @@ export default function RoomDetails() {
   if (loading) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <h2 className="text-xl mb-4">Cargando detalles de la habitación...</h2>
+        <h2 className="text-xl mb-4">{t('reservation.loading', 'Cargando detalles de la habitación...')}</h2>
       </div>
     );
   }
@@ -190,13 +192,13 @@ export default function RoomDetails() {
   if (error) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <h2 className="text-xl text-red-500 mb-4">Error: {error}</h2>
+        <h2 className="text-xl text-red-500 mb-4">{t('reservation.errors.error', 'Error:')} {error}</h2>
         <Button
           variant="default"
           className="rounded-full bg-black text-white"
           onClick={() => navigate("/reserve")}
         >
-          Volver a la selección de habitaciones
+          {t('reservation.backToRooms', 'Volver a la selección de habitaciones')}
         </Button>
       </div>
     );
@@ -206,14 +208,14 @@ export default function RoomDetails() {
   if (!roomId || !room) {
     return (
       <div className="min-h-screen bg-white flex flex-col items-center justify-center">
-        <h1 className="text-2xl mb-4">No se encontró la habitación</h1>
-        <p className="mb-4">Por favor, seleccione una habitación desde la página de selección.</p>
+        <h1 className="text-2xl mb-4">{t('reservation.roomNotFound', 'No se encontró la habitación')}</h1>
+        <p className="mb-4">{t('reservation.selectPrompt', 'Por favor, seleccione una habitación desde la página de selección.')}</p>
         <Button
           variant="default"
           className="rounded-full bg-black text-white"
           onClick={() => navigate("/reserve")}
         >
-          Ir a selección de habitaciones
+          {t('reservation.goToRoomSelection', 'Ir a selección de habitaciones')}
         </Button>
       </div>
     );
@@ -221,8 +223,13 @@ export default function RoomDetails() {
 
   // Determinar el tipo de habitación a mostrar
   const roomCategory = room.category || 
-    (room.id.startsWith("1") ? "Gaming" : 
-    (room.id.startsWith("2") ? "Thinking" : "Working"));
+    (room.id.startsWith("1") ? t('reservation.roomTypes.gaming', 'Gaming') : 
+    (room.id.startsWith("2") ? t('reservation.roomTypes.thinking', 'Thinking') : t('reservation.roomTypes.working', 'Working')));
+
+  // Función para pluralizar "hora" basada en el número
+  const getHourText = (num: number) => {
+    return num === 1 ? t('reservation.hour', 'hora') : t('reservation.hours', 'horas');
+  };
 
   return (
     <div className="min-h-screen bg-white pb-16">
@@ -236,7 +243,7 @@ export default function RoomDetails() {
         >
           <ArrowLeft className="h-6 w-6" />
         </Button>
-        <h1 className="text-2xl font-normal">{roomCategory} Room #{room.id}</h1>
+        <h1 className="text-2xl font-normal">{roomCategory} {t('reservation.room', 'Room')} #{room.id}</h1>
         <div className="w-6" /> {/* Spacer for alignment */}
       </header>
 
@@ -244,23 +251,25 @@ export default function RoomDetails() {
       <div className="px-4 mb-4">
         <ImageCarousel 
           images={room.images} 
-          alt={`${roomCategory} Room ${room.id}`} 
+          alt={`${roomCategory} ${t('reservation.room', 'Room')} ${room.id}`} 
         />
       </div>
 
       {/* Details */}
       <div className="px-4 mb-6">
         <Card className="p-6 rounded-2xl">
-          <h2 className="text-xl font-bold mb-4">Details</h2>
+          <h2 className="text-xl font-bold mb-4">{t('reservation.details', 'Details')}</h2>
           <ul className="space-y-4">
-            <li>Capacidad: {room.capacity} personas</li>
-            <li>Tarifa por hora: ¥{room.hourlyRate.toFixed(2)}</li>
+            <li>{t('reservation.capacity', 'Capacidad')}: {room.capacity} {t('reservation.people', 'personas')}</li>
+            <li>{t('reservation.hourlyRate', 'Tarifa por hora')}: ¥{room.hourlyRate.toFixed(2)}</li>
             <li>
-              Equipamiento:
+              {t('reservation.equipment', 'Equipamiento')}:
               <ul className="ml-6 space-y-2 mt-2">
                 {room.equipment.map((item, index) => (
                   <li key={index}>
-                    {item.name}: {item.quantity} {item.quantity > 1 ? "unidades" : "unidad"}
+                    {item.name}: {item.quantity} {item.quantity > 1 ? 
+                      t('reservation.units', 'unidades') : 
+                      t('reservation.unit', 'unidad')}
                   </li>
                 ))}
               </ul>
@@ -281,7 +290,7 @@ export default function RoomDetails() {
                 updateRoomDetails({ selectedTime: reservation.selectedTime });
               }}
             >
-              <span>{reservation.selectedTime || "Select time"}</span>
+              <span>{reservation.selectedTime || t('reservation.selectTime', 'Select time')}</span>
             </Button>
           </div>
 
@@ -296,7 +305,7 @@ export default function RoomDetails() {
                 updateRoomDetails({ selectedDate: reservation.selectedDate });
               }}
             >
-              <span>{reservation.selectedDate || "Today"}</span>
+              <span>{reservation.selectedDate || t('reservation.today', 'Today')}</span>
             </Button>
           </div>
         </div>
@@ -313,11 +322,11 @@ export default function RoomDetails() {
             onValueChange={handleSliderChange}
           />
           <div className="text-sm text-gray-500 flex justify-between">
-            <span>{room.minHours} hora(s) mínimo</span>
-            <span>{room.maxHours} hora(s) máximo</span>
+            <span>{room.minHours} {getHourText(room.minHours)} {t('reservation.minimum', 'mínimo')}</span>
+            <span>{room.maxHours} {getHourText(room.maxHours)} {t('reservation.maximum', 'máximo')}</span>
           </div>
           <div className="text-sm text-gray-500 text-center mt-2">
-            ¥{price.toFixed(2)} por {hours} hora(s).
+            ¥{price.toFixed(2)} {t('reservation.for', 'por')} {hours} {getHourText(hours)}.
           </div>
         </div>
 
@@ -332,7 +341,7 @@ export default function RoomDetails() {
               navigate("/additional-services");
             }}
           >
-            Add services
+            {t('reservation.addServices', 'Add services')}
             <Plus className="ml-2 h-5 w-5" />
           </Button>
 
@@ -341,7 +350,7 @@ export default function RoomDetails() {
             className="w-full rounded-full h-12 bg-black text-white hover:bg-black/90"
             onClick={handleConfirmAndPay}
           >
-            Confirm and Pay
+            {t('reservation.confirmAndPay', 'Confirm and Pay')}
           </Button>
         </div>
       </div>
