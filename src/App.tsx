@@ -13,6 +13,7 @@ import SignUpPage from "./components/SignUp-page";
 import Confirmation from "./components/Confirmation";
 import MyReservationPage from "./components/My-Reservation-page";
 import HelpServicesPage from "./components/Help-Services-page";
+import FoodPage from "./components/FoodPage";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function AppRoutes() {
         <Route path="/my-reservation" element={<MyReservationPage />} />
         <Route path="/help-services" element={<HelpServicesPage />} />
         <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/food" element={<FoodPage/>} />
       </Route>
     </Routes>
   );

@@ -1,3 +1,11 @@
+/**
+ * Página de servicios de ayuda para los usuarios.
+ * Permite solicitar servicios como comida, wifi, limpieza, videojuegos y servicio de habitación.
+ * Incluye un área de comentarios y un botón para enviar solicitudes.
+ * 
+ * @module HelpServicesPage
+ */
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -6,7 +14,8 @@ import {
   Gamepad,
   SprayCanIcon as Spray,
   Send,
-  UtensilsCrossed, DoorClosed 
+  UtensilsCrossed,
+  DoorClosed
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -14,11 +23,23 @@ import { Card } from "@/components/ui/card";
 import BottomNavBar from "./Bottom-navbar";
 import { useTranslation } from "react-i18next";
 
+/**
+ * Componente que renderiza la página de servicios de ayuda.
+ * Permite a los usuarios solicitar diferentes tipos de asistencia en un hotel o aplicación similar.
+ * 
+ * @returns {JSX.Element} Página de servicios de ayuda.
+ */
 export default function HelpServicesPage() {
+  /** Estado para almacenar los comentarios ingresados por el usuario */
   const [comments, setComments] = useState("");
+
+  /** Hook de navegación de React Router */
   const navigate = useNavigate();
+
+  /** Hook para manejar traducciones */
   const { t } = useTranslation();
 
+  /** Lista de servicios disponibles */
   const services = [
     {
       id: "food",
@@ -39,30 +60,37 @@ export default function HelpServicesPage() {
     { id: "wifi", title: t("help.wifiSupport"), icon: <Wifi className="w-6 h-6" /> },
     { id: "gaming", title: t("help.gamingSupport"), icon: <Gamepad className="w-6 h-6" /> },
     { id: "cleaning", title: t("help.cleaningService"), icon: <Spray className="w-6 h-6" /> },
-    { id: "room", title: t("help.roomService"), icon: <DoorClosed className=" w-6"/> },
+    { id: "room", title: t("help.roomService"), icon: <DoorClosed className="w-6" /> },
   ];
 
+  /**
+   * Maneja el envío de una solicitud de servicio.
+   * Valida que el comentario no esté vacío antes de enviarlo.
+   * 
+   * @async
+   * @function handleSendRequest
+   */
   const handleSendRequest = async () => {
     if (!comments.trim()) {
       alert(t("help.noRequest"));
       return;
     }
-  
+
     try {
       const requestBody = {
         user_id: "a5d90c68-e574-4d7d-90a4-4da6fe0fa1f5", // Cambia esto según el usuario
         date: new Date().toISOString(),
         description: comments, // Se corrigió el nombre de la clave
       };
-  
+
       const response = await fetch("http://localhost:3000/api/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestBody),
       });
-  
+
       if (!response.ok) throw new Error(t("help.failedRequest"));
-  
+
       alert(t("help.successfullRequest"));
       setComments(""); // Limpia el textarea después de enviar
     } catch (error) {
@@ -73,20 +101,19 @@ export default function HelpServicesPage() {
       }
     }
   };
-  
 
   return (
     <div className="min-h-screen bg-white pb-20">
-      {/* Header */}
+      {/* Encabezado */}
       <header className="p-4 flex items-center justify-between">
         <Button onClick={() => navigate(-1)} variant="ghost" size="icon" className="rounded-full">
           <ArrowLeft className="h-6 w-6" />
         </Button>
         <h1 className="text-2xl font-normal">{t("help.help")}</h1>
-        <div className="w-10" /> {/* Spacer for alignment */}
+        <div className="w-10" /> {/* Espaciador para la alineación */}
       </header>
 
-      {/* Services Grid */}
+      {/* Grid de Servicios */}
       <div className="p-4">
         <div className="grid grid-cols-2 gap-4">
           {services.map((service) => (
@@ -102,7 +129,7 @@ export default function HelpServicesPage() {
         </div>
       </div>
 
-      {/* Comments Section */}
+      {/* Sección de Comentarios */}
       <div className="p-4 mt-8">
         <Card className="bg-gray-100 border-0 p-6">
           <Textarea
@@ -114,12 +141,14 @@ export default function HelpServicesPage() {
         </Card>
       </div>
 
-      {/* Send Button */}
+      {/* Botón de Enviar */}
       <div className="p-4 flex justify-center">
         <Button onClick={handleSendRequest} className="bg-gray-100 hover:bg-gray-200 text-black rounded-xl h-12 px-8">
           <Send className="mr-2 h-4 w-4" /> {t("help.sendRequest")}
         </Button>
       </div>
+      
+      {/* Barra de Navegación Inferior */}
       <BottomNavBar />
     </div>
   );

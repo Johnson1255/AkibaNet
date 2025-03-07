@@ -66,5 +66,49 @@
     "susccesfullRequest": "¡Solicitud enviada con éxito!",
     "failedRequest": "Error al enviar la solicitud.",
     "error": "Ha ocurrido un error desconocido"
+  },
+  "food":{
+    "name":"Menú de comida",
+    "snacks": "Snacks",
+    "drinks": "Bebidas",
+    "plates":"Platos",
+    "gotReservation": "No tienes reservación, ve ahora a reservar para ordenar comida",
+    "button": "Ir a reservar",
+    "food":{
+      "plates":{
+        "1":{
+          "name":"Pizza",
+          "description": "Pizza con pepperoni"
+        },
+        "2":{
+          "name":"Sushi",
+          "description": "Sushi de salmón"
+        },
+        "3":{
+          "name":"Hamburguesa",
+          "description": "Hamburguesa clásica(lechuga, tomate, queso, carne de res)"
+        }
+      },
+      "drinks":{
+        "1":{
+          "name":"Coca-Cola",
+          "description": "Bebida Gaseosa"
+        },
+        "2":{
+          "name":"Té",
+          "description": "Té caliente"
+        }
+      },
+      "snacks":{
+        "1":{
+          "name":"Nachos",
+          "description": "Nachos con queso"
+        },
+        "2":{
+          "name":"Pocky",
+          "description": "palitos de galleta recubiertos de chocolate"
+        }
+      }
+    }
   }
 }
