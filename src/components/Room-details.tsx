@@ -118,17 +118,63 @@ export default function RoomDetails() {
   const hours = room ? sliderValue[0] * 0.5 : 0;
   const price = room ? calculatePrice(hours, room.hourlyRate) : 0;
 
+  // Función auxiliar para parsear "MM/DD/YYYY" y "hh:mm am/pm"
+  function parseDateTime(dateStr: string, timeStr: string) {
+    const [month, day, year] = dateStr.split("/");
+    let [hour, rest] = timeStr.split(":");
+    const minute = rest.slice(0, 2);
+    const amPm = rest.slice(3).toLowerCase();
+  
+    if (amPm === "pm" && hour !== "12") {
+      hour = String(Number(hour) + 12);
+    } else if (amPm === "am" && hour === "12") {
+      hour = "0";
+    }
+    return new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute));
+  }
+
   // Manejar el botón "Confirm and Pay"
-  const handleConfirmAndPay = () => {
-    // Actualizar el precio final en el contexto
-    updateRoomDetails({ 
-      hours, 
-      price,
-      totalPrice: price 
-    });
-    
-    // Navegar a la página de confirmación usando React Router
-    navigate("/confirmation");
+  const handleConfirmAndPay = async () => {
+    if (!room) return;
+  
+    try {
+      const storedUser = localStorage.getItem("user");
+      let userId = null;
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser);
+        userId = parsedUser.id;
+      }
+  
+      const startDateTime = parseDateTime(reservation.selectedDate!, reservation.selectedTime!);
+      const basePrice = room.hourlyRate * hours;
+  
+      const reservationPayload = {
+        userId, 
+        roomId: room.id,
+        startTime: startDateTime.toISOString(),
+        hours,
+        basePrice,
+        services: [],
+        products: []
+      };
+      console.log("Sending reservation payload:", reservationPayload);
+  
+      const response = await fetch("http://localhost:3000/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(reservationPayload),
+      });
+  
+      if (!response.ok) {
+        throw new Error("Error al crear la reserva");
+      }
+  
+      const savedBooking = await response.json();
+      localStorage.setItem('lastReservation', JSON.stringify(savedBooking));
+      navigate("/confirmation");
+    } catch (error) {
+      console.error('Error al confirmar reserva:', error);
+    }
   };
 
   // Si está cargando, mostrar indicador

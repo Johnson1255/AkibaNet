@@ -14,6 +14,9 @@ interface RoomDetails {
   selectedDate?: string;
   selectedTime?: string;
   hourlyRate?: number; // Añadimos esta nueva propiedad
+  hours?: number;
+  price?: number;
+  totalPrice?: number; // Se agrega esta propiedad
 }
 
 interface Reservation {
