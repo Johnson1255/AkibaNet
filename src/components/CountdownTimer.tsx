@@ -6,13 +6,15 @@ interface CountdownTimerProps {
   onComplete?: () => void;
   type: 'start' | 'end';
   roomId?: string;
+  formatDate: (date: Date) => string;
 }
 
 const CountdownTimer: React.FC<CountdownTimerProps> = ({ 
   targetDate, 
   onComplete, 
   type,
-  roomId 
+  roomId,
+  formatDate
 }) => {
   const navigate = useNavigate();
   const [timeRemaining, setTimeRemaining] = useState({
@@ -75,6 +77,10 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
           {type === 'start' ? `Para la sala: ${roomId}` : `Sala actual: ${roomId}`}
         </p>
       )}
+      
+      <p className="text-gray-600 mb-2">
+        {type === 'start' ? 'Fecha de inicio:' : 'Fecha de finalización:'} {formatDate(targetDate)}
+      </p>
       
       <div className="text-5xl font-mono font-medium tracking-wider my-5">
         {String(timeRemaining.hours).padStart(2, "0")}:

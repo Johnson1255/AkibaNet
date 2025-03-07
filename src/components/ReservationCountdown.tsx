@@ -1,6 +1,6 @@
+import CountdownTimer from './CountdownTimer';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CountdownTimer from './CountdownTimer';
 
 interface Reservation {
   id: string;
@@ -13,6 +13,14 @@ interface Reservation {
 interface ReservationCountdownProps {
   reservation?: Reservation;
 }
+
+const formatDate = (date: Date): string => {
+  return date.toLocaleDateString('es-ES', {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric'
+  });
+};
 
 const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation }) => {
   const navigate = useNavigate();
@@ -34,10 +42,16 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
       if (timeUntilStart > 0) {
         const timer = setTimeout(() => {
           setStatus('active');
+          // Actualizar en localStorage con el nuevo estado
+          const updatedReservation = { ...reservation, status: 'active' };
+          localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
         }, timeUntilStart);
         return () => clearTimeout(timer);
       } else {
         setStatus('active');
+        // Actualizar en localStorage con el nuevo estado
+        const updatedReservation = { ...reservation, status: 'active' };
+        localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
       }
     }
     
@@ -50,10 +64,16 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
       if (timeUntilEnd > 0) {
         const timer = setTimeout(() => {
           setStatus('completed');
+          // Actualizar en localStorage con el nuevo estado
+          const updatedReservation = { ...reservation, status: 'completed' };
+          localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
         }, timeUntilEnd);
         return () => clearTimeout(timer);
       } else {
         setStatus('completed');
+        // Actualizar en localStorage con el nuevo estado
+        const updatedReservation = { ...reservation, status: 'completed' };
+        localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
       }
     }
   }, [reservation, status]);
@@ -95,7 +115,13 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
           targetDate={new Date(reservation.startTime)}
           type="start"
           roomId={reservation.roomId}
-          onComplete={() => setStatus('active')}
+          formatDate={formatDate}
+          onComplete={() => {
+            setStatus('active');
+            // Actualizar en localStorage con el nuevo estado
+            const updatedReservation = { ...reservation, status: 'active' };
+            localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
+          }}
         />
       )}
       
@@ -104,7 +130,13 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
           targetDate={new Date(reservation.endTime)}
           type="end"
           roomId={reservation.roomId}
-          onComplete={() => setStatus('completed')}
+          formatDate={formatDate}
+          onComplete={() => {
+            setStatus('completed');
+            // Actualizar en localStorage con el nuevo estado
+            const updatedReservation = { ...reservation, status: 'completed' };
+            localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
+          }}
         />
       )}
     </>

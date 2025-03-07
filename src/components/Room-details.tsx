@@ -120,19 +120,42 @@ export default function RoomDetails() {
   const hours = room ? sliderValue[0] : 0;
   const price = room ? calculatePrice(hours, room.hourlyRate) : 0;
 
-  // Función auxiliar para parsear "MM/DD/YYYY" y "hh:mm am/pm"
+  // Función auxiliar para parsear "DD/MM/YYYY" y "hh:mm am/pm"
   function parseDateTime(dateStr: string, timeStr: string) {
-    const [month, day, year] = dateStr.split("/");
-    let [hour, rest] = timeStr.split(":");
-    const minute = rest.slice(0, 2);
-    const amPm = rest.slice(3).toLowerCase();
-  
-    if (amPm === "pm" && hour !== "12") {
-      hour = String(Number(hour) + 12);
-    } else if (amPm === "am" && hour === "12") {
-      hour = "0";
+    // Formato esperado: "DD/MM/YYYY"
+    const dateParts = dateStr.split("/");
+    if (dateParts.length !== 3) {
+      throw new Error(`Formato de fecha inválido: ${dateStr}. Se esperaba DD/MM/YYYY`);
     }
-    return new Date(Number(year), Number(month) - 1, Number(day), Number(hour), Number(minute));
+    
+    const day = parseInt(dateParts[0]);
+    const month = parseInt(dateParts[1]) - 1; // Los meses en JS son 0-11
+    const year = parseInt(dateParts[2]);
+    
+    // Validar día y mes
+    if (day < 1 || day > 31 || month < 0 || month > 11) {
+      throw new Error('Fecha inválida: día o mes fuera de rango');
+    }
+
+    // ...resto del código de parseDateTime sin cambios...
+    const timeMatch = timeStr.match(/(\d+):(\d+)\s*(am|pm)/i);
+    if (!timeMatch) {
+      throw new Error(`Formato de hora inválido: ${timeStr}. Se esperaba hh:mm am/pm`);
+    }
+    
+    let hour = parseInt(timeMatch[1]);
+    const minute = parseInt(timeMatch[2]);
+    const amPm = timeMatch[3].toLowerCase();
+    
+    if (amPm === "pm" && hour !== 12) {
+      hour += 12;
+    } else if (amPm === "am" && hour === 12) {
+      hour = 0;
+    }
+    
+    const dateObj = new Date(year, month, day, hour, minute);
+    console.log(`Fecha parseada: ${dateObj.toLocaleString('es-ES')}`);
+    return dateObj;
   }
 
   // Manejar el botón "Confirm and Pay"
@@ -158,16 +181,26 @@ export default function RoomDetails() {
         throw new Error("Falta seleccionar fecha y hora para la reserva.");
       }
   
+      console.log("Fecha seleccionada:", reservation.selectedDate);
+      console.log("Hora seleccionada:", reservation.selectedTime);
+      
       const startDateTime = parseDateTime(reservation.selectedDate, reservation.selectedTime);
+      const endDateTime = new Date(startDateTime.getTime() + hours * 60 * 60 * 1000);
+  
+      console.log("Fecha inicio:", startDateTime.toISOString());
+      console.log("Fecha fin:", endDateTime.toISOString());
+      
       const basePrice = room.hourlyRate * hours;
   
       const reservationPayload = {
         userId, 
-        roomId: Number(room.id), // 
+        roomId: Number(room.id),
         startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
         duration: hours,
         basePrice,
-        services: [],
+        status: 'pending',
+        services: Array.from(reservation.selectedServices || []),
         products: []
       };
   
@@ -186,7 +219,14 @@ export default function RoomDetails() {
         throw new Error(`Error al crear la reserva: ${responseData.error || "Error desconocido"}`);
       }
   
-      localStorage.setItem("lastReservation", JSON.stringify(responseData));
+      // Guardar la reserva en localStorage con formato consistente
+      localStorage.setItem("lastReservation", JSON.stringify({
+        ...responseData,
+        startTime: startDateTime.toISOString(),
+        endTime: endDateTime.toISOString(),
+        status: 'pending'
+      }));
+      
       navigate("/confirmation");
     } catch (error) {
       console.error("Error al confirmar reserva:", error);
