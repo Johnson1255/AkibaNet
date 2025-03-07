@@ -43,7 +43,25 @@
       "confirmError": "Error al confirmar reserva:"
     }
   },
-  
+  "confirmation": {
+    "title": "Confirmación",
+    "success": "¡Reserva Confirmada!",
+    "successMessage": "Tu reserva ha sido completada con éxito. Aquí están los detalles:",
+    "details": "Detalles de la Reserva",
+    "room": "Sala",
+    "date": "Fecha",
+    "time": "Hora",
+    "duration": "Duración",
+    "bookingId": "ID de Reserva",
+    "services": "Servicios",
+    "hours": "hora(s)",
+    "service": "Servicio",
+    "total": "TOTAL",
+    "backToHome": "Volver al Inicio",
+    "viewReservations": "Ver Mis Reservas",
+    "notFound": "No se encontró información de la reserva",
+    "newReservation": "Realizar una nueva reserva"
+  },
   "settings": {
     "title": "Configuración",
     "language": "Idioma",

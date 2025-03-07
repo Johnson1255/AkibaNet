@@ -43,7 +43,25 @@
       "confirmError": "Error confirming reservation:"
     }
   },
-  
+  "confirmation": {
+    "title": "Confirmation",
+    "success": "Reservation Confirmed!",
+    "successMessage": "Your reservation has been successfully completed. Here are the details:",
+    "details": "Reservation Details",
+    "room": "Room",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration",
+    "bookingId": "Booking ID",
+    "services": "Services",
+    "hours": "hour(s)",
+    "service": "Service",
+    "total": "TOTAL",
+    "backToHome": "Back to Home",
+    "viewReservations": "View My Reservations",
+    "notFound": "Reservation information not found",
+    "newReservation": "Make a new reservation"
+  },
   "settings": {
     "title": "Settings",
     "language": "Language",
@@ -98,13 +116,13 @@
     "noRequest": "Please enter a request before sending.",
     "susccesfullRequest": "Request sent successfully!",
     "failedRequest": "Failed to send request.",
-    "error": "an unknown error has ocurred"
+    "error": "An unknown error has occurred"
   },
   "food": {
     "name": "Food Menu",
     "snacks": "Snacks",
     "drinks": "Beverages",
-    "plates":"Plates",
+    "plates": "Plates",
     "food": {
       "plates": {
         "1": {
@@ -144,7 +162,7 @@
     "gotReservation": "You do not have any current reservation, please make one to order food",
     "button": "Go to reserve page"
   },
-  "room":{
+  "room": {
     "name": "Select a room",
     "fetchError": "Error fetching room data"
   }
