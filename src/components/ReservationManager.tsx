@@ -13,7 +13,7 @@ const ReservationManager: React.FC<ReservationManagerProps> = ({ children }) => 
   useEffect(() => {2
     // Comprobar si hay una reserva activa en localStorage
     const checkActiveReservation = () => {
-      const savedReservation = localStorage.getItem('activeReservation');
+      const savedReservation = localStorage.getItem('lastReservation');
       
       if (savedReservation) {
         const reservation = JSON.parse(savedReservation) as Reservation;
@@ -31,7 +31,7 @@ const ReservationManager: React.FC<ReservationManagerProps> = ({ children }) => 
           }
         } else {
           // La reserva ha terminado, eliminarla
-          localStorage.removeItem('activeReservation');
+          localStorage.removeItem('lastReservation');
           setActiveReservation(null);
         }
       }

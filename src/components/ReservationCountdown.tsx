@@ -25,58 +25,59 @@ const formatDate = (date: Date): string => {
 const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState<'pending' | 'active' | 'completed' | 'cancelled' | null>(
-      reservation ? reservation.status : null
+    reservation ? reservation.status : null
   );
+  const [timers, setTimers] = useState<NodeJS.Timeout[]>([]);
+
+  // Limpiar los timers cuando el componente se desmonte
+  useEffect(() => {
+    return () => {
+      timers.forEach(timer => clearTimeout(timer));
+    };
+  }, [timers]);
 
   useEffect(() => {
     if (!reservation) return;
-    
-    setStatus(reservation.status);
-    
-    // Configurar el temporizador para cambiar automáticamente de pendiente a activo
-    if (reservation.status === 'pending') {
-      const startTime = new Date(reservation.startTime);
-      const now = new Date();
-      const timeUntilStart = startTime.getTime() - now.getTime();
+
+    const updateReservationStatus = (newStatus: typeof status) => {
+      if (newStatus === status) return; // Evitar actualizaciones innecesarias
       
-      if (timeUntilStart > 0) {
-        const timer = setTimeout(() => {
-          setStatus('active');
-          // Actualizar en localStorage con el nuevo estado
-          const updatedReservation = { ...reservation, status: 'active' };
-          localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
-        }, timeUntilStart);
-        return () => clearTimeout(timer);
-      } else {
-        setStatus('active');
-        // Actualizar en localStorage con el nuevo estado
-        const updatedReservation = { ...reservation, status: 'active' };
+      setStatus(newStatus);
+      if (newStatus) {
+        const updatedReservation = { ...reservation, status: newStatus };
         localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
       }
+    };
+
+    const now = new Date().getTime();
+    const startTime = new Date(reservation.startTime).getTime();
+    const endTime = new Date(reservation.endTime).getTime();
+
+    // Limpiar timers existentes
+    timers.forEach(timer => clearTimeout(timer));
+    const newTimers: NodeJS.Timeout[] = [];
+
+    if (now < startTime) {
+      // La reserva aún no comienza
+      updateReservationStatus('pending');
+      const timer = setTimeout(() => {
+        updateReservationStatus('active');
+      }, startTime - now);
+      newTimers.push(timer);
+    } else if (now >= startTime && now < endTime) {
+      // La reserva está activa
+      updateReservationStatus('active');
+      const timer = setTimeout(() => {
+        updateReservationStatus('completed');
+      }, endTime - now);
+      newTimers.push(timer);
+    } else {
+      // La reserva ya terminó
+      updateReservationStatus('completed');
     }
-    
-    // Configurar el temporizador para cambiar automáticamente de activo a completado
-    if (reservation.status === 'active' || status === 'active') {
-      const endTime = new Date(reservation.endTime);
-      const now = new Date();
-      const timeUntilEnd = endTime.getTime() - now.getTime();
-      
-      if (timeUntilEnd > 0) {
-        const timer = setTimeout(() => {
-          setStatus('completed');
-          // Actualizar en localStorage con el nuevo estado
-          const updatedReservation = { ...reservation, status: 'completed' };
-          localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
-        }, timeUntilEnd);
-        return () => clearTimeout(timer);
-      } else {
-        setStatus('completed');
-        // Actualizar en localStorage con el nuevo estado
-        const updatedReservation = { ...reservation, status: 'completed' };
-        localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
-      }
-    }
-  }, [reservation, status]);
+
+    setTimers(newTimers);
+  }, [reservation?.id]); // Solo depende del ID de la reserva
 
   if (!reservation || status === 'cancelled') {
     return (

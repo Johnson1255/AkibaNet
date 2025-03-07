@@ -49,7 +49,15 @@ export default function RoomSelection() {
     const minutes = date.getMinutes();
     const nextQuarter = Math.ceil((minutes + 1) / 15) * 15;
     date.setMinutes(nextQuarter);
-    return date;
+    
+    // Formatear la hora en el formato "hh:mm am/pm"
+    let hours = date.getHours();
+    const minutes24 = date.getMinutes();
+    const ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // las 0 horas deben ser 12 en formato 12h
+    
+    return `${hours.toString().padStart(2, '0')}:${minutes24.toString().padStart(2, '0')} ${ampm}`;
   };
   
   const [rooms, setRooms] = useState<Room[]>([]);
@@ -57,7 +65,7 @@ export default function RoomSelection() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
 
   const [selectedTime, setSelectedTime] = useState<string>(
-    getNextQuarterHour(new Date()).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hour12: true })
+    getNextQuarterHour(new Date())
   );
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState(true);
@@ -66,7 +74,7 @@ export default function RoomSelection() {
   // Verificar si hay una reserva activa
   useEffect(() => {
     const checkActiveReservation = () => {
-      const savedReservation = localStorage.getItem('activeReservation');
+      const savedReservation = localStorage.getItem('lastReservation');
       
       if (savedReservation) {
         const reservation = JSON.parse(savedReservation);
@@ -192,11 +200,13 @@ export default function RoomSelection() {
           <TimePicker
             date={selectedDate}
             setDate={(date: Date) => {
-              const timeString = date.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: true,
-              });
+              let hours = date.getHours();
+              const minutes = date.getMinutes();
+              const ampm = hours >= 12 ? 'pm' : 'am';
+              hours = hours % 12;
+              hours = hours ? hours : 12;
+              
+              const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
               handleTimeChange(timeString);
             }}
           />

@@ -137,8 +137,14 @@ export default function RoomDetails() {
       throw new Error('Fecha inválida: día o mes fuera de rango');
     }
 
-    // ...resto del código de parseDateTime sin cambios...
-    const timeMatch = timeStr.match(/(\d+):(\d+)\s*(am|pm)/i);
+    // Limpiamos el formato de hora para manejar "p. m." y "a. m."
+    const cleanedTimeStr = timeStr
+      .replace("p. m.", "pm")
+      .replace("a. m.", "am")
+      .replace(/\s+/g, "");
+
+    // Ahora buscamos el formato limpio hh:mmam/pm
+    const timeMatch = cleanedTimeStr.match(/(\d+):(\d+)(am|pm)/i);
     if (!timeMatch) {
       throw new Error(`Formato de hora inválido: ${timeStr}. Se esperaba hh:mm am/pm`);
     }

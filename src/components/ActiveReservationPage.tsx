@@ -36,8 +36,9 @@ const ActiveReservationPage: React.FC = () => {
         status: 'cancelled'
       };
       
-      // Guardar la reserva actualizada
-      localStorage.setItem('activeReservation', JSON.stringify(updatedReservation));
+      // Guardar la reserva actualizada en lastReservation
+      localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
+      localStorage.removeItem('lastReservation');
       
       // Redirigir al usuario a la página de selección de habitación
       navigate('/reserve');
