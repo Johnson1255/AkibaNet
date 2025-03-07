@@ -18,6 +18,12 @@ export default function FoodPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
 
+  const lastReservation = localStorage.getItem("lastReservation");
+  let showButton= true;
+  if(lastReservation!=null){
+    showButton=false;
+  }
+
   return (
     <div className="min-h-screen bg-white pb-16">
       {/* Header */}
@@ -43,7 +49,7 @@ export default function FoodPage() {
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">{t("food.food.plates.1.name")}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 w-64">
                 {t("food.food.plates.1.description")}
               </p>
             </div>
@@ -52,7 +58,7 @@ export default function FoodPage() {
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">{t("food.food.plates.2.name")}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 w-64">
                 {t("food.food.plates.2.description")}
               </p>
             </div>
@@ -61,7 +67,7 @@ export default function FoodPage() {
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">{t("food.food.plates.3.name")}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 w-64">
                 {t("food.food.plates.3.description")}
               </p>
             </div>
@@ -73,7 +79,7 @@ export default function FoodPage() {
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">{t("food.food.snacks.1.name")}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 w-64">
                 {t("food.food.snacks.1.description")}
               </p>
             </div>
@@ -82,7 +88,7 @@ export default function FoodPage() {
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">{t("food.food.snacks.2.name")}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 w-64">
                 {t("food.food.snacks.2.description")}
               </p>
             </div>
@@ -94,7 +100,7 @@ export default function FoodPage() {
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">{t("food.food.drinks.1.name")}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 w-64">
                 {t("food.food.drinks.1.description")}
               </p>
             </div>
@@ -103,7 +109,7 @@ export default function FoodPage() {
           <div className="border rounded-xl p-4 flex justify-between items-center">
             <div>
               <h3 className="text-lg font-normal">{t("food.food.drinks.2.name")}</h3>
-              <p className="text-gray-500">
+              <p className="text-gray-500 w-64">
                 {t("food.food.drinks.2.description")}
               </p>
             </div>
@@ -113,6 +119,7 @@ export default function FoodPage() {
       </div>
 
       {/*Go to reserve Button */}
+      { showButton &&
       <div className="px-6 py-4 flex-column items-center text-center">
         <h3 className="text-sm mb-2">{t("food.gotReservation")}</h3>
         <Button
@@ -122,7 +129,7 @@ export default function FoodPage() {
         >
           {t("food.button")} <LogOut className="ml-2 h-4 w-4" />
         </Button>
-      </div>
+      </div>}
       <BottomNavBar />
     </div>
   );

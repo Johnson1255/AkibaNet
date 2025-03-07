@@ -45,7 +45,7 @@ export default function HelpServicesPage() {
       id: "food",
       title: t("help.food"),
       icon: (
-        <div className="flex gap-1">
+        <div className="flex gap-1 " onClick={() => navigate("/food")}>
           <div className="w-6 h-6 relative">
             <div className="absolute inset-0 flex items-end">
               <div className="w-4 h-5 bg-current rounded-sm" />
@@ -118,7 +118,7 @@ export default function HelpServicesPage() {
         <div className="grid grid-cols-2 gap-4">
           {services.map((service) => (
             <Card
-              key={service.id}
+              key={service.id} 
               className={`p-6 bg-gray-100 border-0 flex flex-col items-center justify-center space-y-2
                 ${service.fullWidth ? "col-span-2" : ""}`}
             >
