@@ -147,5 +147,29 @@
   "room":{
     "name": "Select a room",
     "fetchError": "Error fetching room data"
+  },
+  "services": {
+    "headset": {
+      "name": "Premium gaming headsets"
+    },
+    "streaming": {
+      "name": "Streaming Setup",
+      "description": "webcam and microphone for streamers."
+    },
+    "refrigerator": {
+      "name": "Small refrigerator",
+      "description": "For cold drinks and snacks"
+    },
+    "chair": {
+      "name": "Ergonomic gaming chair",
+      "description": "Adjustable and comfortable for long sessions."
+    },
+    "consoleRental": "Console rental",
+    "consoleNote": "* Each console has its own library of games available"
+  },
+  "consoles": {
+    "ps5": "Playstation 5",
+    "dreamcast": "Sega Dreamcast",
+    "n64": "Nintengod 64"
   }
 }
