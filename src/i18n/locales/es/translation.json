@@ -32,7 +32,7 @@
     "backToRooms": "Volver a la selección de habitaciones",
     "roomTypes": {
       "gaming": "Juegos",
-      "thinking": "Lectura",
+      "thinking": "Creatividad",
       "working": "Trabajo"
     },
     "errors": {
@@ -43,7 +43,25 @@
       "confirmError": "Error al confirmar reserva:"
     }
   },
-  
+  "confirmation": {
+    "title": "Confirmación de Reserva",
+    "details": "Detalles de la Reserva",
+    "room": "Sala",
+    "date": "Fecha",
+    "time": "Hora",
+    "duration": "Duración",
+    "hours": "horas",
+    "bookingId": "ID de Reserva",
+    "services": "Servicios",
+    "service": "Servicio",
+    "total": "Total a Pagar",
+    "backToHome": "Volver al Inicio",
+    "viewReservations": "Ver Mis Reservas",
+    "success": "¡Reserva Exitosa!",
+    "successMessage": "Tu reserva ha sido confirmada. Puedes verla en tu cuenta.",
+    "notFound": "No se encontró información de reserva",
+    "newReservation": "Nueva Reserva"
+  },
   "settings": {
     "title": "Configuración",
     "language": "Idioma",
@@ -165,11 +183,20 @@
       "description": "Ajustable y cómoda para sesiones largas."
     },
     "consoleRental": "Alquiler de consolas",
-    "consoleNote": "* Cada consola tiene su propia biblioteca de juegos disponible"
+    "consoleNote": "* Cada consola tiene su propia biblioteca de juegos disponible",
+    "categories": {
+      "gaming": "Servicios de Gaming",
+      "thinking": "Servicios de Creatividad",
+      "working": "Servicios de Trabajo"
+    }
   },
   "consoles": {
     "ps5": "Playstation 5",
     "dreamcast": "Sega Dreamcast",
     "n64": "Nintengod 64"
+  },
+  "common": {
+    "retry": "Reintentar",
+    "total": "TOTAL"
   }
 }

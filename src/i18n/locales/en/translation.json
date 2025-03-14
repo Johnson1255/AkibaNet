@@ -165,11 +165,39 @@
       "description": "Adjustable and comfortable for long sessions."
     },
     "consoleRental": "Console rental",
-    "consoleNote": "* Each console has its own library of games available"
+    "consoleNote": "* Each console has its own library of games available",
+    "categories": {
+      "gaming": "Gaming Services",
+      "thinking": "Reading Services",
+      "working": "Working Services"
+    }
   },
   "consoles": {
     "ps5": "Playstation 5",
     "dreamcast": "Sega Dreamcast",
     "n64": "Nintengod 64"
+  },
+  "common": {
+    "retry": "Retry",
+    "total": "TOTAL"
+  },
+  "confirmation": {
+    "title": "Reservation Confirmation",
+    "details": "Reservation Details",
+    "room": "Room",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration",
+    "hours": "hours",
+    "bookingId": "Booking ID",
+    "services": "Services",
+    "service": "Service",
+    "total": "Total Payment",
+    "backToHome": "Back to Home",
+    "viewReservations": "View My Reservations",
+    "success": "Reservation Successful!",
+    "successMessage": "Your reservation has been confirmed. You can view it in your account.",
+    "notFound": "No reservation information found",
+    "newReservation": "New Reservation"
   }
 }
