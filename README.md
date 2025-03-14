@@ -13,24 +13,24 @@ Esta es una aplicación web para la gestión de reservas de salas. Permite a los
 ## 🏗 Instalación y Configuración
 
 ### 1️⃣ Clonar el repositorio
-\`\`\`sh
+```sh
 git clone https://github.com/tu-usuario/tu-repositorio.git
 cd tu-repositorio
-\`\`\`
+```
 
 ### 2️⃣ Instalar dependencias
-\`\`\`sh
+```sh
 npm install
-\`\`\`
+```
 
 ### 3️⃣ Iniciar el servidor JSON
 Después de clonar el otro repositorio en ese
-\`\`\`sh
+```sh
 npm run dev
-\`\`\`
+```
 > Asegúrate de que \`db.json\` contiene los datos necesarios.
 
 ### 4️⃣ Iniciar el servidor de desarrollo
-\`\`\`sh
+```sh
 npm run dev
-\`\`\`
+```
