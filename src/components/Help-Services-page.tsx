@@ -89,7 +89,7 @@ export default function HelpServicesPage() {
 
       if (!response.ok) throw new Error(t("help.failedRequest"));
 
-      alert(t("help.successfullRequest"));
+      alert(t("help.susccessfullRequest"));
       setComments(""); // Limpia el textarea después de enviar
     } catch (error) {
       if (error instanceof Error) {
