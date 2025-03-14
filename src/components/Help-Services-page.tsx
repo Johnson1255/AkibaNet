@@ -51,12 +51,6 @@ export default function HelpServicesPage() {
       title: t("help.food"),
       icon: (
         <div className="flex gap-1 " onClick={() => navigate("/food")}>
-          <div className="w-6 h-6 relative">
-            <div className="absolute inset-0 flex items-end">
-              <div className="w-4 h-5 bg-current rounded-sm" />
-              <div className="w-2 h-3 bg-current" />
-            </div>
-          </div>
           <UtensilsCrossed className="w-6 h-6" />
         </div>
       ),
