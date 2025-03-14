@@ -96,7 +96,7 @@
     "requestPlaceholder": "¿Alguna solicitud o comentario específico?",
     "sendRequest": "Enviar Solicitud",
     "noRequest": "Por favor, ingresa una solicitud antes de enviarla.",
-    "susccesfullRequest": "¡Solicitud enviada con éxito!",
+    "susccessfullRequest": "¡Solicitud enviada con éxito!",
     "failedRequest": "Error al enviar la solicitud.",
     "error": "Ha ocurrido un error desconocido"
   },

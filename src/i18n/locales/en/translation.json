@@ -96,7 +96,7 @@
     "requestPlaceholder": "Any specific requests or comments?",
     "sendRequest": "Send Request",
     "noRequest": "Please enter a request before sending.",
-    "susccesfullRequest": "Request sent successfully!",
+    "susccessfullRequest": "Request sent successfully!",
     "failedRequest": "Failed to send request.",
     "error": "an unknown error has ocurred"
   },
