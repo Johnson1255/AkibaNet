@@ -208,7 +208,7 @@ export default function RoomDetails() {
         duration: hours,
         basePrice,
         status: 'pending',
-        services: Array.from(reservation.selectedServices || []),
+        services: Array.from(reservation.selectedServices || []).filter(s => s !== "refrigerator"),
         products: []
       };
   
@@ -232,7 +232,9 @@ export default function RoomDetails() {
         ...responseData,
         startTime: startDateTime.toISOString(),
         endTime: endDateTime.toISOString(),
-        status: 'pending'
+        status: 'pending',
+        hours, // Añadir horas
+        basePrice // Añadir precio base
       }));
       
       navigate("/confirmation");

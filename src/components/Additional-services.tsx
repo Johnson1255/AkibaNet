@@ -83,27 +83,12 @@ export default function AdditionalServices() {
     const fetchServices = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch('http://localhost:3000/api/services');
-        
+        const fetchUrl = 'http://localhost:3000/api/services/categories';
+        const response = await fetch(fetchUrl);
         if (!response.ok) {
           throw new Error('Error al obtener los servicios');
         }
-        
-        const services: ApiService[] = await response.json();
-        
-        // Organizar los servicios por categoría
-        const categorized: ServicesByCategory = {
-          gaming: [],
-          working: [],
-          thinking: []
-        };
-        
-        services.forEach(service => {
-          if (categorized[service.category as keyof ServicesByCategory]) {
-            categorized[service.category as keyof ServicesByCategory].push(service);
-          }
-        });
-        
+        const categorized: ServicesByCategory = await response.json();
         setServicesByCategory(categorized);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Error desconocido');
@@ -112,7 +97,7 @@ export default function AdditionalServices() {
         setIsLoading(false);
       }
     };
-    
+
     fetchServices();
   }, []);
 
@@ -244,6 +229,13 @@ export default function AdditionalServices() {
         totalPrice: totalPrice
       });
 
+      // Construir arreglo con formateo (serviceId, quantity, price)
+      const selectedServicesArray = getSelectedServices().map(service => ({
+        serviceId: service.id,
+        quantity: 1,
+        price: service.price
+      }));
+
       // Creación del payload para la API
       const reservationPayload = {
         userId,
@@ -254,7 +246,7 @@ export default function AdditionalServices() {
         basePrice: baseRoomPrice,
         totalPrice: totalPrice,
         status: 'pending',
-        services: selectedServicesList,
+        services: selectedServicesArray,
         products: []
       };
 
@@ -282,7 +274,9 @@ export default function AdditionalServices() {
         startTime: startDateTime.toISOString(),
         endTime: endDateTime.toISOString(),
         status: 'pending',
-        services: selectedServicesList
+        services: selectedServicesArray,
+        hours: baseHours,
+        basePrice: baseRoomPrice
       }));
       
       navigate("/confirmation");
@@ -351,7 +345,7 @@ export default function AdditionalServices() {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
-        <p className="text-xl">Cargando servicios...</p>
+        <p className="text-xl">{t('reservation.loading')}</p>
       </div>
     );
   }
@@ -359,9 +353,9 @@ export default function AdditionalServices() {
   if (error) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-background">
-        <p className="text-xl text-red-500">Error: {error}</p>
+        <p className="text-xl text-red-500">{t('reservation.errors.error')} {error}</p>
         <Button className="mt-4" onClick={() => window.location.reload()}>
-          Reintentar
+          {t('common.retry')}
         </Button>
       </div>
     );
@@ -380,16 +374,16 @@ export default function AdditionalServices() {
           >
             <ArrowLeft className="h-6 w-6" />
           </Button>
-          <h1 className="text-2xl font-normal">{t("reservation.addServices", "Additional Services")}</h1>
+          <h1 className="text-2xl font-normal">{t('reservation.addServices')}</h1>
           <div className="w-10" /> {/* Spacer for alignment */}
         </header>
 
         {/* Room information summary */}
         <div className="p-4 bg-muted/30">
-          <h2 className="text-lg font-medium">Room #{roomId}</h2>
+          <h2 className="text-lg font-medium">{t('reservation.room')} #{roomId}</h2>
           <div className="text-sm text-muted-foreground">
             <p>{reservation.selectedDate} - {reservation.selectedTime}</p>
-            <p>{baseHours} hours - ¥{baseRoomPrice}</p>
+            <p>{baseHours} {baseHours === 1 ? t('reservation.hour') : t('reservation.hours')} - ¥{baseRoomPrice}</p>
           </div>
         </div>
 
@@ -397,7 +391,7 @@ export default function AdditionalServices() {
         <div className="p-4 space-y-8">
           {/* Gaming Services */}
           <div>
-            <h2 className="text-2xl mb-4">Gaming Services</h2>
+            <h2 className="text-2xl mb-4">{t('services.categories.gaming')}</h2>
             <div className="space-y-4">
               {servicesByCategory.gaming.map(renderServiceCard)}
             </div>
@@ -405,7 +399,7 @@ export default function AdditionalServices() {
 
           {/* Thinking Services */}
           <div>
-            <h2 className="text-2xl mb-4">Thinking Services</h2>
+            <h2 className="text-2xl mb-4">{t('services.categories.thinking')}</h2>
             <div className="space-y-4">
               {servicesByCategory.thinking.map(renderServiceCard)}
             </div>
@@ -413,7 +407,7 @@ export default function AdditionalServices() {
 
           {/* Working Services */}
           <div>
-            <h2 className="text-2xl mb-4">Working Services</h2>
+            <h2 className="text-2xl mb-4">{t('services.categories.working')}</h2>
             <div className="space-y-4">
               {servicesByCategory.working.map(renderServiceCard)}
             </div>
@@ -424,7 +418,7 @@ export default function AdditionalServices() {
         <div className="bottom-0 left-0 right-0">
           <div className="bg-secondary p-4 space-y-2">
             <div className="flex justify-between">
-              <span>Room #{roomId}</span>
+              <span>{t('reservation.room')} #{roomId}</span>
               <span className="whitespace-nowrap">¥ {baseRoomPrice}</span>
 
             </div>
@@ -436,7 +430,7 @@ export default function AdditionalServices() {
             ))}
             <Separator />
             <div className="flex justify-between font-bold">
-              <span>TOTAL</span>
+              <span>{t('common.total')}</span>
               <span className="whitespace-nowrap">¥ {calculateTotal()}</span>
             </div>
           </div>
@@ -444,7 +438,7 @@ export default function AdditionalServices() {
             className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
             onClick={handleConfirmAndPay}
           >
-            {t("reservation.confirmAndPay", "Confirm and Pay")}
+            {t('reservation.confirmAndPay')}
           </Button>
         </div>
       </div>
