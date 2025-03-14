@@ -14,8 +14,8 @@ Esta es una aplicación web para la gestión de reservas de salas. Permite a los
 
 ### 1️⃣ Clonar el repositorio
 ```sh
-git clone https://github.com/tu-usuario/tu-repositorio.git
-cd tu-repositorio
+git clone https://github.com/Johnson1255/AkibaNet.git
+cd AkibaNet
 ```
 
 ### 2️⃣ Instalar dependencias
