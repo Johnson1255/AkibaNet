@@ -77,7 +77,7 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
     }
 
     setTimers(newTimers);
-  }, [reservation?.id]); // Solo depende del ID de la reserva
+  }, [reservation, status, timers]); // Agregar dependencias faltantes
 
   if (!reservation || status === 'cancelled') {
     return (

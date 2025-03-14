@@ -4,13 +4,11 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { register, login as loginService } from "@/services/authService";
-import { useAuth } from "@/context/AuthContext";
+import { register } from "@/services/authService";
 import { useTheme } from "@/context/ThemeContext"; // Importar useTheme
 
 export default function SignUpPage() {
   const navigate = useNavigate();
-  const { login } = useAuth();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -68,26 +66,13 @@ export default function SignUpPage() {
     }
 
     try {
-      // Registrar al usuario
-      const userData = await register({ name, email, password, phone });
+      await register({ name, email, password, phone });
+      setError("Registration successful. Please log in manually.");
       
-      try {
-        // Intentar iniciar sesión automáticamente
-        const loginResponse = await loginService({ email, password });
-        
-        // Si el login es exitoso, guardar datos de sesión
-        login(loginResponse.token, loginResponse.user);
-        navigate("/home");
-      } catch (loginError) {
-        // Si falla el login automático, redirigir al login manual
-        console.error("Error en login automático:", loginError);
-        setError("Registration successful. Please log in manually.");
-        
-        // Esperar 2 segundos y redirigir a la página de login
-        setTimeout(() => {
-          navigate("/login", { state: { email } }); // Pasamos el email para prellenarlo en el form
-        }, 2000);
-      }
+      // Esperar 3 segundos y redirigir a la página de login
+      setTimeout(() => {
+        navigate("/login", { state: { email } }); // Pasamos el email para prellenarlo en el form
+      }, 3000);
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

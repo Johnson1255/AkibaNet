@@ -1,11 +1,11 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { User, validateToken, checkServerStatus } from '../services/authService';
+import { User } from '../services/authService';
+import { validateToken, checkServerStatus } from './shared';
 
 interface AuthContextType {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-  isLoading: boolean;
   serverAvailable: boolean;
   login: (token: string, userData: User) => void;
   logout: () => void;
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               try {
                 setUser(JSON.parse(storedUser));
                 setToken(storedToken);
-              } catch (e) {
+              } catch {
                 localStorage.removeItem('user');
                 localStorage.removeItem('token');
               }
@@ -100,7 +100,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     };
     
     checkAuth();
-  }, []);
+  }, [serverAvailable]);
 
   const login = (newToken: string, userData: User) => {
     localStorage.setItem('token', newToken);

@@ -72,7 +72,7 @@ export default function LoginForm() {
         return false;
       }
       return true;
-    } catch (error) {
+    } catch {
       setError('No se pudo conectar al servidor. Verifica tu conexión a internet.');
       return false;
     }

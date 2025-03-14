@@ -6,7 +6,6 @@ import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
 import { useTranslation } from "react-i18next";
 import { useReservation } from "../context/ReservationContext";
-import { useTheme } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 // Interfaces para los datos

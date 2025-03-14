@@ -22,7 +22,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import BottomNavBar from "./Bottom-navbar";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "../context/ThemeContext";
 
 /**
  * Componente que renderiza la página de servicios de ayuda.
@@ -40,9 +39,6 @@ export default function HelpServicesPage() {
 
   /** Hook para manejar traducciones */
   const { t } = useTranslation();
-
-  /** Hook para manejar el tema */
-  const { theme } = useTheme();
 
   /** Lista de servicios disponibles */
   const services = [

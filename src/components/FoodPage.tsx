@@ -1,4 +1,4 @@
-import { ArrowLeft, LogOut, Plus, Minus } from "lucide-react";
+import { ArrowLeft, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -19,13 +19,11 @@ interface FoodData {
   [key: string]: Product[];
 }
 
-interface SelectedProductsMap extends Map<number, number> {}
-
 export default function FoodPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [foodData, setFoodData] = useState<FoodData>({});
-  const [selectedProducts, setSelectedProducts] = useState<SelectedProductsMap>(
+  const [selectedProducts, setSelectedProducts] = useState<Map<number, number>>(
     new Map()
   );
   const { theme } = useTheme();
@@ -45,7 +43,7 @@ export default function FoodPage() {
 
   const toggleProduct = (productId: number): void => {
     setSelectedProducts(
-      (prevSelected: SelectedProductsMap): SelectedProductsMap => {
+      (prevSelected: Map<number, number>): Map<number, number> => {
         const newSelected = new Map(prevSelected);
         const currentCount: number = newSelected.get(productId) || 0;
         if (currentCount < 5) {
