@@ -33,6 +33,7 @@ import { useTheme } from "../context/ThemeContext";
 export default function HelpServicesPage() {
   /** Estado para almacenar los comentarios ingresados por el usuario */
   const [comments, setComments] = useState("");
+  const [successMessage, setSuccessMessage] = useState(""); // Nuevo estado para el mensaje de éxito
 
   /** Hook de navegación de React Router */
   const navigate = useNavigate();
@@ -75,28 +76,36 @@ export default function HelpServicesPage() {
    * @function handleSendRequest
    */
   const handleSendRequest = async () => {
-    if (!comments.trim()) {
-      alert(t("help.noRequest"));
-      return;
-    }
-
     try {
+      const user = JSON.parse(localStorage.getItem("user") || "{}"); // Obtener el objeto user del localStorage
+      const userId = user.id; // Obtener el id del objeto user
+      if (!userId) throw new Error(t("help.noUserId")); // Manejar el caso en que no haya user_id
+
       const requestBody = {
-        user_id: "a5d90c68-e574-4d7d-90a4-4da6fe0fa1f5", // Cambia esto según el usuario
+        user_id: userId,
         date: new Date().toISOString(),
-        description: comments, // Se corrigió el nombre de la clave
+        description: comments,
       };
+
+      const token = localStorage.getItem("token");
 
       const response = await fetch("http://localhost:3000/api/requests", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
         body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) throw new Error(t("help.failedRequest"));
 
-      alert(t("help.successfullRequest"));
-      setComments(""); // Limpia el textarea después de enviar
+      setSuccessMessage(t("help.successfullRequest")); // Mostrar mensaje de éxito
+      setComments(""); // Limpiar el textarea después de enviar
+
+      setTimeout(() => {
+        setSuccessMessage(""); // Limpiar el mensaje de éxito después de 5 segundos
+      }, 5000);
     } catch (error) {
       if (error instanceof Error) {
         alert(t(error.message));
@@ -147,8 +156,12 @@ export default function HelpServicesPage() {
 
       {/* Botón de Enviar */}
       <div className="p-4 flex justify-center">
-        <Button onClick={handleSendRequest} className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-12 px-8">
-          <Send className="mr-2 h-4 w-4" /> {t("help.sendRequest")}
+        <Button 
+          onClick={handleSendRequest} 
+          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-xl h-12 px-8"
+          disabled={comments.trim().length < 4} // Deshabilitar el botón si el comentario tiene menos de 4 caracteres
+        >
+          {successMessage ? successMessage : <><Send className="mr-2 h-4 w-4" /> {t("help.sendRequest")}</>}
         </Button>
       </div>
       

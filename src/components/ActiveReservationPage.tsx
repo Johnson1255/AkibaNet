@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import ReservationCountdown from './ReservationCountdown';
 import BottomNavBar from './Bottom-navbar';
 import { Clock, Info } from 'lucide-react';
@@ -13,6 +14,8 @@ interface Reservation {
   roomId: string;
   userId: string;
   status: 'pending' | 'active' | 'completed' | 'cancelled';
+  services: string[];
+  products: { productId: string; name: string; price: number; quantity: number }[];
 }
 
 const ActiveReservationPage: React.FC = () => {
@@ -28,13 +31,28 @@ const ActiveReservationPage: React.FC = () => {
     }
   }, [navigate]);
 
-  const cancelReservation = () => {
+  const handleReservationAction = () => {
     if (activeReservation) {
-      const updatedReservation = { ...activeReservation, status: 'cancelled' };
+      const now = new Date();
+      const startTime = new Date(activeReservation.startTime);
+      let updatedReservation;
+
+      if (now < startTime) {
+        updatedReservation = { ...activeReservation, status: 'cancelled' };
+      } else {
+        updatedReservation = { ...activeReservation, status: 'completed' };
+      }
+
       localStorage.setItem('lastReservation', JSON.stringify(updatedReservation));
       localStorage.removeItem('lastReservation');
       navigate('/reserve');
     }
+  };
+
+  const getActionButtonText = () => {
+    const now = new Date();
+    const startTime = new Date(activeReservation!.startTime);
+    return now < startTime ? 'Cancelar Reserva' : 'Terminar Reserva';
   };
 
   if (!activeReservation) {
@@ -56,9 +74,9 @@ const ActiveReservationPage: React.FC = () => {
               You already have an active reservation. You cannot make a new reservation until the current one ends.
             </p>
           </div>
-          
+
           <h2 className="text-xl font-semibold mb-3">Room #{activeReservation.roomId}</h2>
-          
+
           <div className="flex items-center mb-4">
             <Clock className="h-5 w-5 text-muted-foreground mr-2" />
             <div>
@@ -70,18 +88,57 @@ const ActiveReservationPage: React.FC = () => {
               </div>
             </div>
           </div>
-          
+
           <ReservationCountdown reservation={activeReservation} />
-          
+
           <Button
             variant="outline"
             className="w-full mt-4 border border-border"
-            onClick={cancelReservation}
+            onClick={handleReservationAction}
           >
-            Cancel Reservation
+            {getActionButtonText()}
           </Button>
         </Card>
-        
+
+        {/* Servicios */}
+        {activeReservation.services.length > 0 && (
+          <Card className="p-4 mb-4 bg-card text-card-foreground">
+            <CardHeader>
+              <CardTitle className="text-lg font-semibold mb-2">Servicios</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-wrap gap-2">
+              {activeReservation.services.map((service, index) => (
+                <Badge key={index} variant="outline" className="px-3 py-1">
+                  {service}
+                </Badge>
+              ))}
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Productos */}
+        <Card className="p-4 mb-4 bg-card text-card-foreground">
+          <CardHeader>
+            <CardTitle className="text-lg font-semibold mb-2">Productos</CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-wrap gap-2">
+            {activeReservation.products.length > 0 ? (
+              activeReservation.products.map((product, index) => (
+                <Badge key={index} variant="secondary" className="px-3 py-1">
+                  {product.name} - ${product.price} x {product.quantity}
+                </Badge>
+              ))
+            ) : (
+              <Button 
+                className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={() => navigate('/food')}
+              >
+                Agregar Productos
+              </Button>
+            )}
+          </CardContent>
+        </Card>
+
         <Button 
           className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
           onClick={() => navigate('/home')}
@@ -89,7 +146,7 @@ const ActiveReservationPage: React.FC = () => {
           Back to Home
         </Button>
       </div>
-      
+
       <BottomNavBar />
     </div>
   );

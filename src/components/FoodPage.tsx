@@ -1,18 +1,32 @@
-/**
- * @component FoodPage
- * @description Página que muestra los platos, snacks y bebidas disponibles en el menú.
- * Permite la navegación y muestra un botón de cierre de sesión.
- */
-import { ArrowLeft, LogOut } from "lucide-react";
+import { ArrowLeft, LogOut, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import BottomNavBar from "./Bottom-navbar";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useEffect, useState } from "react";
+import { useTheme } from "@/context/ThemeContext";
+
+interface Product {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+}
+
+interface FoodData {
+  [key: string]: Product[];
+}
+
+interface SelectedProductsMap extends Map<number, number> {}
 
 export default function FoodPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [foodData, setFoodData] = useState<FoodData>({});
+  const [selectedProducts, setSelectedProducts] = useState<SelectedProductsMap>(new Map());
+  const { theme } = useTheme();
 
   const lastReservation = localStorage.getItem("lastReservation");
   let showButton = true;
@@ -20,8 +34,85 @@ export default function FoodPage() {
     showButton = false;
   }
 
+  useEffect(() => {
+    fetch("http://localhost:3000/api/food")
+      .then((res) => res.json())
+      .then((data) => setFoodData(data))
+      .catch((err) => console.error(err));
+  }, []);
+
+  const toggleProduct = (productId: number): void => {
+    setSelectedProducts((prevSelected: SelectedProductsMap): SelectedProductsMap => {
+      const newSelected = new Map(prevSelected);
+      const currentCount: number = newSelected.get(productId) || 0;
+      if (currentCount < 5) {
+        newSelected.set(productId, currentCount + 1);
+      } else {
+        newSelected.delete(productId);
+      }
+      return newSelected;
+    });
+  };
+
+  const confirmProducts = () => {
+    const lastReservation = localStorage.getItem("lastReservation");
+    if (lastReservation) {
+      const reservation = JSON.parse(lastReservation);
+      const productsArray = Array.from(selectedProducts.entries()).map(([productId, quantity]) => {
+        const product = Object.values(foodData).flat().find(p => p.id === productId);
+        return {
+          productId,
+          name: product?.name,
+          price: product?.price,
+          quantity
+        };
+      });
+      reservation.products = productsArray;
+      localStorage.setItem("lastReservation", JSON.stringify(reservation));
+      navigate("/active-reservation");
+    }
+  };
+
+  const renderProductCard = (product: Product) => (
+    <Card
+      key={product.id}
+      className={`p-4 flex items-center justify-between ${
+        selectedProducts.has(product.id)
+          ? "bg-primary text-primary-foreground"
+          : "bg-card text-card-foreground"
+      }`}
+    >
+      <div>
+        <h3 className="text-lg font-normal">{product.name}</h3>
+        <p className={`text-sm ${selectedProducts.has(product.id) ? "text-primary-foreground" : "text-card-foreground"}`}>
+          {product.description}
+        </p>
+      </div>
+      <div className="flex items-center gap-4">
+        <span className="text-lg whitespace-nowrap">¥ {product.price}</span>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="rounded-full"
+          onClick={() => toggleProduct(product.id)}
+        >
+          {selectedProducts.has(product.id) ? (
+            <Minus className="h-6 w-6" />
+          ) : (
+            <Plus className="h-6 w-6" />
+          )}
+        </Button>
+      </div>
+    </Card>
+  );
+
   return (
-    <div className="min-h-screen bg-background text-foreground pb-16">
+    <div className={`min-h-screen bg-background text-foreground pb-16 ${theme}`}>
+      {/* Aviso de Política */}
+      <div className="p-4 bg-yellow-200 text-yellow-800 text-center">
+        {t("food.policyNotice")}
+      </div>
+
       {/* Header */}
       <header className="p-4 flex items-center justify-between bg-background border-b border-border">
         <Button
@@ -38,95 +129,28 @@ export default function FoodPage() {
 
       <Separator className="my-4" />
 
-      {/* Plates */}
       <div className="px-6">
-        <h2 className="text-2xl font-bold mt-4 mb-4">{t("food.plates")}</h2>
-        <div className="space-y-3">
-          <div className="border rounded-xl p-4 flex justify-between items-center bg-card text-card-foreground">
-            <div>
-              <h3 className="text-lg font-normal">{t("food.food.plates.1.name")}</h3>
-              <p className="text-muted-foreground w-64">
-                {t("food.food.plates.1.description")}
-              </p>
+        {Object.keys(foodData).map((category) => (
+          <div key={category}>
+            <h2 className="text-2xl font-bold mt-4 mb-4">{t(`food.${category}`)}</h2>
+            <div className="space-y-3">
+              {foodData[category].map((product) => renderProductCard(product))}
             </div>
-            <span className="text-lg">¥ 1700</span>
           </div>
-          <div className="border rounded-xl p-4 flex justify-between items-center bg-card text-card-foreground">
-            <div>
-              <h3 className="text-lg font-normal">{t("food.food.plates.2.name")}</h3>
-              <p className="text-muted-foreground w-64">
-                {t("food.food.plates.2.description")}
-              </p>
-            </div>
-            <span className="text-lg">¥ 1850</span>
-          </div>
-          <div className="border rounded-xl p-4 flex justify-between items-center bg-card text-card-foreground">
-            <div>
-              <h3 className="text-lg font-normal">{t("food.food.plates.3.name")}</h3>
-              <p className="text-muted-foreground w-64">
-                {t("food.food.plates.3.description")}
-              </p>
-            </div>
-            <span className="text-lg">¥ 1850</span>
-          </div>
-        </div>
-        <h2 className="text-2xl font-bold mt-4 mb-4">{t("food.snacks")}</h2>
-        <div className="space-y-3">
-          <div className="border rounded-xl p-4 flex justify-between items-center bg-card text-card-foreground">
-            <div>
-              <h3 className="text-lg font-normal">{t("food.food.snacks.1.name")}</h3>
-              <p className="text-muted-foreground w-64">
-                {t("food.food.snacks.1.description")}
-              </p>
-            </div>
-            <span className="text-lg">¥ 1700</span>
-          </div>
-          <div className="border rounded-xl p-4 flex justify-between items-center bg-card text-card-foreground">
-            <div>
-              <h3 className="text-lg font-normal">{t("food.food.snacks.2.name")}</h3>
-              <p className="text-muted-foreground w-64">
-                {t("food.food.snacks.2.description")}
-              </p>
-            </div>
-            <span className="text-lg">¥ 1700</span>
-          </div>
-        </div>
-        <h2 className="text-2xl font-bold mt-4 mb-4">{t("food.drinks")}</h2>
-        <div className="space-y-3">
-          <div className="border rounded-xl p-4 flex justify-between items-center bg-card text-card-foreground">
-            <div>
-              <h3 className="text-lg font-normal">{t("food.food.drinks.1.name")}</h3>
-              <p className="text-muted-foreground w-64">
-                {t("food.food.drinks.1.description")}
-              </p>
-            </div>
-            <span className="text-lg">¥ 1700</span>
-          </div>
-          <div className="border rounded-xl p-4 flex justify-between items-center bg-card text-card-foreground">
-            <div>
-              <h3 className="text-lg font-normal">{t("food.food.drinks.2.name")}</h3>
-              <p className="text-muted-foreground w-64">
-                {t("food.food.drinks.2.description")}
-              </p>
-            </div>
-            <span className="text-lg">¥ 1700</span>
-          </div>
-        </div>
+        ))}
       </div>
 
-      {/* Go to reserve Button */}
-      {showButton && (
-        <div className="px-6 py-4 flex flex-col items-center text-center">
-          <h3 className="text-sm mb-2">{t("food.gotReservation")}</h3>
-          <Button
-            variant="default"
-            className="w-full bg-primary text-primary-foreground rounded-xl h-12"
-            onClick={() => navigate("/reserve")}
-          >
-            {t("food.button")} <LogOut className="ml-2 h-4 w-4" />
-          </Button>
-        </div>
-      )}
+      {/* Botón de Confirmar */}
+      <div className="px-6 py-4 flex flex-col items-center text-center">
+        <Button
+          variant="default"
+          className="w-full bg-primary text-primary-foreground rounded-xl h-12"
+          onClick={confirmProducts}
+        >
+          {t("food.confirmButton")}
+        </Button>
+      </div>
+
       <BottomNavBar />
     </div>
   );
