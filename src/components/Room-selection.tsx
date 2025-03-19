@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { ArrowLeft, Filter, ChevronDown, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -100,7 +100,7 @@ export default function RoomSelection() {
   ];
 
   // Función para obtener las habitaciones del API
-  const fetchRooms = async () => {
+  const fetchRooms = useCallback(async () => {
     try {
       setLoading(true);
       const response = await fetch('http://localhost:3000/api/rooms' + 
@@ -128,7 +128,7 @@ export default function RoomSelection() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory]);
 
   // Cargar habitaciones al montar el componente y cuando cambie la categoría
   useEffect(() => {

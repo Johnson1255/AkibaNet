@@ -41,7 +41,18 @@
       "unknownError": "Unknown error",
       "bookingError": "Error creating booking",
       "confirmError": "Error confirming reservation:"
-    }
+    },
+    "noReservation": "You have no reservations",
+    "makeNewReservation": "Make a new reservation to get started",
+    "reserveRoom": "Reserve a room",
+    "completed": "Your reservation has ended",
+    "thankYou": "Thank you for using our service",
+    "newReservation": "Make a new reservation",
+    "noPendingReservation": "You have no pending reservations",
+    "startsIn": "Your reservation starts in:",
+    "endsIn": "Your reservation ends in:",
+    "startDate": "Start date",
+    "endDate": "End date"
   },
   
   "settings": {

@@ -1,6 +1,8 @@
 import CountdownTimer from './CountdownTimer';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Button } from './ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface Reservation {
   id: string;
@@ -24,6 +26,7 @@ const formatDate = (date: Date): string => {
 
 const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation }) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [status, setStatus] = useState<'pending' | 'active' | 'completed' | 'cancelled' | null>(
     reservation ? reservation.status : null
   );
@@ -77,18 +80,18 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
     }
 
     setTimers(newTimers);
-  }, [reservation, status, timers]); // Agregar dependencias faltantes
+  }, [reservation]); // Eliminar dependencias innecesarias
 
   if (!reservation || status === 'cancelled') {
     return (
-      <div className="rounded-xl bg-white border p-6 shadow-sm text-center">
-        <h2 className="text-2xl font-medium mb-3">No tienes ninguna reserva</h2>
-        <p className="text-gray-600 mb-5">Haz una nueva reserva para comenzar</p>
+      <div className="rounded-xl bg-card border p-6 shadow-sm text-center">
+        <h2 className="text-2xl font-medium mb-3 text-foreground">{t('reservation.noReservation')}</h2>
+        <p className="text-muted-foreground mb-5">{t('reservation.makeNewReservation')}</p>
         <button
           onClick={() => navigate('/reserve')}
-          className="inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+          className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/80 transition-colors"
         >
-          Reservar una sala
+          {t('reservation.reserveRoom')}
         </button>
       </div>
     );
@@ -96,15 +99,15 @@ const ReservationCountdown: React.FC<ReservationCountdownProps> = ({ reservation
 
   if (status === 'completed') {
     return (
-      <div className="rounded-xl bg-white border p-6 shadow-sm text-center">
-        <h2 className="text-2xl font-medium mb-3">Tu reserva ha finalizado</h2>
-        <p className="text-gray-600 mb-5">Gracias por usar nuestro servicio</p>
-        <button
+      <div className="rounded-xl bg-card border p-6 shadow-sm text-center">
+        <h2 className="text-2xl font-medium mb-3 text-foreground">{t('reservation.completed')}</h2>
+        <p className="text-muted-foreground mb-5">{t('reservation.thankYou')}</p>
+        <Button
           onClick={() => navigate('/reserve')}
-          className="inline-block px-6 py-3 bg-black text-white rounded-lg font-medium hover:bg-gray-800 transition-colors"
+          className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/80 transition-colors"
         >
-          Hacer una nueva reserva
-        </button>
+          {t('reservation.newReservation')}
+        </Button>
       </div>
     );
   }

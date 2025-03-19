@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // Importar hook de traducción
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +20,7 @@ interface Reservation {
 }
 
 function ActiveReservationPage() {
+  const { t } = useTranslation(); // Inicializar hook de traducción
   const navigate = useNavigate();
   const [activeReservation, setActiveReservation] = useState<Reservation | null>(null);
 
@@ -52,33 +54,33 @@ function ActiveReservationPage() {
   const getActionButtonText = () => {
     const now = new Date();
     const startTime = new Date(activeReservation!.startTime);
-    return now < startTime ? 'Cancelar Reserva' : 'Terminar Reserva';
+    return now < startTime ? t('activeReservation.cancelReservation') : t('activeReservation.completeReservation');
   };
 
   if (!activeReservation) {
-    return <div>Loading...</div>;
+    return <div>{t('activeReservation.notFound')}</div>;
   }
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-16">
       <header className="p-4 bg-background border-b border-border">
-        <h1 className="text-2xl font-medium text-center">Active Reservation</h1>
+        <h1 className="text-2xl font-medium text-center">{t('activeReservation.title')}</h1>
       </header>
 
       <div className="p-4">
         <Card className="p-4 mb-4 bg-card text-card-foreground">
-          <div className="bg-yellow-100 p-3 rounded-lg mb-4 flex items-start">
-            <Info className="h-5 w-5 text-yellow-700 mr-2 mt-0.5" />
-            <p className="text-yellow-700 text-sm">You already have an active reservation. You cannot make a new reservation until the current one ends.</p>
+          <div className="p-3 rounded-lg mb-4 flex items-start bg-background">
+            <Info className="h-5 w-5 primary mr-2 mt-0.5" />
+            <p className="primary text-sm">{t('activeReservation.policyNotice')}</p>
           </div>
 
-          <h2 className="text-xl font-semibold mb-3">Room #{activeReservation.roomId}</h2>
+          <h2 className="text-xl font-semibold mb-3">{t('reservation.room')} #{activeReservation.roomId}</h2>
 
           <div className="flex items-center mb-4">
             <Clock className="h-5 w-5 text-muted-foreground mr-2" />
             <div>
-              <div className="text-sm text-muted-foreground">Start: {new Date(activeReservation.startTime).toLocaleString()}</div>
-              <div className="text-sm text-muted-foreground">End: {new Date(activeReservation.endTime).toLocaleString()}</div>
+              <div className="text-sm text-muted-foreground">{t('confirmation.date')}: {new Date(activeReservation.startTime).toLocaleString()}</div>
+              <div className="text-sm text-muted-foreground">{t('confirmation.time')}: {new Date(activeReservation.endTime).toLocaleString()}</div>
             </div>
           </div>
 
@@ -92,7 +94,7 @@ function ActiveReservationPage() {
         {activeReservation.services.length > 0 && (
           <Card className="p-4 mb-4 bg-card text-card-foreground">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold mb-2">Servicios</CardTitle>
+              <CardTitle className="text-lg font-semibold mb-2">{t('confirmation.services')}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-wrap gap-2">
               {activeReservation.services.map((service, index) => (
@@ -106,7 +108,7 @@ function ActiveReservationPage() {
 
         <Card className="p-4 mb-4 bg-card text-card-foreground">
           <CardHeader>
-            <CardTitle className="text-lg font-semibold mb-2">Productos</CardTitle>
+            <CardTitle className="text-lg font-semibold mb-2">{t('activeReservation.products')}</CardTitle>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
             {activeReservation.products.map((product, index) => (
@@ -117,7 +119,7 @@ function ActiveReservationPage() {
           </CardContent>
         </Card>
 
-        <Button className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate('/home')}>Back to Home</Button>
+        <Button className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90" onClick={() => navigate('/home')}>{t('activeReservation.backToHome')}</Button>
       </div>
 
       <BottomNavBar />

@@ -41,7 +41,18 @@
       "unknownError": "Error desconocido",
       "bookingError": "Error al crear la reserva",
       "confirmError": "Error al confirmar reserva:"
-    }
+    },
+    "noReservation": "No tienes ninguna reserva",
+    "makeNewReservation": "Haz una nueva reserva para comenzar",
+    "reserveRoom": "Reservar una sala",
+    "completed": "Tu reserva ha finalizado",
+    "thankYou": "Gracias por usar nuestro servicio",
+    "newReservation": "Hacer una nueva reserva",
+    "noPendingReservation": "No tienes ninguna reserva pendiente",
+    "startsIn": "Tu reserva inicia en:",
+    "endsIn": "Tu reserva termina en:",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de finalización"
   },
   "confirmation": {
     "title": "Confirmación de Reserva",

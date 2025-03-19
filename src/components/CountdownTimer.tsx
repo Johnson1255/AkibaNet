@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 interface CountdownTimerProps {
   targetDate: Date;
@@ -16,6 +17,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   roomId,
   formatDate
 }) => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [timeRemaining, setTimeRemaining] = useState({
     hours: 0,
@@ -54,13 +56,13 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   if (isCompleted && type === 'end') {
     return (
       <div className="rounded-xl bg-card border border-border p-6 shadow-sm text-center">
-        <h2 className="text-2xl font-medium mb-3">Tu reserva ha finalizado</h2>
-        <p className="text-muted-foreground mb-5">No tienes ninguna reserva pendiente</p>
+        <h2 className="text-2xl font-medium mb-3">{t('reservation.completed')}</h2>
+        <p className="text-muted-foreground mb-5">{t('reservation.noPendingReservation')}</p>
         <button
           onClick={() => navigate('/reserve')}
           className="inline-block px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:bg-primary/90 transition-colors"
         >
-          Hacer una nueva reserva
+          {t('reservation.newReservation')}
         </button>
       </div>
     );
@@ -69,7 +71,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   return (
     <div className={`rounded-xl border border-border p-6 shadow-sm text-center ${type === 'start' ? 'bg-secondary' : 'bg-card'}`}>
       <h2 className="text-2xl font-medium mb-3">
-        {type === 'start' ? 'Tu reserva inicia en:' : 'Tu reserva termina en:'}
+        {type === 'start' ? t('reservation.startsIn') : t('reservation.endsIn')}
       </h2>
       
       {roomId && (
@@ -79,7 +81,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
       )}
       
       <p className="text-muted-foreground mb-2">
-        {type === 'start' ? 'Fecha de inicio:' : 'Fecha de finalización:'} {formatDate(targetDate)}
+        {type === 'start' ? t('reservation.startDate') : t('reservation.endDate')}: {formatDate(targetDate)}
       </p>
       
       <div className="text-5xl font-mono font-medium tracking-wider my-5">
