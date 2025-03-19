@@ -1,0 +1,554 @@
+{
+  "gaming": {
+    "name": "Gaming Rooms",
+    "description": "Salas equipadas para gaming",
+    "rooms": [
+      {
+        "id": "101",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "console",
+            "name": "PS5",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["https://img.jakpost.net/c/2017/06/06/2017_06_06_28226_1496732633._large.jpg", "https://i.ytimg.com/vi/nzBzyeJTOpw/maxresdefault.jpg"]
+      },
+      {
+        "id": "102",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "console",
+            "name": "PS5",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-102-main.jpg", "room-102-angle1.jpg"]
+      },
+      {
+        "id": "103",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "console",
+            "name": "PS5",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-103-main.jpg", "room-103-angle1.jpg"]
+      },
+      {
+        "id": "104",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "console",
+            "name": "PS5",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-104-main.jpg", "room-104-angle1.jpg"]
+      },
+      {
+        "id": "105",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "console",
+            "name": "PS5",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-105-main.jpg", "room-105-angle1.jpg"]
+      },
+      {
+        "id": "106",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "console",
+            "name": "PS5",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-106-main.jpg", "room-106-angle1.jpg"]
+      },
+      {
+        "id": "107",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "pc",
+            "name": "Gaming PC",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-107-main.jpg", "room-107-angle1.jpg"]
+      },
+      {
+        "id": "108",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "pc",
+            "name": "Gaming PC",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-108-main.jpg", "room-108-angle1.jpg"]
+      },
+      {
+        "id": "109",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "pc",
+            "name": "Gaming PC",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-109-main.jpg", "room-109-angle1.jpg"]
+      },
+      {
+        "id": "110",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "pc",
+            "name": "Gaming PC",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-110-main.jpg", "room-110-angle1.jpg"]
+      },
+      {
+        "id": "111",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "pc",
+            "name": "Gaming PC",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-111-main.jpg", "room-111-angle1.jpg"]
+      },
+      {
+        "id": "112",
+        "capacity": 4,
+        "hourlyRate": 25.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 8,
+        "equipment": [
+          {
+            "type": "pc",
+            "name": "Gaming PC",
+            "quantity": 1
+          },
+          {
+            "type": "screen",
+            "name": "4K TV 55\"",
+            "quantity": 1
+          }
+        ],
+        "images": ["room-112-main.jpg", "room-112-angle1.jpg"]
+      }
+    ]
+  },
+  "thinking": {
+    "name": "Thinking Rooms",
+    "description": "Salas para concentración y dar rienda suelta a la creatividad",
+    "rooms": [
+      {
+        "id": "201",
+        "capacity": 2,
+        "hourlyRate": 15.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 4,
+        "equipment": [
+          {
+            "type": "whiteboard",
+            "name": "Whiteboard",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          }
+        ],
+        "images": ["thinking-room-201-main.jpg", "thinking-room-201-angle1.jpg"]
+      },
+      {
+        "id": "202",
+        "capacity": 2,
+        "hourlyRate": 15.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 4,
+        "equipment": [
+          {
+            "type": "whiteboard",
+            "name": "Whiteboard",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          }
+        ],
+        "images": ["thinking-room-202-main.jpg", "thinking-room-202-angle1.jpg"]
+      },
+      {
+        "id": "203",
+        "capacity": 2,
+        "hourlyRate": 15.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 4,
+        "equipment": [
+          {
+            "type": "whiteboard",
+            "name": "Whiteboard",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          }
+        ],
+        "images": ["thinking-room-203-main.jpg", "thinking-room-203-angle1.jpg"]
+      },
+      {
+        "id": "204",
+        "capacity": 2,
+        "hourlyRate": 15.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 4,
+        "equipment": [
+          {
+            "type": "whiteboard",
+            "name": "Whiteboard",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          }
+        ],
+        "images": ["thinking-room-204-main.jpg", "thinking-room-204-angle1.jpg"]
+      },
+      {
+        "id": "205",
+        "capacity": 2,
+        "hourlyRate": 15.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 4,
+        "equipment": [
+          {
+            "type": "whiteboard",
+            "name": "Whiteboard",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          }
+        ],
+        "images": ["thinking-room-205-main.jpg", "thinking-room-205-angle1.jpg"]
+      },
+      {
+        "id": "206",
+        "capacity": 2,
+        "hourlyRate": 15.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 4,
+        "equipment": [
+          {
+            "type": "whiteboard",
+            "name": "Whiteboard",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          }
+        ],
+        "images": ["thinking-room-206-main.jpg", "thinking-room-206-angle1.jpg"]
+      }
+    ]
+  },
+  "working": {
+    "name": "Working Rooms",
+    "description": "Salas para trabajo y reuniones, enfocadas a nómadas digitales y freelancers",
+    "rooms": [
+      {
+        "id": "301",
+        "capacity": 2,
+        "hourlyRate": 20.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 6,
+        "equipment": [
+          {
+            "type": "desk",
+            "name": "Standing Desk",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          },
+          {
+            "type": "monitor",
+            "name": "27\" Monitor",
+            "quantity": 1
+          }
+        ],
+        "images": ["working-room-301-main.jpg", "working-room-301-angle1.jpg"]
+      },
+      {
+        "id": "302",
+        "capacity": 2,
+        "hourlyRate": 20.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 6,
+        "equipment": [
+          {
+            "type": "desk",
+            "name": "Standing Desk",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          },
+          {
+            "type": "monitor",
+            "name": "27\" Monitor",
+            "quantity": 1
+          }
+        ],
+        "images": ["working-room-302-main.jpg", "working-room-302-angle1.jpg"]
+      },
+      {
+        "id": "303",
+        "capacity": 2,
+        "hourlyRate": 20.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 6,
+        "equipment": [
+          {
+            "type": "desk",
+            "name": "Standing Desk",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          },
+          {
+            "type": "monitor",
+            "name": "27\" Monitor",
+            "quantity": 1
+          }
+        ],
+        "images": ["working-room-303-main.jpg", "working-room-303-angle1.jpg"]
+      },
+      {
+        "id": "304",
+        "capacity": 2,
+        "hourlyRate": 20.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 6,
+        "equipment": [
+          {
+            "type": "desk",
+            "name": "Standing Desk",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          },
+          {
+            "type": "monitor",
+            "name": "27\" Monitor",
+            "quantity": 1
+          }
+        ],
+        "images": ["working-room-304-main.jpg", "working-room-304-angle1.jpg"]
+      },
+      {
+        "id": "305",
+        "capacity": 2,
+        "hourlyRate": 20.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 6,
+        "equipment": [
+          {
+            "type": "desk",
+            "name": "Standing Desk",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          },
+          {
+            "type": "monitor",
+            "name": "27\" Monitor",
+            "quantity": 1
+          }
+        ],
+        "images": ["working-room-305-main.jpg", "working-room-305-angle1.jpg"]
+      },
+      {
+        "id": "306",
+        "capacity": 2,
+        "hourlyRate": 20.0,
+        "status": "available",
+        "minHours": 1,
+        "maxHours": 6,
+        "equipment": [
+          {
+            "type": "desk",
+            "name": "Standing Desk",
+            "quantity": 1
+          },
+          {
+            "type": "chair",
+            "name": "Ergonomic Chair",
+            "quantity": 2
+          },
+          {
+            "type": "monitor",
+            "name": "27\" Monitor",
+            "quantity": 1
+          }
+        ],
+        "images": ["working-room-306-main.jpg", "working-room-306-angle1.jpg"]
+      }
+    ]
+  }
+}

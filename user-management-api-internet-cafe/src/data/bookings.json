@@ -1,0 +1,85 @@
+[
+  {
+    "id": "book-71193843-da20-43aa-a877-e2e00694d80c",
+    "userId": "c418e5bc-b7cf-4b49-9931-5db62276db1b",
+    "roomId": 101,
+    "status": "active",
+    "startTime": "2025-03-14T21:00:00.000Z",
+    "duration": 4,
+    "endTime": "2025-03-15T01:00:00.000Z",
+    "services": [
+      {
+        "serviceId": "g1",
+        "quantity": 1,
+        "price": 15
+      },
+      {
+        "serviceId": "g2",
+        "quantity": 1,
+        "price": 25
+      },
+      {
+        "serviceId": "g3",
+        "quantity": 1,
+        "price": 30
+      }
+    ],
+    "products": [],
+    "basePrice": 100,
+    "servicesTotal": 70,
+    "productsTotal": 0,
+    "createdAt": "2025-03-14T20:48:20.858Z",
+    "updatedAt": "2025-03-14T20:48:20.858Z",
+    "totalPrice": 170
+  },
+  {
+    "id": "book-3f254cc2-0c10-4ae0-8cb9-77ba524cabcf",
+    "userId": "d22d048e-71ed-4962-8dfb-7827300e2609",
+    "roomId": 103,
+    "status": "active",
+    "startTime": "2025-03-14T21:15:00.000Z",
+    "duration": 4,
+    "endTime": "2025-03-15T01:15:00.000Z",
+    "services": [],
+    "products": [],
+    "basePrice": 100,
+    "servicesTotal": 0,
+    "productsTotal": 0,
+    "createdAt": "2025-03-14T21:06:03.236Z",
+    "updatedAt": "2025-03-14T21:06:03.236Z",
+    "totalPrice": 100
+  },
+  {
+    "id": "book-823f513c-8acb-4ac6-9e16-dcbd0eb0a336",
+    "userId": "d22d048e-71ed-4962-8dfb-7827300e2609",
+    "roomId": 111,
+    "status": "active",
+    "startTime": "2025-03-14T21:15:00.000Z",
+    "duration": 4,
+    "endTime": "2025-03-15T01:15:00.000Z",
+    "services": [
+      {
+        "serviceId": "g1",
+        "quantity": 1,
+        "price": 15
+      },
+      {
+        "serviceId": "g2",
+        "quantity": 1,
+        "price": 25
+      },
+      {
+        "serviceId": "g3",
+        "quantity": 1,
+        "price": 30
+      }
+    ],
+    "products": [],
+    "basePrice": 100,
+    "servicesTotal": 70,
+    "productsTotal": 0,
+    "createdAt": "2025-03-14T21:07:25.803Z",
+    "updatedAt": "2025-03-14T21:07:25.803Z",
+    "totalPrice": 170
+  }
+]

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "r-001",
+    "user_id": "a5d90c68-e574-4d7d-90a4-4da6fe0fa1f5",
+    "date": "2025-03-07T12:00:00.000Z",
+    "description": "Pongan comida, que hace mucha hambre"
+  },
+  {
+    "id": "r-002",
+    "user_id": "c418e5bc-b7cf-4b49-9931-5db62276db1b",
+    "date": "2025-03-14T19:54:35.734Z",
+    "description": "Hola"
+  },
+  {
+    "id": "r-003",
+    "user_id": "c418e5bc-b7cf-4b49-9931-5db62276db1b",
+    "date": "2025-03-14T20:00:30.047Z",
+    "description": "hola"
+  },
+  {
+    "id": "r-004",
+    "user_id": "c418e5bc-b7cf-4b49-9931-5db62276db1b",
+    "date": "2025-03-14T20:03:28.670Z",
+    "description": "Hola"
+  },
+  {
+    "id": "r-005",
+    "user_id": "c418e5bc-b7cf-4b49-9931-5db62276db1b",
+    "date": "2025-03-14T20:36:04.446Z",
+    "description": "Hola Papu"
+  },
+  {
+    "id": "r-006",
+    "user_id": "c418e5bc-b7cf-4b49-9931-5db62276db1b",
+    "date": "2025-03-14T20:38:45.718Z",
+    "description": "asda"
+  },
+  {
+    "id": "r-007",
+    "user_id": "d22d048e-71ed-4962-8dfb-7827300e2609",
+    "date": "2025-03-14T21:03:23.704Z",
+    "description": "Quiero una botella de old parr"
+  }
+]
