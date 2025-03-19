@@ -1,11 +1,12 @@
-import { Link, useNavigate, useLocation } from "react-router-dom"
-import { Heart } from "lucide-react"
-import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { useAuth } from "@/context/AuthContext"
-import { login as loginService } from "@/services/authService"
+import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Heart, Sun, Moon } from "lucide-react"; // Importar iconos
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/context/AuthContext";
+import { login as loginService } from "@/services/authService";
+import { useTheme } from "@/context/ThemeContext"; // Importar useTheme
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ export default function LoginForm() {
   const [error, setError] = useState("")
   const [success, setSuccess] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+  const { theme, toggleTheme } = useTheme(); // Obtener tema y función para cambiar tema
   
   // Verificar si venimos del registro con un email predefinido
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function LoginForm() {
         return false;
       }
       return true;
-    } catch (error) {
+    } catch {
       setError('No se pudo conectar al servidor. Verifica tu conexión a internet.');
       return false;
     }
@@ -78,6 +80,11 @@ export default function LoginForm() {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between py-8 px-4">
+      <div className="w-full flex justify-end p-4">
+        <Button onClick={toggleTheme} className="bg-transparent hover:bg-transparent">
+          {theme === 'light' ? <Moon className="w-6 h-6" /> : <Sun className="w-6 h-6" />}
+        </Button>
+      </div>
       <Card className="w-full max-w-sm border-0 shadow-none">
         <CardContent className="space-y-6 pt-8">
           <div className="flex justify-center">
@@ -90,7 +97,7 @@ export default function LoginForm() {
             <Input
               type="text"
               placeholder="Email / Telephone"
-              className="h-12 bg-gray-100 border-0"
+              className="bg-transparent border border-input h-12 text-lg placeholder:text-muted-foreground"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={isLoading}
@@ -98,7 +105,7 @@ export default function LoginForm() {
             <Input
               type="password"
               placeholder="Password"
-              className="h-12 bg-gray-100 border-0"
+              className="bg-transparent border border-input h-12 text-lg placeholder:text-muted-foreground"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               disabled={isLoading}
@@ -108,7 +115,7 @@ export default function LoginForm() {
   
             <Button 
               type="submit" 
-              className="w-full bg-black text-white hover:bg-black/90 rounded-full h-12"
+              className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full h-12"
               disabled={isLoading}
               onClick={() => !isLoading && checkServerConnection()}
             >
@@ -117,23 +124,23 @@ export default function LoginForm() {
           </form>
   
           <div className="space-y-3">
-            <Button variant="secondary" className="w-full bg-gray-100 hover:bg-gray-200 text-black rounded-full h-12">
+            <Button variant="secondary" className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full h-12">
               Login with Google
             </Button>
-            <Button variant="secondary" className="w-full bg-gray-100 hover:bg-gray-200 text-black rounded-full h-12">
+            <Button variant="secondary" className="w-full bg-secondary text-secondary-foreground hover:bg-secondary/90 rounded-full h-12">
               Login with Instagram
             </Button>
           </div>
   
           <div className="text-center">
-            <Link to="/signup" className="text-black hover:underline">
+            <Link to="/signup" className="text-primary hover:underline">
               Don't have an account yet? Sign up
             </Link>
           </div>
         </CardContent>
       </Card>
   
-      <CardFooter className="text-gray-500 text-sm text-center">
+      <CardFooter className="text-muted-foreground text-sm text-center">
         <div className="space-y-1">
           <p>© 2023 Papus Developers INC. All rights reserved.</p>
           <p className="flex items-center justify-center gap-1">

@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { ReservationProvider } from './context/ReservationContext';
 import { AuthProvider } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext'; // Importar ThemeProvider
 import { PrivateRoute, PublicRoute } from './components/PrivateRoute';
 
 import LoginForm from "./components/LogIn-form";
@@ -18,11 +19,13 @@ import ActiveReservationPage from './components/ActiveReservationPage';
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <ReservationProvider>
-          <AppRoutes />
-        </ReservationProvider>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <ReservationProvider>
+            <AppRoutes />
+          </ReservationProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

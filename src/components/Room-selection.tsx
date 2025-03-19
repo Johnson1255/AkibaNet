@@ -19,7 +19,6 @@ import TimePicker from "./time-picker";
 import BottomNavBar from "./Bottom-navbar";
 import { useReservation } from "../context/ReservationContext";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "../context/ThemeContext";
 
 // Nuevos tipos para las habitaciones
 interface Equipment {
@@ -44,7 +43,6 @@ export default function RoomSelection() {
   const { updateRoomDetails } = useReservation();
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const { theme } = useTheme();
 
   // Función para obtener la siguiente hora en bloques de 15 minutos
   const getNextQuarterHour = (date: Date) => {
@@ -135,7 +133,7 @@ export default function RoomSelection() {
   // Cargar habitaciones al montar el componente y cuando cambie la categoría
   useEffect(() => {
     fetchRooms();
-  }, [selectedCategory]);
+  }, [selectedCategory, fetchRooms]);
 
   const handleRoomSelect = (roomId: string) => {
     setSelectedRoom(roomId === selectedRoom ? null : roomId);

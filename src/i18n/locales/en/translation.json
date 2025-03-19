@@ -48,7 +48,8 @@
     "title": "Settings",
     "language": "Language",
     "notifications": "Notifications",
-    "paymentMethods": "Payment Methods"
+    "paymentMethods": "Payment Methods",
+    "theme": "Theme"
   },
   "buttons": {
     "logout": "Log Out"
@@ -96,7 +97,7 @@
     "requestPlaceholder": "Any specific requests or comments?",
     "sendRequest": "Send Request",
     "noRequest": "Please enter a request before sending.",
-    "susccessfullRequest": "Request sent successfully!",
+    "successfullRequest": "Request sent successfully!",
     "failedRequest": "Failed to send request.",
     "error": "an unknown error has ocurred"
   },
@@ -104,45 +105,23 @@
     "name": "Food Menu",
     "snacks": "Snacks",
     "drinks": "Beverages",
-    "plates":"Plates",
-    "food": {
-      "plates": {
-        "1": {
-          "name": "Pizza",
-          "description": "Pepperoni pizza"
-        },
-        "2": {
-          "name": "Sushi",
-          "description": "Salmon sushi"
-        },
-        "3": {
-          "name": "Burger",
-          "description": "Classic burger (lettuce, tomato, cheese, beef patty)"
-        }
-      },
-      "drinks": {
-        "1": {
-          "name": "Coca-Cola",
-          "description": "Soft drink"
-        },
-        "2": {
-          "name": "Tea",
-          "description": "Hot tea"
-        }
-      },
-      "snacks": {
-        "1": {
-          "name": "Nachos",
-          "description": "Nachos with cheese"
-        },
-        "2": {
-          "name": "Pocky",
-          "description": "Biscuit sticks covered in chocolate"
-        }
-      }
-    },
+    "plates": "Plates",
     "gotReservation": "You do not have any current reservation, please make one to order food",
-    "button": "Go to reserve page"
+    "button": "Go to reserve page",
+    "price": "Price",
+    "add": "Add",
+    "remove": "Remove",
+    "maxReached": "Maximum reached",
+    "orderSummary": "Order Summary",
+    "totalPrice": "Total Price",
+    "checkout": "Checkout",
+    "fastFood": "Fast Food",
+    "energyDrinks": "Energy Drinks",
+    "ramen": "Ramen",
+    "noProducts": "You have not ordered any products yet.",
+    "addProducts": "Add Products",
+    "policyNotice": "Notice: All food orders must be confirmed before ending the reservation.",
+    "confirmButton": "Confirm Products"
   },
   "room":{
     "name": "Select a room",
@@ -165,11 +144,55 @@
       "description": "Adjustable and comfortable for long sessions."
     },
     "consoleRental": "Console rental",
-    "consoleNote": "* Each console has its own library of games available"
+    "consoleNote": "* Each console has its own library of games available",
+    "categories": {
+      "gaming": "Gaming Services",
+      "thinking": "Reading Services",
+      "working": "Working Services"
+    }
   },
   "consoles": {
     "ps5": "Playstation 5",
     "dreamcast": "Sega Dreamcast",
     "n64": "Nintengod 64"
+  },
+  "common": {
+    "retry": "Retry",
+    "total": "TOTAL"
+  },
+  "confirmation": {
+    "title": "Reservation Confirmation",
+    "details": "Reservation Details",
+    "room": "Room",
+    "date": "Date",
+    "time": "Time",
+    "duration": "Duration",
+    "hours": "hours",
+    "bookingId": "Booking ID",
+    "services": "Services",
+    "service": "Service",
+    "total": "Total Payment",
+    "backToHome": "Back to Home",
+    "viewReservations": "View My Reservations",
+    "success": "Reservation Successful!",
+    "successMessage": "Your reservation has been confirmed. You can view it in your account.",
+    "notFound": "No reservation information found",
+    "newReservation": "New Reservation"
+  },
+  "activeReservation": {
+    "notFound": "No reservation information found",
+    "newReservation": "New Reservation",
+    "title": "Active Reservation",
+    "details": "Reservation Details",
+    "service": "Service",
+    "noServices": "No services added",
+    "products": "Products",
+    "noProducts": "No products added",
+    "orderFood": "Order Food",
+    "total": "Total",
+    "policyNotice": "Notice: You cannot make a new reservation until the current one ends.",
+    "cancelReservation": "Cancel Reservation",
+    "backToHome": "Back to Home",
+    "completeReservation": "Complete Reservation"
   }
 }

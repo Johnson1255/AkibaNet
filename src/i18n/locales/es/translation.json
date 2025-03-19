@@ -32,7 +32,7 @@
     "backToRooms": "Volver a la selección de habitaciones",
     "roomTypes": {
       "gaming": "Juegos",
-      "thinking": "Lectura",
+      "thinking": "Creatividad",
       "working": "Trabajo"
     },
     "errors": {
@@ -43,12 +43,31 @@
       "confirmError": "Error al confirmar reserva:"
     }
   },
-  
+  "confirmation": {
+    "title": "Confirmación de Reserva",
+    "details": "Detalles de la Reserva",
+    "room": "Sala",
+    "date": "Fecha",
+    "time": "Hora",
+    "duration": "Duración",
+    "hours": "horas",
+    "bookingId": "ID de Reserva",
+    "services": "Servicios",
+    "service": "Servicio",
+    "total": "Total a Pagar",
+    "backToHome": "Volver al Inicio",
+    "viewReservations": "Ver Mis Reservas",
+    "success": "¡Reserva Exitosa!",
+    "successMessage": "Tu reserva ha sido confirmada. Puedes verla en tu cuenta.",
+    "notFound": "No se encontró información de reserva",
+    "newReservation": "Nueva Reserva"
+  },
   "settings": {
     "title": "Configuración",
     "language": "Idioma",
     "notifications": "Notificaciones",
-    "paymentMethods": "Métodos de pago"
+    "paymentMethods": "Métodos de pago",
+    "theme": "Tema"
   },
   "buttons": {
     "logout": "Cerrar Sesión"
@@ -96,55 +115,34 @@
     "requestPlaceholder": "¿Alguna solicitud o comentario específico?",
     "sendRequest": "Enviar Solicitud",
     "noRequest": "Por favor, ingresa una solicitud antes de enviarla.",
-    "susccessfullRequest": "¡Solicitud enviada con éxito!",
+    "susccesfullRequest": "¡Solicitud enviada con éxito!",
+    "successfullRequest": "¡Solicitud enviada con éxito!",
     "failedRequest": "Error al enviar la solicitud.",
     "error": "Ha ocurrido un error desconocido"
   },
-  "food":{
-    "name":"Menú de comida",
+  "food": {
+    "name": "Menú de comida",
     "snacks": "Snacks",
     "drinks": "Bebidas",
-    "plates":"Platos",
+    "plates": "Platos",
     "gotReservation": "No tienes reservación, ve ahora a reservar para ordenar comida",
     "button": "Ir a reservar",
-    "food":{
-      "plates":{
-        "1":{
-          "name":"Pizza",
-          "description": "Pizza con pepperoni"
-        },
-        "2":{
-          "name":"Sushi",
-          "description": "Sushi de salmón"
-        },
-        "3":{
-          "name":"Hamburguesa",
-          "description": "Hamburguesa clásica(lechuga, tomate, queso, carne de res)"
-        }
-      },
-      "drinks":{
-        "1":{
-          "name":"Coca-Cola",
-          "description": "Bebida Gaseosa"
-        },
-        "2":{
-          "name":"Té",
-          "description": "Té caliente"
-        }
-      },
-      "snacks":{
-        "1":{
-          "name":"Nachos",
-          "description": "Nachos con queso"
-        },
-        "2":{
-          "name":"Pocky",
-          "description": "palitos de galleta recubiertos de chocolate"
-        }
-      }
-    }
+    "price": "Precio",
+    "add": "Añadir",
+    "remove": "Quitar",
+    "maxReached": "Máximo alcanzado",
+    "orderSummary": "Resumen del pedido",
+    "totalPrice": "Precio total",
+    "checkout": "Pagar",
+    "fastFood": "Comida rápida",
+    "energyDrinks": "Bebidas energéticas",
+    "ramen": "Ramen",
+    "noProducts": "No has pedido ningún producto aún.",
+    "addProducts": "Añadir Productos",
+    "policyNotice": "Aviso: Todos los pedidos de comida deben ser confirmados antes de finalizar la reserva.",
+    "confirmButton": "Confirmar Productos"
   },
-  "room":{
+  "room": {
     "name": "Elige una habitación",
     "fetchError": "Error al cargar la información de las habitaciones."
   },
@@ -165,11 +163,36 @@
       "description": "Ajustable y cómoda para sesiones largas."
     },
     "consoleRental": "Alquiler de consolas",
-    "consoleNote": "* Cada consola tiene su propia biblioteca de juegos disponible"
+    "consoleNote": "* Cada consola tiene su propia biblioteca de juegos disponible",
+    "categories": {
+      "gaming": "Servicios de Gaming",
+      "thinking": "Servicios de Creatividad",
+      "working": "Servicios de Trabajo"
+    }
   },
   "consoles": {
     "ps5": "Playstation 5",
     "dreamcast": "Sega Dreamcast",
     "n64": "Nintengod 64"
+  },
+  "common": {
+    "retry": "Reintentar",
+    "total": "TOTAL"
+  },
+  "activeReservation": {
+    "notFound": "No se encontró información de reserva",
+    "newReservation": "Nueva Reserva",
+    "title": "Reserva Activa",
+    "details": "Detalles de la Reserva",
+    "service": "Servicio",
+    "noServices": "No hay servicios añadidos",
+    "products": "Productos",
+    "noProducts": "No hay productos añadidos",
+    "orderFood": "Ordenar Comida",
+    "total": "Total",
+    "policyNotice": "Aviso: No puedes hacer una nueva reserva hasta que termine la actual.",
+    "cancelReservation": "Cancelar Reserva",
+    "backToHome": "Volver al Inicio",
+    "completeReservation": "Terminar Reserva"
   }
 }

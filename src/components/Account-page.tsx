@@ -42,12 +42,6 @@ export default function AccountPage() {
     navigate("/login");
   }
 
-  // Generar URL del avatar usando robohash con el nombre del usuario o un valor predeterminado
-  const generateAvatarUrl = () => {
-    const seed = user?.name || t('account.profile.defaultUser');
-    return `https://robohash.org/${encodeURIComponent(seed)}.png?set=set3`;
-  };
-
   // Función para cambiar el idioma
   const handleLanguageChange = () => {
     const newLang = i18n.language === 'en' ? 'es' : 'en';
@@ -67,18 +61,8 @@ export default function AccountPage() {
 
       {/* Profile Section */}
       <div className="px-6 py-4 flex items-center gap-4">
-        <div className="w-16 h-16 bg-gray-100 rounded-full overflow-hidden">
-          <img 
-            src={generateAvatarUrl()} 
-            alt="Avatar de perfil" 
-            className="w-full h-full object-cover"
-            onError={(e) => {
-              // Si hay error al cargar la imagen, mostrar icono predeterminado
-              const target = e.target as HTMLImageElement;
-              target.style.display = 'none';
-              target.parentElement!.innerHTML = '<div class="w-full h-full flex items-center justify-center"><svg class="w-8 h-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg></div>';
-            }}
-          />
+        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center">
+          <UserIcon className="w-8 h-8 text-gray-400" />
         </div>
         <div>
           <h2 className="text-xl font-normal">{user?.name || t('account.profile.defaultUser')}</h2>

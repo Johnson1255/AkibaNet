@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import BottomNavBar from "./Bottom-navbar";
 import { ArrowLeft, Check } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import BottomNavBar from "./Bottom-navbar";
-// Importa tu sistema de traducción (ajusta según tu implementación)
+import { useEffect, useState } from 'react';
 import { useTranslation } from "react-i18next";
 
 // Tipo de datos para la reserva recibida del API
@@ -23,10 +22,13 @@ interface ReservationDetails {
 }
 
 export default function Confirmation() {
-  const { t } = useTranslation(); // Hook para traducción
+  const { t, i18n } = useTranslation(); // Añadir i18n para debugging si es necesario
   const [savedReservation, setSavedReservation] = useState<ReservationDetails | null>(null);
 
   useEffect(() => {
+    // Asegurarse de que i18n está inicializado correctamente (opcional)
+    console.log("Current language:", i18n.language);
+    
     // Cargar los datos de la reserva guardada en localStorage
     const savedData = localStorage.getItem('lastReservation');
     if (savedData) {
@@ -48,19 +50,17 @@ export default function Confirmation() {
       // Guardar la reserva como activa
       if (parsedData.startTime && parsedData.endTime) {
         const activeReservation = {
+          ...parsedData,
           id: parsedData.id || `res-${Date.now()}`,
-          startTime: parsedData.startTime,
-          endTime: parsedData.endTime,
-          roomId: parsedData.roomId || '',
-          userId: 'current-user', // Esto debería venir de tu sistema de autenticación
-          status: 'pending'
+          userId: 'current-user',
+          status: 'active'
         };
         
         // Almacenar la reserva activa en localStorage
         localStorage.setItem('lastReservation', JSON.stringify(activeReservation));
       }
     }
-  }, []);
+  }, [i18n.language]);
 
   // Si no hay reservación guardada, mostrar mensaje de error o redireccionar
   if (!savedReservation) {
@@ -118,29 +118,22 @@ export default function Confirmation() {
             </div>
             
             <div className="flex justify-between">
-
               <span className="text-muted-foreground">{t('confirmation.date')}:</span>
-
               <span className="font-medium">{savedReservation.selectedDate}</span>
             </div>
             
             <div className="flex justify-between">
-
               <span className="text-muted-foreground">{t('confirmation.time')}:</span>
-
               <span className="font-medium">{savedReservation.selectedTime}</span>
             </div>
             
             <div className="flex justify-between">
-
               <span className="text-muted-foreground">{t('confirmation.duration')}:</span>
               <span className="font-medium">{savedReservation.hours} {t('confirmation.hours')}</span>
-
             </div>
 
             {savedReservation?.id && (
               <div className="flex justify-between">
-
                 <span className="text-muted-foreground">{t('confirmation.bookingId')}:</span>
                 <span className="font-medium">{savedReservation.id}</span>
               </div>
@@ -149,25 +142,27 @@ export default function Confirmation() {
           
           <Separator className="my-4" />
           
-          {/* Servicios */}
-          <h4 className="font-medium mb-2">{t('confirmation.services')}:</h4>
           <div className="space-y-2">
             <div className="flex justify-between">
               <span>{t('confirmation.room')} ({savedReservation.hours} {t('confirmation.hours')})</span>
               <span>¥{savedReservation.basePrice}</span>
             </div>
-            
-            {/* Si hay servicios adicionales, mostrarlos aquí */}
-            {savedReservation.services && savedReservation.services.length > 0 && 
-              savedReservation.services.map((service, index) => (
-                <div key={index} className="flex justify-between">
-                  <span>{service.quantity}x {t('confirmation.service')} #{service.serviceId}</span>
-                  <span>¥{service.price}</span>
-                </div>
-              )
-            )}
           </div>
-          
+            {savedReservation.services && savedReservation.services.length > 0 && (
+            <>
+              <Separator className="my-4" />
+              <h4 className="font-medium mb-2">{t('confirmation.services')}:</h4>
+              <div className="space-y-2"></div>
+              {console.log('Services length:', savedReservation.services.length)}
+              {savedReservation.services.map((service, index) => (
+                <div key={index} className="flex justify-between">
+                <span>{service.quantity}x {t('confirmation.service')} #{service.serviceId}</span>
+                <span>¥{service.price}</span>
+                </div>
+              ))}
+              </>
+            )}
+
           <Separator className="my-4" />
           
           {/* Total */}

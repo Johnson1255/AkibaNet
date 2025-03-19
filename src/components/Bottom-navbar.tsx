@@ -1,9 +1,7 @@
 import { Link } from "react-router-dom";
 import { HelpCircle, Coffee, Home, User, ConciergeBell } from "lucide-react";
-import { useTheme } from "../context/ThemeContext";
 
 export default function BottomNavBar() {
-  const { theme } = useTheme();
   const lastReservation = localStorage.getItem("lastReservation");
   let HaveReservation = false;
   if(lastReservation != null) {

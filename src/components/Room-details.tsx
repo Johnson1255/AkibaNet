@@ -8,7 +8,6 @@ import ImageCarousel from "./ImageCarousel";
 import { useReservation } from "../context/ReservationContext";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "../context/ThemeContext";
 
 // Definir interfaces para los datos recibidos de la API
 interface Equipment {
@@ -34,7 +33,6 @@ export default function RoomDetails() {
   const location = useLocation();
   const params = useParams();
   const { t } = useTranslation(); // Hook para traducciones
-  const { theme } = useTheme();
   
   // Obtener el roomId de los parámetros de URL
   let roomId: string | null = null;
@@ -101,7 +99,7 @@ export default function RoomDetails() {
     };
     
     fetchRoomDetails();
-  }, [roomId, t]);
+  }, [roomId, t, updateRoomDetails]);
 
   // Función para calcular el precio
   const calculatePrice = (hours: number, hourlyRate: number) => {
@@ -208,7 +206,7 @@ export default function RoomDetails() {
         duration: hours,
         basePrice,
         status: 'pending',
-        services: Array.from(reservation.selectedServices || []),
+        services: Array.from(reservation.selectedServices || []).filter(s => s !== "refrigerator"),
         products: []
       };
   
@@ -232,7 +230,9 @@ export default function RoomDetails() {
         ...responseData,
         startTime: startDateTime.toISOString(),
         endTime: endDateTime.toISOString(),
-        status: 'pending'
+        status: 'pending',
+        hours, // Añadir horas
+        basePrice // Añadir precio base
       }));
       
       navigate("/confirmation");

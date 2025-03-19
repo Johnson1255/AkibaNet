@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import BottomNavBar from "./Bottom-navbar";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
-import { useTheme } from "../context/ThemeContext";
 
 /**
  * Componente principal de la página de inicio del café.
@@ -23,9 +22,6 @@ export default function CafeHome() {
 
   /** Hook para manejar traducciones */
   const { t } = useTranslation();
-
-  /** Hook para manejar el tema */
-  const { theme } = useTheme();
   
   /** Nombre del usuario autenticado o un valor predeterminado */
   const userName = user?.name || t('account.profile.defaultUser');
