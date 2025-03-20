@@ -11,7 +11,7 @@ export const TotalSummary: React.FC<TotalSummaryProps> = ({ reservation }) => {
   return (
     <>
       <Separator className="my-4" />
-      <div className="flex justify-between font-bold text-lg">
+      <div className="flex justify-between font-bold text-lg px-4">
         <span>{t("confirmation.total")}</span>
         <span>¥{reservation.totalPrice || reservation.basePrice}</span>
       </div>
