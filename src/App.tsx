@@ -14,7 +14,7 @@ import SignUpPage from "@/components/SignUp-page";
 import Confirmation from "@/components/Confirmation";
 import HelpServicesPage from "@/components/Help-Services-page";
 import FoodPage from "@/components/FoodPage";
-import ActiveReservationPage from '@/components/ActiveReservationPage';
+import ActiveReservationPage from '@/components/ActiveReservationPage/index';
 
 function App() {
   return (
