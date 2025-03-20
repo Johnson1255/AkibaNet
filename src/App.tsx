@@ -11,7 +11,7 @@ import RoomDetails from "@/components/Room-details";
 import AdditionalServices from "@/components/AdditionalServicesPage/index";
 import AccountPage from "@/components/AccountPage/index";
 import SignUpPage from "@/components/SignUp-page";
-import Confirmation from "@/components/Confirmation";
+import Confirmation from "@/components/Confirmation/index";
 import HelpServicesPage from "@/components/Help-Services-page";
 import FoodPage from "@/components/FoodPage";
 import ActiveReservationPage from '@/components/ActiveReservationPage/index';

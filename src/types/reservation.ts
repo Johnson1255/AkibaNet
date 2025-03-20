@@ -16,6 +16,20 @@ export interface Reservation {
   hourlyRate?: number;  // Added to match usage in context
 }
 
+export interface ConfirmedReservationDetails {
+  id?: string;
+  roomId?: string;
+  hours?: number;
+  basePrice?: number;
+  totalPrice?: number;
+  startTime?: string;
+  endTime?: string;
+  status?: string;
+  selectedDate?: string;
+  selectedTime?: string;
+  services?: Array<{ serviceId: string; price: number; name: string }>;
+}
+
 export interface Service {
   id: string;
   name: string;
