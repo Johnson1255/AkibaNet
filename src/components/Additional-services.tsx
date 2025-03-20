@@ -3,7 +3,7 @@ import { ArrowLeft, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import BottomNavBar from "./Bottom-navbar";
+import BottomNavBar from "@/components/BottomNavbar";
 import { useTranslation } from "react-i18next";
 import { useReservation } from "../context/ReservationContext";
 import { useNavigate } from "react-router-dom";
