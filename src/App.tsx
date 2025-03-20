@@ -1,20 +1,20 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import { ReservationProvider } from './context/ReservationContext';
-import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from './context/ThemeContext'; // Importar ThemeProvider
-import { PrivateRoute, PublicRoute } from './components/PrivateRoute';
+import { ReservationProvider } from '@/context/ReservationContext';
+import { AuthProvider } from '@/context/AuthContext';
+import { ThemeProvider } from '@/context/ThemeContext'; // Importar ThemeProvider
+import { PrivateRoute, PublicRoute } from '@/components/PrivateRoute';
 
-import LoginForm from "./components/LogIn-form";
-import CafeHome from "./components/Home-page";
-import RoomSelection from "./components/Room-selection";
-import RoomDetails from "./components/Room-details";
-import AdditionalServices from "./components/Additional-services";
-import AccountPage from "./components/Account-page";
-import SignUpPage from "./components/SignUp-page";
-import Confirmation from "./components/Confirmation";
-import HelpServicesPage from "./components/Help-Services-page";
-import FoodPage from "./components/FoodPage";
-import ActiveReservationPage from './components/ActiveReservationPage';
+import LoginForm from "@/components/LogIn-form";
+import CafeHome from "@/components/Home-page";
+import RoomSelection from "@/components/Room-selection";
+import RoomDetails from "@/components/Room-details";
+import AdditionalServices from "@/components/Additional-services";
+import AccountPage from "@/components/AccountPage";
+import SignUpPage from "@/components/SignUp-page";
+import Confirmation from "@/components/Confirmation";
+import HelpServicesPage from "@/components/Help-Services-page";
+import FoodPage from "@/components/FoodPage";
+import ActiveReservationPage from '@/components/ActiveReservationPage';
 
 function App() {
   return (

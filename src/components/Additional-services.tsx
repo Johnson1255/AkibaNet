@@ -209,31 +209,23 @@ export default function AdditionalServices() {
       // Cálculo de precios 
       let servicesTotal = 0;
       const selectedServicesList: string[] = [];
-      
-      selectedServices.forEach(serviceId => {
-        selectedServicesList.push(serviceId);
-        for (const category in servicesByCategory) {
-          const service = servicesByCategory[category as keyof ServicesByCategory].find(s => s.id === serviceId);
-          if (service) {
-            servicesTotal += service.price;
-            break;
-          }
-        }
+      const selectedServicesArray = getSelectedServices().map(service => {
+        selectedServicesList.push(service.id);
+        servicesTotal += service.price;
+        return {
+          serviceId: service.id,
+          serviceName: service.name, // Add service name here
+          quantity: 1,
+          price: service.price
+        };
       });
-      
+
       const totalPrice = baseRoomPrice + servicesTotal;
       
       // Actualizar el contexto con el precio total
       updateRoomDetails({ 
         totalPrice: totalPrice
       });
-
-      // Construir arreglo con formateo (serviceId, quantity, price)
-      const selectedServicesArray = getSelectedServices().map(service => ({
-        serviceId: service.id,
-        quantity: 1,
-        price: service.price
-      }));
 
       // Creación del payload para la API
       const reservationPayload = {

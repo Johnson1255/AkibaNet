@@ -2,13 +2,13 @@ import { ArrowLeft, User as UserIcon, ChevronRight, LogOut, Moon, Sun } from "lu
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
 import { Separator } from "@/components/ui/separator"
-import BottomNavBar from "./Bottom-navbar"
-import { useAuth } from "../context/AuthContext"
+import BottomNavBar from "@/components/BottomNavbar"
+import { useAuth } from "@/context/AuthContext"
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
-import { getUserProfile } from "../services/authService"
+import { getUserProfile } from "@/services/authService"
 import { useTranslation } from "react-i18next"
-import { useTheme } from "../context/ThemeContext"
+import { useTheme } from "@/context/ThemeContext"
 
 export default function AccountPage() {
   const { t, i18n } = useTranslation();

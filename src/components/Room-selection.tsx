@@ -16,7 +16,7 @@ import {
 import { Calendar } from "@/components/ui/calendar";
 import { useNavigate } from "react-router-dom";
 import TimePicker from "./time-picker";
-import BottomNavBar from "./Bottom-navbar";
+import BottomNavBar from "@/components/BottomNavbar";
 import { useReservation } from "../context/ReservationContext";
 import { useTranslation } from "react-i18next";
 

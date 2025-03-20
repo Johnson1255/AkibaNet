@@ -81,5 +81,69 @@
     "createdAt": "2025-03-14T21:07:25.803Z",
     "updatedAt": "2025-03-14T21:07:25.803Z",
     "totalPrice": 170
+  },
+  {
+    "id": "book-0d82b388-0fbd-4aeb-a5c5-692bdaafec4f",
+    "userId": "a19e61de-fe72-4d1e-942b-586e05d930f7",
+    "roomId": 101,
+    "status": "completed",
+    "startTime": "2025-03-20T02:45:00.000Z",
+    "duration": 1,
+    "endTime": "2025-03-20T03:45:00.000Z",
+    "services": [
+      {
+        "serviceId": "t1",
+        "quantity": 1,
+        "price": 80
+      },
+      {
+        "serviceId": "t2",
+        "quantity": 1,
+        "price": 200
+      }
+    ],
+    "products": [],
+    "basePrice": 25,
+    "servicesTotal": 280,
+    "productsTotal": 0,
+    "createdAt": "2025-03-20T02:39:23.604Z",
+    "updatedAt": "2025-03-20T02:39:23.604Z",
+    "totalPrice": 305
+  },
+  {
+    "id": "book-f1a08c88-34b2-4a2e-9fd8-0ed6369929b9",
+    "userId": "a19e61de-fe72-4d1e-942b-586e05d930f7",
+    "roomId": 102,
+    "status": "active",
+    "startTime": "2025-03-20T02:45:00.000Z",
+    "duration": 4,
+    "endTime": "2025-03-20T06:45:00.000Z",
+    "services": [
+      {
+        "serviceId": "g1",
+        "serviceName": "Gaming Mouse",
+        "quantity": 1,
+        "price": 15
+      },
+      {
+        "serviceId": "g2",
+        "serviceName": "Gaming Keyboard",
+        "quantity": 1,
+        "price": 25
+      },
+      {
+        "serviceId": "g3",
+        "serviceName": "Gaming Headset",
+        "quantity": 1,
+        "price": 30
+      }
+    ],
+    "products": [],
+    "basePrice": 100,
+    "servicesTotal": 70,
+    "productsTotal": 0,
+    "createdAt": "2025-03-20T02:42:45.281Z",
+    "updatedAt": "2025-03-20T02:42:45.281Z",
+    "totalPrice": 170
   }
 ]

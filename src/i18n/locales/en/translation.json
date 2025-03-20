@@ -162,11 +162,6 @@
       "working": "Working Services"
     }
   },
-  "consoles": {
-    "ps5": "Playstation 5",
-    "dreamcast": "Sega Dreamcast",
-    "n64": "Nintengod 64"
-  },
   "common": {
     "retry": "Retry",
     "total": "TOTAL"
@@ -204,6 +199,7 @@
     "policyNotice": "Notice: You cannot make a new reservation until the current one ends.",
     "cancelReservation": "Cancel Reservation",
     "backToHome": "Back to Home",
-    "completeReservation": "Complete Reservation"
+    "completeReservation": "Complete Reservation",
+    "buyProducts": "Buy Products"
   }
 }

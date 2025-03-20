@@ -2,7 +2,7 @@ import { ArrowLeft, Plus, Minus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import BottomNavBar from "./Bottom-navbar";
+import BottomNavBar from "./BottomNavbar";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
@@ -27,6 +27,7 @@ export default function FoodPage() {
     new Map()
   );
   const { theme } = useTheme();
+  const [showPolicyNotice, setShowPolicyNotice] = useState(true);
 
   const lastReservation = localStorage.getItem("lastReservation");
   let showButton = true;
@@ -39,6 +40,13 @@ export default function FoodPage() {
       .then((res) => res.json())
       .then((data) => setFoodData(data))
       .catch((err) => console.error(err));
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowPolicyNotice(false);
+    }, 5000);
+    return () => clearTimeout(timer);
   }, []);
 
   const toggleProduct = (productId: number): void => {
@@ -73,7 +81,27 @@ export default function FoodPage() {
           };
         }
       );
-      reservation.products = productsArray;
+
+      // Append new products to the existing ones
+      reservation.products = reservation.products || [];
+      productsArray.forEach((newProduct) => {
+        interface ReservationProduct {
+          productId: number;
+          name: string;
+          price: number;
+          quantity: number;
+        }
+
+        const existingProduct: ReservationProduct | undefined = reservation.products.find(
+          (p: ReservationProduct) => p.productId === newProduct.productId
+        );
+        if (existingProduct) {
+          existingProduct.quantity += newProduct.quantity;
+        } else {
+          reservation.products.push(newProduct);
+        }
+      });
+
       localStorage.setItem("lastReservation", JSON.stringify(reservation));
       navigate("/active-reservation");
     }
@@ -139,9 +167,11 @@ export default function FoodPage() {
       </header>
 
       {/* Aviso de Política */}
-      <div className="p-4 bg-yellow-200 text-yellow-800 text-center">
-        {showButton ? t("food.policyNotice") : t("food.gotReservation")}
-      </div>
+      {showPolicyNotice && (
+        <div className="p-4 bg-yellow-200 text-yellow-800 text-center">
+          {showButton ? t("food.policyNotice") : t("food.gotReservation")}
+        </div>
+      )}
       <Separator className="my-4" />
 
       <div className="px-6">

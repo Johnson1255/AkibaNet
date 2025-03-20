@@ -1,4 +1,4 @@
-import BottomNavBar from "./Bottom-navbar";
+import BottomNavBar from "@/components/BottomNavbar";
 import { ArrowLeft, Check } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -18,7 +18,7 @@ interface ReservationDetails {
   status?: string;
   selectedDate?: string; 
   selectedTime?: string;
-  services?: Array<{serviceId: string, quantity: number, price: number}>;
+  services?: Array<{serviceId: string, quantity: number, price: number, serviceName: string}>;
 }
 
 export default function Confirmation() {
@@ -156,7 +156,7 @@ export default function Confirmation() {
               {console.log('Services length:', savedReservation.services.length)}
               {savedReservation.services.map((service, index) => (
                 <div key={index} className="flex justify-between">
-                <span>{service.quantity}x {t('confirmation.service')} #{service.serviceId}</span>
+                <span>{service.quantity}x {service.serviceName}</span> {/* Display service name */}
                 <span>¥{service.price}</span>
                 </div>
               ))}
