@@ -9,7 +9,7 @@ import CafeHome from "@/components/Home-page";
 import RoomSelection from "@/components/Room-selection";
 import RoomDetails from "@/components/Room-details";
 import AdditionalServices from "@/components/Additional-services";
-import AccountPage from "@/components/AccountPage";
+import AccountPage from "@/components/AccountPage/index";
 import SignUpPage from "@/components/SignUp-page";
 import Confirmation from "@/components/Confirmation";
 import HelpServicesPage from "@/components/Help-Services-page";
