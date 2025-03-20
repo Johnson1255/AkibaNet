@@ -3,10 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Clock, Info } from "lucide-react";
 import ReservationCountdown from "@/components/ReservationCountdown";
-import { Reservation } from "@/types/reservation";
+import { DetailedReservation } from "@/types/reservation";
 
 interface ReservationInfoCardProps {
-  reservation: Reservation;
+  reservation: DetailedReservation;
   onAction: () => void;
   actionButtonText: string;
 }

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Reservation } from '../models/reservation';
+import { DetailedReservation } from "@/types/reservation";
 import { getReservationTimeInfo, ReservationTimeStatus } from '../utils/reservationTimer';
 
 interface ReservationStatusProps {
-  reservation: Reservation | null;
+  reservation: DetailedReservation | null;
 }
 
 const ReservationStatus: React.FC<ReservationStatusProps> = ({ reservation }) => {

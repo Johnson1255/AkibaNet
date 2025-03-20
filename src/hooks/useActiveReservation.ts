@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Reservation } from "@/types/reservation";
+import { DetailedReservation } from "@/types/reservation";
 
 export const useActiveReservation = () => {
   const navigate = useNavigate();
-  const [activeReservation, setActiveReservation] = useState<Reservation | null>(null);
+  const [activeReservation, setActiveReservation] = useState<DetailedReservation | null>(null);
 
   useEffect(() => {
     const savedReservation = localStorage.getItem("lastReservation");
