@@ -8,7 +8,7 @@ import LoginForm from "@/components/LogIn-form";
 import CafeHome from "@/components/Home-page";
 import RoomSelection from "@/components/Room-selection";
 import RoomDetails from "@/components/Room-details";
-import AdditionalServices from "@/components/Additional-services";
+import AdditionalServices from "@/components/AdditionalServicesPage/index";
 import AccountPage from "@/components/AccountPage/index";
 import SignUpPage from "@/components/SignUp-page";
 import Confirmation from "@/components/Confirmation";

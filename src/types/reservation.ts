@@ -17,13 +17,13 @@ export interface Reservation {
 }
 
 export interface Service {
-  serviceId: string;
-  serviceName: string;
+  id: string;
+  name: string;
   price: number;
 }
 
 export interface Product {
-  productId: string;
+  id: string;
   name: string;
   price: number;
   quantity: number;

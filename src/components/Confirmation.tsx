@@ -18,7 +18,7 @@ interface ReservationDetails {
   status?: string;
   selectedDate?: string; 
   selectedTime?: string;
-  services?: Array<{serviceId: string, quantity: number, price: number, serviceName: string}>;
+  services?: Array<{serviceId: string, price: number, name: string}>;
 }
 
 export default function Confirmation() {
@@ -156,7 +156,7 @@ export default function Confirmation() {
               {console.log('Services length:', savedReservation.services.length)}
               {savedReservation.services.map((service, index) => (
                 <div key={index} className="flex justify-between">
-                <span>{service.quantity}x {service.serviceName}</span> {/* Display service name */}
+                <span>{service.name}</span> {/* Display service name */}
                 <span>¥{service.price}</span>
                 </div>
               ))}

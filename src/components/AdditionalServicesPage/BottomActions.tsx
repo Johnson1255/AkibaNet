@@ -8,11 +8,13 @@ export const BottomActions: React.FC<BottomActionsProps> = ({
 }) => {
   const { t } = useTranslation();
   return (
-    <Button
-      className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
-      onClick={handleConfirmAndPay}
-    >
-      {t("reservation.confirmAndPay")}
-    </Button>
+    <div className="px-4">
+      <Button
+        className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90 my-4"
+        onClick={handleConfirmAndPay}
+      >
+        {t("reservation.confirmAndPay")}
+      </Button>
+    </div>
   );
 };

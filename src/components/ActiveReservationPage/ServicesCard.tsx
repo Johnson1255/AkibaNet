@@ -22,7 +22,7 @@ export const ServicesCard: React.FC<ServicesCardProps> = ({ services }) => {
       <CardContent className="flex flex-wrap gap-2">
         {services.map((service, index) => (
           <Badge key={index} variant="outline" className="px-3 py-1">
-            {service.serviceName} - ${service.price}
+            {service.name} - ${service.price}
           </Badge>
         ))}
       </CardContent>

@@ -49,15 +49,15 @@ export default function FoodPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  const toggleProduct = (productId: number): void => {
+  const toggleProduct = (id: number): void => {
     setSelectedProducts(
       (prevSelected: Map<number, number>): Map<number, number> => {
         const newSelected = new Map(prevSelected);
-        const currentCount: number = newSelected.get(productId) || 0;
+        const currentCount: number = newSelected.get(id) || 0;
         if (currentCount < 5) {
-          newSelected.set(productId, currentCount + 1);
+          newSelected.set(id, currentCount + 1);
         } else {
-          newSelected.delete(productId);
+          newSelected.delete(id);
         }
         return newSelected;
       }
@@ -69,12 +69,12 @@ export default function FoodPage() {
     if (lastReservation) {
       const reservation = JSON.parse(lastReservation);
       const productsArray = Array.from(selectedProducts.entries()).map(
-        ([productId, quantity]) => {
+        ([id, quantity]) => {
           const product = Object.values(foodData)
             .flat()
-            .find((p) => p.id === productId);
+            .find((p) => p.id === id);
           return {
-            productId,
+            id,
             name: product?.name,
             price: product?.price,
             quantity,
@@ -86,14 +86,14 @@ export default function FoodPage() {
       reservation.products = reservation.products || [];
       productsArray.forEach((newProduct) => {
         interface ReservationProduct {
-          productId: number;
+          id: number;
           name: string;
           price: number;
           quantity: number;
         }
 
         const existingProduct: ReservationProduct | undefined = reservation.products.find(
-          (p: ReservationProduct) => p.productId === newProduct.productId
+          (p: ReservationProduct) => p.id === newProduct.id
         );
         if (existingProduct) {
           existingProduct.quantity += newProduct.quantity;
