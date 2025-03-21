@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Clock, Info } from "lucide-react";
+import { Clock } from "lucide-react";
 import ReservationCountdown from "@/components/ActiveReservationPage/ReservationCountdown";
 import { DetailedReservation } from "@/types/reservation";
 
@@ -17,18 +17,10 @@ export const ReservationInfoCard: React.FC<ReservationInfoCardProps> = ({
   actionButtonText
 }) => {
   const { t } = useTranslation();
-  const isReservationEnded = new Date() > new Date(reservation.endTime);
   
   return (
     <Card className="p-4 mb-4 bg-card text-card-foreground">
-      {!isReservationEnded && (
-        <div className="p-3 rounded-lg mb-4 flex items-start bg-background">
-          <Info className="h-5 w-5 primary mr-2 mt-0.5" />
-          <p className="primary text-sm">
-            {t("activeReservation.policyNotice")}
-          </p>
-        </div>
-      )}
+
       <h2 className="text-xl font-semibold mb-3">
         {t("reservation.room")} #{reservation.roomId}
       </h2>

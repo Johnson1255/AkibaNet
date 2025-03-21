@@ -9,19 +9,19 @@ interface ServicesCardProps {
 
 export const ServicesCard: React.FC<ServicesCardProps> = ({ services }) => {
   const { t } = useTranslation();
-  
+
   if (services.length === 0) return null;
-  
+
   return (
-    <Card className="p-4 mb-4 bg-card text-card-foreground">
+    <Card className="mb-4 bg-card text-card-foreground">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold mb-2">
+        <CardTitle className="text-lg font-semibold">
           {t("confirmation.services")}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-wrap gap-2">
         {services.map((service, index) => (
-          <Badge key={index} variant="secondary" className="px-3 py-1">
+          <Badge key={index} variant="secondary">
             {service.name} - ${service.price}
           </Badge>
         ))}

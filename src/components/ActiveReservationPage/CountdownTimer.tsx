@@ -55,7 +55,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   if (isCompleted && type === 'end') {
     return (
-      <div className="rounded-xl bg-card border border-border p-6 shadow-sm text-center">
+      <div className="rounded-xl bg-card border border-border p-6 shadow-sm text-center bg-secondary">
         <h2 className="text-2xl font-medium mb-3">{t('reservation.completed')}</h2>
         <p className="text-muted-foreground mb-5">{t('reservation.noPendingReservation')}</p>
         <button
@@ -69,7 +69,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   }
 
   return (
-    <div className={`rounded-xl border border-border p-6 shadow-sm text-center ${type === 'start' ? 'bg-secondary' : 'bg-card'}`}>
+    <div className="rounded-xl border border-border p-6 shadow-sm text-center bg-secondary">
       <h2 className="text-2xl font-medium mb-3">
         {type === 'start' ? t('reservation.startsIn') : t('reservation.endsIn')}
       </h2>
