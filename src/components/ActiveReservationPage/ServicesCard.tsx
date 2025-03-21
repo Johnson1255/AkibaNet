@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Service } from "@/types/reservation";
+import { Service } from "@/types/services";
 
 interface ServicesCardProps {
   services: Service[];
@@ -21,7 +21,7 @@ export const ServicesCard: React.FC<ServicesCardProps> = ({ services }) => {
       </CardHeader>
       <CardContent className="flex flex-wrap gap-2">
         {services.map((service, index) => (
-          <Badge key={index} variant="outline" className="px-3 py-1">
+          <Badge key={index} variant="secondary" className="px-3 py-1">
             {service.name} - ${service.price}
           </Badge>
         ))}

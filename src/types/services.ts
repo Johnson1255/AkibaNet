@@ -1,3 +1,8 @@
+export interface Service {
+  id: string;
+  name: string;
+  price: number;
+}
 export interface OrderSummaryProps {
   roomId: string;
   baseRoomPrice: number;

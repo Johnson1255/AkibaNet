@@ -1,5 +1,5 @@
-import { ServicesByCategory } from "@/types/services";
-
+import { Service,ServicesByCategory } from "@/types/services";
+import { Product } from "@/types/product";
 export interface Reservation {
   id?: string;  // Made optional since it might not be available during creation
   roomId?: string | number;  // Added to match usage in components
@@ -28,19 +28,6 @@ export interface ConfirmedReservationDetails {
   selectedDate?: string;
   selectedTime?: string;
   services?: Array<{ serviceId: string; price: number; name: string }>;
-}
-
-export interface Service {
-  id: string;
-  name: string;
-  price: number;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
 }
 
 export interface DetailedReservation {
