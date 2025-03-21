@@ -1,0 +1,7 @@
+{
+  "name": "internet-cafe",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "custom"
+}
