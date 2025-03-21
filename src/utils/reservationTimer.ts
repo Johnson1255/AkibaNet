@@ -1,4 +1,4 @@
-import { Reservation } from '../models/reservation';
+import { DetailedReservation } from "@/types/reservation";
 
 export enum ReservationTimeStatus {
   NOT_STARTED = 'NOT_STARTED',
@@ -12,7 +12,7 @@ export interface ReservationTimeInfo {
   formattedTimeRemaining: string; // en formato HH:MM:SS
 }
 
-export function getReservationTimeInfo(reservation: Reservation): ReservationTimeInfo {
+export function getReservationTimeInfo(reservation: DetailedReservation): ReservationTimeInfo {
   const now = new Date();
   const startTime = new Date(reservation.startTime);
   const endTime = new Date(reservation.endTime);

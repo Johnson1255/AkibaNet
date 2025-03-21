@@ -4,17 +4,17 @@ import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext'; // Importar ThemeProvider
 import { PrivateRoute, PublicRoute } from '@/components/PrivateRoute';
 
-import LoginForm from "@/components/LogIn-form";
-import CafeHome from "@/components/Home-page";
-import RoomSelection from "@/components/Room-selection";
-import RoomDetails from "@/components/Room-details";
-import AdditionalServices from "@/components/Additional-services";
-import AccountPage from "@/components/AccountPage";
-import SignUpPage from "@/components/SignUp-page";
-import Confirmation from "@/components/Confirmation";
-import HelpServicesPage from "@/components/Help-Services-page";
-import FoodPage from "@/components/FoodPage";
-import ActiveReservationPage from '@/components/ActiveReservationPage';
+import LogInPage from "@/components/auth/LogInPage";
+import Home from "@/components/HomePage/index";
+import RoomSelection from "@/components/RoomsPage/index";
+import RoomDetails from "@/components/RoomDetailsPage/index";
+import AdditionalServices from "@/components/AdditionalServicesPage/index";
+import AccountPage from "@/components/AccountPage/index";
+import SignUpPage from "@/components/auth/SignUpPage";
+import Confirmation from "@/components/Confirmation/index";
+import HelpServicesPage from "@/components/HelpPage/index";
+import FoodPage from "@/components/FoodPage/index";
+import ActiveReservationPage from '@/components/ActiveReservationPage/index';
 
 function App() {
   return (
@@ -38,13 +38,13 @@ function AppRoutes() {
 
       {/* Rutas públicas - solo accesibles si NO está autenticado */}
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<LogInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
       </Route>
       
       {/* Rutas privadas - solo accesibles si está autenticado */}
       <Route element={<PrivateRoute />}>
-        <Route path="/home" element={<CafeHome />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/reserve" element={<RoomSelection />} />
         <Route path="/room-details/:roomId" element={<RoomDetails />} />
         <Route path="/additional-services" element={<AdditionalServices />} />

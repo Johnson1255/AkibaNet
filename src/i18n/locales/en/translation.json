@@ -99,6 +99,7 @@
     "reservations": "Reservations"
   },
   "help": {
+    "title": "Help & Services",
     "help": "Help & Services",
     "food": "Drinks, Food & Snacks",
     "wifiSupport": "Wifi Support",
@@ -136,26 +137,21 @@
   },
   "room":{
     "name": "Select a room",
-    "fetchError": "Error fetching room data"
+    "title": "Select a room",
+    "fetchError": "Error fetching room data",
+    "categories": {
+      "all": "All Rooms",
+      "gaming": "Gaming Rooms",
+      "thinking": "Thinking Rooms",
+      "working": "Working Rooms"
+    },
+    "selectors": {
+      "selectDate": "Select date",
+      "selectCategory": "Category"
+    }
   },
   "services": {
-    "headset": {
-      "name": "Premium gaming headsets"
-    },
-    "streaming": {
-      "name": "Streaming Setup",
-      "description": "webcam and microphone for streamers."
-    },
-    "refrigerator": {
-      "name": "Small refrigerator",
-      "description": "For cold drinks and snacks"
-    },
-    "chair": {
-      "name": "Ergonomic gaming chair",
-      "description": "Adjustable and comfortable for long sessions."
-    },
-    "consoleRental": "Console rental",
-    "consoleNote": "* Each console has its own library of games available",
+    "title": "Services",
     "categories": {
       "gaming": "Gaming Services",
       "thinking": "Reading Services",
@@ -176,6 +172,7 @@
     "hours": "hours",
     "bookingId": "Booking ID",
     "services": "Services",
+    "products": "Products",
     "service": "Service",
     "total": "Total Payment",
     "backToHome": "Back to Home",

@@ -64,6 +64,7 @@
     "hours": "horas",
     "bookingId": "ID de Reserva",
     "services": "Servicios",
+    "products": "Productos",
     "service": "Servicio",
     "total": "Total a Pagar",
     "backToHome": "Volver al Inicio",
@@ -117,6 +118,7 @@
     "reservations": "Reservas"
   },
   "help": {
+    "title": "Ayuda y Servicios",
     "help": "Atención al cliente",
     "food": "Bebidas, Comida y Snacks",
     "wifiSupport": "Soporte de Wifi",
@@ -154,27 +156,22 @@
     "confirmButton": "Confirmar Productos"
   },
   "room": {
-    "name": "Elige una habitación",
-    "fetchError": "Error al cargar la información de las habitaciones."
+    "name": "Elige una sala",
+    "title": "Elige una habitación",
+    "fetchError": "Error al cargar la información de las habitaciones.",
+    "categories": {
+      "all": "Todas las salas",
+      "gaming": "Salas Gaming",
+      "thinking": "Salas Thinking",
+      "working": "Salas Working"
+    },
+    "selectors": {
+      "selectDate": "Seleccionar fecha",
+      "selectCategory": "Categoría"
+    }
   },
   "services": {
-    "headset": {
-      "name": "Auriculares premium para gaming"
-    },
-    "streaming": {
-      "name": "Equipo para streaming",
-      "description": "webcam y micrófono para streamers."
-    },
-    "refrigerator": {
-      "name": "Pequeño refrigerador",
-      "description": "Para bebidas frías y snacks"
-    },
-    "chair": {
-      "name": "Silla ergonómica para gaming",
-      "description": "Ajustable y cómoda para sesiones largas."
-    },
-    "consoleRental": "Alquiler de consolas",
-    "consoleNote": "* Cada consola tiene su propia biblioteca de juegos disponible",
+    "title": "Servicios",
     "categories": {
       "gaming": "Servicios de Gaming",
       "thinking": "Servicios de Creatividad",
