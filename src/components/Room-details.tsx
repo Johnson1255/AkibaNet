@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import BottomNavBar from "@/components/common/BottomNavbar";
-import ImageCarousel from "./ImageCarousel";
+import ImageCarousel from "./RoomDetailsPage/ImageCarousel";
 import { useReservation } from "../context/ReservationContext";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";

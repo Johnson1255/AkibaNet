@@ -7,7 +7,7 @@ import { PrivateRoute, PublicRoute } from '@/components/PrivateRoute';
 import LoginForm from "@/components/LogIn-form";
 import Home from "@/components/HomePage/index";
 import RoomSelection from "@/components/Room-selection";
-import RoomDetails from "@/components/Room-details";
+import RoomDetails from "@/components/RoomDetailsPage/index";
 import AdditionalServices from "@/components/AdditionalServicesPage/index";
 import AccountPage from "@/components/AccountPage/index";
 import SignUpPage from "@/components/SignUp-page";

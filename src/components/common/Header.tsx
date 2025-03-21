@@ -11,13 +11,7 @@ interface HeaderProps {
   className?: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  title,
-  showBackButton = true,
-  translationKey,
-  onBackClick,
-  className = "bg-background border-b border-border",
-}) => {
+export function Header({ title, showBackButton, translationKey, onBackClick, className }: HeaderProps) {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
