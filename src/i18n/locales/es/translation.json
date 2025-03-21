@@ -158,23 +158,7 @@
     "fetchError": "Error al cargar la información de las habitaciones."
   },
   "services": {
-    "headset": {
-      "name": "Auriculares premium para gaming"
-    },
-    "streaming": {
-      "name": "Equipo para streaming",
-      "description": "webcam y micrófono para streamers."
-    },
-    "refrigerator": {
-      "name": "Pequeño refrigerador",
-      "description": "Para bebidas frías y snacks"
-    },
-    "chair": {
-      "name": "Silla ergonómica para gaming",
-      "description": "Ajustable y cómoda para sesiones largas."
-    },
-    "consoleRental": "Alquiler de consolas",
-    "consoleNote": "* Cada consola tiene su propia biblioteca de juegos disponible",
+    "title": "Servicios",
     "categories": {
       "gaming": "Servicios de Gaming",
       "thinking": "Servicios de Creatividad",
