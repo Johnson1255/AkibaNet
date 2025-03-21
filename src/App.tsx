@@ -4,7 +4,7 @@ import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext'; // Importar ThemeProvider
 import { PrivateRoute, PublicRoute } from '@/components/PrivateRoute';
 
-import LoginForm from "@/components/LogIn-form";
+import LoginForm from "@/components/auth/LoginForm";
 import Home from "@/components/HomePage/index";
 import RoomSelection from "@/components/RoomsPage/index";
 import RoomDetails from "@/components/RoomDetailsPage/index";
