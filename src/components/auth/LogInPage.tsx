@@ -1,54 +1,50 @@
 import { Link } from "react-router-dom";
-import { Sun, Moon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useTheme } from "@/context/ThemeContext";
 import { useLoginForm } from "@/hooks/useLoginForm";
 import { SocialLoginButtons } from "./SocialLoginButtons";
 import { Footer } from "../common/Footer";
 import { checkServerConnection } from "@/utils/serverUtils";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export default function LoginForm() {
-  const { theme, toggleTheme } = useTheme();
   const {
     email,
     setEmail,
     password,
     setPassword,
     error,
-    setError,  // Añadir setError
+    setError, // Añadir setError
     success,
     isLoading,
-    handleLogin
+    handleLogin,
   } = useLoginForm();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault(); // Importante: prevenir el comportamiento por defecto
-    
+
     try {
       const isConnected = await checkServerConnection();
       if (!isConnected) {
-        setError('No se pudo conectar al servidor. Verifica tu conexión a internet.');
+        setError(
+          "No se pudo conectar al servidor. Verifica tu conexión a internet."
+        );
         return;
       }
-      
+
       await handleLogin(e);
     } catch (err) {
-      setError('Ocurrió un error inesperado. Por favor, intenta de nuevo.');
+      setError("Ocurrió un error inesperado. Por favor, intenta de nuevo.");
     }
   };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-between py-8 px-4">
       <div className="w-full flex justify-end p-4">
-        <Button onClick={toggleTheme} className="bg-secondary hover:bg-secondary/90 rounded-full p-2">
-          {theme === 'light' ? <Moon className="w-6 h-6 text-secondary-foreground" />
-          : 
-          <Sun className="w-6 h-6 text-secondary-foreground" />}
-        </Button>
+        <ThemeSwitcher />
       </div>
-      
+
       <Card className="w-full max-w-sm border-0 shadow-none">
         <CardContent className="space-y-6 pt-8">
           <div className="flex justify-center">
@@ -56,7 +52,9 @@ export default function LoginForm() {
             <div className="w-24 h-24 rounded-full bg-gray-200" />
           </div>
 
-          {success && <div className="text-green-500 text-sm text-center">{success}</div>}
+          {success && (
+            <div className="text-green-500 text-sm text-center">{success}</div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <Input
@@ -78,12 +76,12 @@ export default function LoginForm() {
 
             {error && <div className="text-red-500 text-sm">{error}</div>}
 
-            <Button 
-              type="submit" 
+            <Button
+              type="submit"
               className="w-full bg-primary text-primary-foreground hover:bg-primary/90 rounded-full h-12"
               disabled={isLoading}
             >
-              {isLoading ? 'Iniciando sesión...' : 'Login'}
+              {isLoading ? "Iniciando sesión..." : "Login"}
             </Button>
           </form>
 

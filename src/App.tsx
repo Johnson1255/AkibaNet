@@ -4,13 +4,13 @@ import { AuthProvider } from '@/context/AuthContext';
 import { ThemeProvider } from '@/context/ThemeContext'; // Importar ThemeProvider
 import { PrivateRoute, PublicRoute } from '@/components/PrivateRoute';
 
-import LoginForm from "@/components/auth/LoginForm";
+import LogInPage from "@/components/auth/LogInPage";
 import Home from "@/components/HomePage/index";
 import RoomSelection from "@/components/RoomsPage/index";
 import RoomDetails from "@/components/RoomDetailsPage/index";
 import AdditionalServices from "@/components/AdditionalServicesPage/index";
 import AccountPage from "@/components/AccountPage/index";
-import SignUpPage from "@/components/SignUp-page";
+import SignUpPage from "@/components/auth/SignUpPage";
 import Confirmation from "@/components/Confirmation/index";
 import HelpServicesPage from "@/components/HelpPage/index";
 import FoodPage from "@/components/FoodPage/index";
@@ -38,7 +38,7 @@ function AppRoutes() {
 
       {/* Rutas públicas - solo accesibles si NO está autenticado */}
       <Route element={<PublicRoute />}>
-        <Route path="/login" element={<LoginForm />} />
+        <Route path="/login" element={<LogInPage />} />
         <Route path="/signup" element={<SignUpPage />} />
       </Route>
       
