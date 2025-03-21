@@ -5,7 +5,7 @@ import { ThemeProvider } from '@/context/ThemeContext'; // Importar ThemeProvide
 import { PrivateRoute, PublicRoute } from '@/components/PrivateRoute';
 
 import LoginForm from "@/components/LogIn-form";
-import CafeHome from "@/components/Home-page";
+import Home from "@/components/HomePage/index";
 import RoomSelection from "@/components/Room-selection";
 import RoomDetails from "@/components/Room-details";
 import AdditionalServices from "@/components/AdditionalServicesPage/index";
@@ -44,7 +44,7 @@ function AppRoutes() {
       
       {/* Rutas privadas - solo accesibles si está autenticado */}
       <Route element={<PrivateRoute />}>
-        <Route path="/home" element={<CafeHome />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/reserve" element={<RoomSelection />} />
         <Route path="/room-details/:roomId" element={<RoomDetails />} />
         <Route path="/additional-services" element={<AdditionalServices />} />
