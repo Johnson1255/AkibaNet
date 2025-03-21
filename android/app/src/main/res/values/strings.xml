@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">AkibaNet</string>
+    <string name="title_activity_main">AkibaNet</string>
+    <string name="package_name">com.ejemplo.AkibaNet</string>
+    <string name="custom_url_scheme">com.ejemplo.AkibaNet</string>
+</resources>
