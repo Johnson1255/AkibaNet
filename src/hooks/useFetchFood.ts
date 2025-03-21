@@ -1,17 +1,6 @@
-// src/components/FoodPage/useFetchFood.ts
+import { CategorizedProductData } from "@/types/product";
 
-interface FoodData {
-  [key: string]: Product[];
-}
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-}
-
-export const useFetchFood = (setFoodData: React.Dispatch<React.SetStateAction<FoodData>>) => {
+export const useFetchFood = (setFoodData: React.Dispatch<React.SetStateAction<CategorizedProductData>>) => {
   const fetchFood = () => {
     fetch("http://localhost:3000/api/food")
       .then((res) => res.json())

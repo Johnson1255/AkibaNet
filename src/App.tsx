@@ -13,7 +13,7 @@ import AccountPage from "@/components/AccountPage/index";
 import SignUpPage from "@/components/SignUp-page";
 import Confirmation from "@/components/Confirmation/index";
 import HelpServicesPage from "@/components/Help-Services-page";
-import FoodPage from "@/components/FoodPage";
+import FoodPage from "@/components/FoodPage/index";
 import ActiveReservationPage from '@/components/ActiveReservationPage/index';
 
 function App() {
