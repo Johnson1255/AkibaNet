@@ -7,7 +7,7 @@
 import { HelpCircle, Coffee, Pizza } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import BottomNavBar from "@/components/BottomNavbar";
+import BottomNavBar from "@/components/common/BottomNavbar";
 import { useAuth } from "@/context/AuthContext";
 import { useTranslation } from "react-i18next";
 

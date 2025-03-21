@@ -1,13 +1,13 @@
 
 import { Separator } from "@/components/ui/separator";
-import BottomNavBar from "@/components/BottomNavbar";
+import BottomNavBar from "@/components/common/BottomNavbar";
 import { useAuth } from "@/context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/context/ThemeContext";
 import { useUserProfile } from "@/hooks/useUserProfile";
 
-import { AccountHeader } from "./AccountHeader";
+import { Header } from "@/components/common/Header";
 import { ProfileSection } from "./ProfileSection";
 import { ReservationHistory } from "./ReservationHistory";
 import { SettingsSection } from "./SettingsSection";
@@ -55,7 +55,7 @@ export default function AccountPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-16">
-      <AccountHeader title={t('account.title')} />
+      <Header title={t("account.title")} showBackButton={true} />
       <ProfileSection user={user} />
       <Separator className="my-4" />
       <ReservationHistory 

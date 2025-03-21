@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useReservation } from "@/context/ReservationContext";
 import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/AdditionalServicesPage/Header";
+import { Header } from "@/components/common/Header";
 import { RoomSummary } from "@/components/AdditionalServicesPage/RoomSummary";
 import { ServiceCategory } from "@/components/AdditionalServicesPage/ServiceCategory";
 import { OrderSummary } from "@/components/AdditionalServicesPage/OrderSummary";
@@ -122,7 +122,7 @@ export default function AdditionalServicesPage() {
   return (
     <>
       <div className="min-h-screen bg-background">
-        <Header navigate={navigate} />
+        <Header title={t("services.title")} showBackButton={true} />
         <RoomSummary
           reservation={enhancedReservation}
           roomId={roomId}

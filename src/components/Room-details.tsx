@@ -3,7 +3,7 @@ import { ArrowLeft, Plus, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
-import BottomNavBar from "@/components/BottomNavbar";
+import BottomNavBar from "@/components/common/BottomNavbar";
 import ImageCarousel from "./ImageCarousel";
 import { useReservation } from "../context/ReservationContext";
 import { useNavigate, useLocation, useParams } from "react-router-dom";

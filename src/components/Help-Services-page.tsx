@@ -20,7 +20,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
-import BottomNavBar from "@/components/BottomNavbar";
+import BottomNavBar from "@/components/common/BottomNavbar";
 import { useTranslation } from "react-i18next";
 
 /**

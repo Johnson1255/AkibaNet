@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
-import BottomNavBar from "@/components/BottomNavbar";
+import BottomNavBar from "@/components/common/BottomNavbar";
 import { useLoadReservation } from "@/hooks/useLoadReservation";
-import { Header } from "@/components/Confirmation/Header";
+import { Header } from "@/components/common/Header";
 import { ConfirmationMessage } from "@/components/Confirmation/ConfirmationMessage";
 import { ReservationDetails } from "@/components/Confirmation/ReservationDetails";
 import { ServicesList } from "@/components/Confirmation/ServicesList";
@@ -32,7 +32,7 @@ export default function Confirmation() {
   return (
     <>
       <div className="min-h-screen bg-background text-foreground pb-16">
-        <Header />
+        <Header title={t("confirmation.title")} showBackButton={true} />
         <ConfirmationMessage />
         <ReservationDetails reservation={savedReservation} />
         <ServicesList services={savedReservation.services} />
