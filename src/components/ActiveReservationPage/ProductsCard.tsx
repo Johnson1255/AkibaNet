@@ -14,10 +14,10 @@ export const ProductsCard: React.FC<ProductsCardProps> = ({ products }) => {
   const navigate = useNavigate();
   
   return (
-    <Card className="p-4 mb-4 bg-card text-card-foreground">
+    <Card className="mb-4 bg-card text-card-foreground">
       <CardHeader>
-        <CardTitle className="text-lg font-semibold mb-2">
-          {t("activeReservation.products")}
+        <CardTitle className="text-lg font-semibold">
+          {t("confirmation.services")}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-wrap gap-2">
@@ -30,7 +30,7 @@ export const ProductsCard: React.FC<ProductsCardProps> = ({ products }) => {
           </Button>
         ) : (
           products.map((product, index) => (
-            <Badge key={index} variant="secondary" className="px-3 py-1">
+            <Badge key={index} variant="secondary">
               {product.name} - ${product.price} x {product.quantity}
             </Badge>
           ))
