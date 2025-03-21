@@ -1,13 +1,4 @@
-// src/components/FoodPage/useToggleProduct.ts
-
-interface Product {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-}
-
-export const useToggleProduct = (selectedProducts: Map<number, number>, setSelectedProducts: React.Dispatch<React.SetStateAction<Map<number, number>>>) => {
+export const useToggleProduct = (setSelectedProducts: React.Dispatch<React.SetStateAction<Map<number, number>>>) => {
   const toggleProduct = (id: number): void => {
     setSelectedProducts(
       (prevSelected: Map<number, number>): Map<number, number> => {

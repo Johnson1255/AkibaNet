@@ -21,7 +21,7 @@ export default function FoodPage() {
   const [showPolicyNotice, setShowPolicyNotice] = useState(true)
   const allProducts = Object.values(productData).flat()
   const { fetchFood } = useFetchFood(setFoodData)
-  const { toggleProduct } = useToggleProduct(selectedProducts, setSelectedProducts)
+  const { toggleProduct } = useToggleProduct(setSelectedProducts)
   const { confirmProducts } = useConfirmProducts(selectedProducts, navigate, allProducts)
 
 
