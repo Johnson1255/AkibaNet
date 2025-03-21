@@ -2,7 +2,7 @@ import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Clock, Info } from "lucide-react";
-import ReservationCountdown from "@/components/ReservationCountdown";
+import ReservationCountdown from "@/components/ActiveReservationPage/ReservationCountdown";
 import { DetailedReservation } from "@/types/reservation";
 
 interface ReservationInfoCardProps {

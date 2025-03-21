@@ -1,7 +1,7 @@
-import CountdownTimer from './CountdownTimer';
+import CountdownTimer from '@/components/ActiveReservationPage/CountdownTimer';
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button } from './ui/button';
+import { Button } from '../ui/button';
 import { useTranslation } from 'react-i18next';
 
 interface Reservation {
