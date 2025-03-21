@@ -155,8 +155,19 @@
     "confirmButton": "Confirmar Productos"
   },
   "room": {
-    "name": "Elige una habitación",
-    "fetchError": "Error al cargar la información de las habitaciones."
+    "name": "Elige una sala",
+    "title": "Elige una habitación",
+    "fetchError": "Error al cargar la información de las habitaciones.",
+    "categories": {
+      "all": "Todas las salas",
+      "gaming": "Salas Gaming",
+      "thinking": "Salas Thinking",
+      "working": "Salas Working"
+    },
+    "selectors": {
+      "selectDate": "Seleccionar fecha",
+      "selectCategory": "Categoría"
+    }
   },
   "services": {
     "title": "Servicios",

@@ -137,7 +137,18 @@
   },
   "room":{
     "name": "Select a room",
-    "fetchError": "Error fetching room data"
+    "title": "Select a room",
+    "fetchError": "Error fetching room data",
+    "categories": {
+      "all": "All Rooms",
+      "gaming": "Gaming Rooms",
+      "thinking": "Thinking Rooms",
+      "working": "Working Rooms"
+    },
+    "selectors": {
+      "selectDate": "Select date",
+      "selectCategory": "Category"
+    }
   },
   "services": {
     "title": "Services",

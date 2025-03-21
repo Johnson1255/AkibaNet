@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
 import { useNavigate } from "react-router-dom";
-import TimePicker from "./time-picker";
+import TimePicker from "@/components/RoomsPage/TimePicker";
 import BottomNavBar from "@/components/common/BottomNavbar";
 import { useReservation } from "../context/ReservationContext";
 import { useTranslation } from "react-i18next";
@@ -49,20 +49,24 @@ export default function RoomSelection() {
     const minutes = date.getMinutes();
     const nextQuarter = Math.ceil((minutes + 1) / 15) * 15;
     date.setMinutes(nextQuarter);
-    
+
     // Formatear la hora en el formato "hh:mm am/pm"
     let hours = date.getHours();
     const minutes24 = date.getMinutes();
-    const ampm = hours >= 12 ? 'pm' : 'am';
+    const ampm = hours >= 12 ? "pm" : "am";
     hours = hours % 12;
     hours = hours ? hours : 12; // las 0 horas deben ser 12 en formato 12h
-    
-    return `${hours.toString().padStart(2, '0')}:${minutes24.toString().padStart(2, '0')} ${ampm}`;
+
+    return `${hours.toString().padStart(2, "0")}:${minutes24
+      .toString()
+      .padStart(2, "0")} ${ampm}`;
   };
-  
+
   const [rooms, setRooms] = useState<Room[]>([]);
   const [selectedRoom, setSelectedRoom] = useState<string | null>(null);
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(
+    new Date()
+  );
 
   const [selectedTime, setSelectedTime] = useState<string>(
     getNextQuarterHour(new Date())
@@ -74,20 +78,20 @@ export default function RoomSelection() {
   // Verificar si hay una reserva activa
   useEffect(() => {
     const checkActiveReservation = () => {
-      const savedReservation = localStorage.getItem('lastReservation');
-      
+      const savedReservation = localStorage.getItem("lastReservation");
+
       if (savedReservation) {
         const reservation = JSON.parse(savedReservation);
         const now = new Date();
         const endTime = new Date(reservation.endTime);
-        
+
         // Si la reserva aún no ha terminado, redirigir al usuario
-        if (now < endTime && reservation.status !== 'cancelled') {
-          navigate('/active-reservation');
+        if (now < endTime && reservation.status !== "cancelled") {
+          navigate("/active-reservation");
         }
       }
     };
-    
+
     checkActiveReservation();
   }, [navigate]);
 
@@ -103,15 +107,17 @@ export default function RoomSelection() {
   const fetchRooms = useCallback(async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3000/api/rooms' + 
-        (selectedCategory !== 'all' ? `?category=${selectedCategory}` : ''));
-      
+      const response = await fetch(
+        "http://localhost:3000/api/rooms" +
+          (selectedCategory !== "all" ? `?category=${selectedCategory}` : "")
+      );
+
       if (!response.ok) {
-        throw new Error('Error al cargar las habitaciones');
+        throw new Error("Error al cargar las habitaciones");
       }
 
       const data = await response.json();
-      
+
       // La respuesta del API debería ser un array de rooms directamente
       if (Array.isArray(data)) {
         setRooms(data);
@@ -122,7 +128,7 @@ export default function RoomSelection() {
         setRooms([]);
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Error desconocido');
+      setError(err instanceof Error ? err.message : "Error desconocido");
       console.error("Error fetching rooms:", err);
       setRooms([]);
     } finally {
@@ -143,8 +149,8 @@ export default function RoomSelection() {
   const handleDateChange = (date: Date | undefined) => {
     setSelectedDate(date);
     if (date) {
-      updateRoomDetails({ 
-        selectedDate: date.toLocaleDateString() 
+      updateRoomDetails({
+        selectedDate: date.toLocaleDateString(),
       });
     }
   };
@@ -157,16 +163,16 @@ export default function RoomSelection() {
   // Función para navegar a la página de detalles de la sala
   const goToRoomDetails = (roomId: string) => {
     if (roomId) {
-      const selectedRoom = rooms.find(r => r.id === roomId);
+      const selectedRoom = rooms.find((r) => r.id === roomId);
       updateRoomDetails({
         roomId: Number(roomId),
         selectedDate: selectedDate?.toLocaleDateString(),
         selectedTime: selectedTime,
-        hourlyRate: selectedRoom?.hourlyRate
+        hourlyRate: selectedRoom?.hourlyRate,
       });
-      
+
       console.log("Navigating to room details with roomId:", roomId);
-      
+
       navigate(`/room-details/${roomId}`);
     }
   };
@@ -189,33 +195,43 @@ export default function RoomSelection() {
 
       {/* Time, Date and Category Selection */}
       <div className="bg-secondary p-4 flex gap-3">
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-background">
-            {selectedTime}
-            <ChevronDown className="h-4 w-4 ml-2" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <TimePicker
-            date={selectedDate}
-            setDate={(date: Date) => {
-              let hours = date.getHours();
-              const minutes = date.getMinutes();
-              const ampm = hours >= 12 ? 'pm' : 'am';
-              hours = hours % 12;
-              hours = hours ? hours : 12;
-              
-              const timeString = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${ampm}`;
-              handleTimeChange(timeString);
-            }}
-          />
-        </PopoverContent>
-      </Popover>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant="outline"
+              className="w-[35%] h-[40px] rounded-full bg-background"
+            >
+              {selectedTime}
+              <ChevronDown className="h-4 w-4 ml-2" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <TimePicker
+              date={selectedDate}
+              setDate={(date: Date) => {
+                let hours = date.getHours();
+                const minutes = date.getMinutes();
+                const ampm = hours >= 12 ? "pm" : "am";
+                hours = hours % 12;
+                hours = hours ? hours : 12;
+
+                const timeString = `${hours
+                  .toString()
+                  .padStart(2, "0")}:${minutes
+                  .toString()
+                  .padStart(2, "0")} ${ampm}`;
+                handleTimeChange(timeString);
+              }}
+            />
+          </PopoverContent>
+        </Popover>
 
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant="outline" className="w-[35%] h-[40px] rounded-full bg-background">
+            <Button
+              variant="outline"
+              className="w-[35%] h-[40px] rounded-full bg-background"
+            >
               {selectedDate?.toLocaleDateString() || "Select date"}{" "}
               <ChevronDown className="ml-2 h-4 w-4" />
             </Button>
@@ -237,16 +253,19 @@ export default function RoomSelection() {
             </Button>
           </PopoverTrigger>
           <PopoverContent className="w-auto p-0">
-            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+            <Select
+              value={selectedCategory}
+              onValueChange={setSelectedCategory}
+            >
               <SelectTrigger className="rounded-full bg-white">
-          <SelectValue placeholder="Categoría" />
+                <SelectValue placeholder="Categoría" />
               </SelectTrigger>
               <SelectContent>
-          {categories.map(category => (
-            <SelectItem key={category.id} value={category.id}>
-              {category.name}
-            </SelectItem>
-          ))}
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </PopoverContent>
@@ -267,9 +286,21 @@ export default function RoomSelection() {
                 variant="outline"
                 className={`
                   aspect-square text-lg font-normal flex flex-col gap-1
-                  ${selectedRoom === room.id ? "bg-primary text-primary-foreground hover:bg-primary/90" : ""}
-                  ${room.status !== "available" ? "bg-muted text-muted-foreground hover:bg-muted" : ""}
-                  ${room.status === "available" && selectedRoom !== room.id ? "bg-secondary hover:bg-secondary/80" : ""}
+                  ${
+                    selectedRoom === room.id
+                      ? "bg-primary text-primary-foreground hover:bg-primary/90"
+                      : ""
+                  }
+                  ${
+                    room.status !== "available"
+                      ? "bg-muted text-muted-foreground hover:bg-muted"
+                      : ""
+                  }
+                  ${
+                    room.status === "available" && selectedRoom !== room.id
+                      ? "bg-secondary hover:bg-secondary/80"
+                      : ""
+                  }
                 `}
                 disabled={room.status !== "available"}
                 onClick={() => handleRoomSelect(room.id)}
@@ -280,7 +311,7 @@ export default function RoomSelection() {
           </div>
         )}
       </div>
-      
+
       {/* Selected Room and Action */}
       <div className="px-6 py-4 flex justify-between">
         <Button
