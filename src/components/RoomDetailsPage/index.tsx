@@ -7,18 +7,38 @@ import ImageCarousel from "./ImageCarousel";
 import BottomNavBar from "@/components/common/BottomNavbar";
 import { DetailsCard } from "@/components/RoomDetailsPage/DetailsCard";
 import { BookingSection } from "@/components/RoomDetailsPage/BookingSection";
+import { useBookingLogic } from "@/hooks/useBookingLogic";
+import { useReservation } from "@/context/ReservationContext";
 
 export default function RoomDetails() {
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
   const { t } = useTranslation();
+  const { updateRoomDetails, reservation } = useReservation();
 
   // Get roomId from URL parameters
-  let roomId: string | null =
+  const roomId =
     params.roomId || new URLSearchParams(location.search).get("room");
-
   const { room, loading, error } = useRoomDetails(roomId);
+
+  // Mover estos hooks antes de cualquier lógica condicional
+  const { sliderValue, handleSliderChange, hours, price } =
+    useBookingLogic(room);
+
+  const getHourText = (num: number) => {
+    return num === 1
+      ? t("reservation.hour", "hora")
+      : t("reservation.hours", "horas");
+  };
+
+  const roomCategory =
+    room?.category ||
+    (room?.id.startsWith("1")
+      ? t("reservation.roomTypes.gaming", "Gaming")
+      : room?.id.startsWith("2")
+      ? t("reservation.roomTypes.thinking", "Thinking")
+      : t("reservation.roomTypes.working", "Working"));
 
   if (loading) {
     return (
@@ -67,18 +87,13 @@ export default function RoomDetails() {
     );
   }
 
-  const roomCategory =
-    room.category ||
-    (room.id.startsWith("1")
-      ? t("reservation.roomTypes.gaming", "Gaming")
-      : room.id.startsWith("2")
-      ? t("reservation.roomTypes.thinking", "Thinking")
-      : t("reservation.roomTypes.working", "Working"));
-
   return (
     <div className="min-h-screen bg-background text-foreground pb-16">
       <div>
-        <Header title={`${t("reservation.room")} ${room.id}`} showBackButton={true}/>
+        <Header
+          title={`${t("reservation.room")} ${room.id}`}
+          showBackButton={true}
+        />
       </div>
 
       <div className="px-4 mb-4">
@@ -97,13 +112,13 @@ export default function RoomDetails() {
       <div className="px-4 mb-6">
         <BookingSection
           room={room}
-          price={room.hourlyRate}
-          hours={1}
-          sliderValue={[1]}
-          reservation={{ selectedDate: "", selectedTime: "" }}
-          onSliderChange={() => {}}
-          onUpdateRoomDetails={() => {}}
-          getHourText={() => ""}
+          price={price}
+          hours={hours}
+          sliderValue={sliderValue}
+          reservation={reservation}
+          onSliderChange={handleSliderChange}
+          onUpdateRoomDetails={updateRoomDetails}
+          getHourText={getHourText}
         />
       </div>
       <BottomNavBar />

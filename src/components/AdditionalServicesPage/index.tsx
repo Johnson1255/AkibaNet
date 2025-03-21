@@ -10,7 +10,7 @@ import { BottomActions } from "@/components/AdditionalServicesPage/BottomActions
 import type { ServicesByCategory, ApiService } from "@/types/services";
 import { useFetchServices } from "@/hooks/useFetchServices";
 import { useSyncSelectedServices } from "@/hooks/useSyncSelectedServices";
-import { handleConfirmAndPay } from "@/utils/handleConfirmAndPay";
+import { handleWithServicesConfirm } from "@/utils/handleConfirmReservation";
 import { Button } from "@/components/ui/button";
 import type { Reservation } from "@/types/reservation";
 
@@ -156,7 +156,7 @@ export default function AdditionalServicesPage() {
         />
         <BottomActions
           handleConfirmAndPay={() =>
-            handleConfirmAndPay({
+            handleWithServicesConfirm({
               reservation: enhancedReservation,
               selectedServices,
               roomId,

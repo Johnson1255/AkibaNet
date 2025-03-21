@@ -172,6 +172,7 @@
     "hours": "hours",
     "bookingId": "Booking ID",
     "services": "Services",
+    "products": "Products",
     "service": "Service",
     "total": "Total Payment",
     "backToHome": "Back to Home",

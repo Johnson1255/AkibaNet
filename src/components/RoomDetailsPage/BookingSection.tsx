@@ -3,11 +3,12 @@ import { Slider } from "@/components/ui/slider";
 import { Clock, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-
+import { handleDirectConfirm } from "@/utils/handleConfirmReservation";
 interface BookingSectionProps {
   room: {
     minHours: number;
     maxHours: number;
+    id: string;
   };
   price: number;
   hours: number;
@@ -112,7 +113,17 @@ export function BookingSection({
         <Button
           variant="default"
           className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={() => navigate("/confirmation")}
+          onClick={() =>
+            handleDirectConfirm({
+              reservation,
+              roomId: room.id,
+              hours,
+              price,
+              navigate,
+              updateRoomDetails: onUpdateRoomDetails,
+              t,
+            })
+          }
         >
           {t("reservation.confirmAndPay", "Confirm and Pay")}
         </Button>

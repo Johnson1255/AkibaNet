@@ -17,7 +17,7 @@ export const ProductsCard: React.FC<ProductsCardProps> = ({ products }) => {
     <Card className="mb-4 bg-card text-card-foreground">
       <CardHeader>
         <CardTitle className="text-lg font-semibold">
-          {t("confirmation.services")}
+          {t("confirmation.products")}
         </CardTitle>
       </CardHeader>
       <CardContent className="flex flex-wrap gap-2">

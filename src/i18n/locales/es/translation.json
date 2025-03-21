@@ -64,6 +64,7 @@
     "hours": "horas",
     "bookingId": "ID de Reserva",
     "services": "Servicios",
+    "products": "Productos",
     "service": "Servicio",
     "total": "Total a Pagar",
     "backToHome": "Volver al Inicio",
