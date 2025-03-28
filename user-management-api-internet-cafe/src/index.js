@@ -36,6 +36,13 @@ app.use('/api/bookings', bookingRoutes);
 app.use('/api/food', foodRoutes);
 app.use('/api/requests', requestRoutes);
 
+app.get("/", (_req, res) => {
+  res.send(
+    "<h1>API de AkibaNet</h1><p>Para acceder a los endpoints de la API, utiliza la ruta /api/</p>"
+  );
+});
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+

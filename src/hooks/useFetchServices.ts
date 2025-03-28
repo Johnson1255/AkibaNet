@@ -10,7 +10,7 @@ export const useFetchServices = (
     const fetchServices = async () => {
       setIsLoading(true);
       try {
-        const fetchUrl = 'http://localhost:3000/api/services/categories';
+        const fetchUrl = `${import.meta.env.VITE_API_URL}/api/services/categories`;
         const response = await fetch(fetchUrl);
         if (!response.ok) {
           throw new Error('Error al obtener los servicios');

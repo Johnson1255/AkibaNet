@@ -122,7 +122,7 @@ export const handleWithServicesConfirm = async ({
       products: [],
     };
 
-    const response = await fetch("http://localhost:3000/api/bookings", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -229,7 +229,7 @@ export const handleDirectConfirm = async ({
       products: [],
     };
 
-    const response = await fetch("http://localhost:3000/api/bookings", {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/bookings`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -3,7 +3,7 @@ export const checkServerConnection = async (): Promise<boolean> => {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 segundos de timeout
 
-    const response = await fetch('http://localhost:3000/health', { 
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/health`, { 
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       signal: controller.signal

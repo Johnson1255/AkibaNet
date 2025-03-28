@@ -19,7 +19,7 @@ export const useHelpRequest = () => {
       };
 
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/api/requests", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/api/requests`, {
         method: "POST",
         headers: { 
           "Content-Type": "application/json",

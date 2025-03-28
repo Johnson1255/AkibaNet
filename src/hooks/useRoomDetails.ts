@@ -20,7 +20,7 @@ export const useRoomDetails = (roomId: string | null): UseRoomDetailsReturn => {
 
       try {
         setLoading(true);
-        const response = await fetch(`http://localhost:3000/api/rooms/${roomId}`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/api/rooms/${roomId}`);
 
         if (!response.ok) {
           throw new Error(t('reservation.errors.roomLoadError', 'Error al cargar los detalles de la habitación: {{statusText}}', { statusText: response.statusText }));

@@ -34,7 +34,7 @@ export interface ErrorResponse {
 // Función para verificar si el servidor está en línea
 export const checkServerStatus = async (): Promise<boolean> => {
   try {
-    await fetch(`http://localhost:3000/health`, {
+    await fetch(`${import.meta.env.VITE_API_URL}/health`, {
       method: "HEAD",
     });
     return true;
@@ -48,7 +48,6 @@ export const login = async (
   credentials: LoginCredentials
 ): Promise<AuthResponse> => {
   try {
-    // Verificar conexión con el servidor primero
     const isServerOnline = await checkServerStatus();
 
     if (!isServerOnline) {
@@ -57,33 +56,58 @@ export const login = async (
       );
     }
 
-    const response = await fetch(`http://localhost:3000/api/users/login`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Accept": "application/json" // Agregamos este header para especificar que esperamos JSON
       },
       body: JSON.stringify(credentials),
     });
 
-    const data = await response.json();
+    // Logging de información de la respuesta
+    console.log('Status:', response.status);
+    console.log('Status Text:', response.statusText);
+    console.log('Content-Type:', response.headers.get('content-type'));
+    
+    const contentType = response.headers.get('content-type');
+    const text = await response.text();
+    console.log('Response raw text:', text);
+
+    // Verificar si la respuesta es HTML
+    if (contentType && contentType.includes('text/html')) {
+      throw new Error('El servidor devolvió una página HTML en lugar de JSON. Posible error de autenticación del servidor.');
+    }
+
+    if (!text) {
+      throw new Error('La respuesta del servidor está vacía');
+    }
+
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error('Error al parsear JSON:', e);
+      throw new Error(`Error al procesar la respuesta del servidor: ${text.substring(0, 100)}...`);
+    }
 
     if (!response.ok) {
-      // Ahora usamos los nuevos códigos de error para mensajes más específicos
       const errorMsg = getErrorMessage(data);
       throw new Error(errorMsg);
     }
 
     return data;
   } catch (error) {
-    // Manejo específico para errores de red
-    if (
-      error instanceof TypeError &&
-      error.message.includes("Failed to fetch")
-    ) {
+    if (error instanceof TypeError && error.message.includes("Failed to fetch")) {
       throw new Error(
         "No se puede conectar con el servidor. Verifica tu conexión a internet."
       );
     } else if (error instanceof Error) {
+      console.error('Error detallado:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       throw error;
     } else {
       throw new Error("Error de conexión al servidor");
@@ -104,7 +128,7 @@ export const register = async (
       );
     }
 
-    const response = await fetch(`http://localhost:3000/api/users/register`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -151,7 +175,7 @@ export const validateToken = async (
     }
 
     const response = await fetch(
-      `http://localhost:3000/api/users/validate-token`,
+      `${import.meta.env.VITE_API_URL}/api/users/validate-token`,
       {
         method: "POST",
         headers: {
@@ -176,7 +200,7 @@ export const validateToken = async (
 
 export const getUserProfile = async (token: string): Promise<User> => {
   try {
-    const response = await fetch(`http://localhost:3000/api/users/profile`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/users/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
