@@ -73,13 +73,6 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
       <h2 className="text-2xl font-medium mb-3">
         {type === 'start' ? t('reservation.startsIn') : t('reservation.endsIn')}
       </h2>
-      
-      {roomId && (
-        <p className="text-muted-foreground mb-3">
-          {type === 'start' ? `Para la sala: ${roomId}` : `Sala actual: ${roomId}`}
-        </p>
-      )}
-      
       <p className="text-muted-foreground mb-2">
         {type === 'start' ? t('reservation.startDate') : t('reservation.endDate')}: {formatDate(targetDate)}
       </p>

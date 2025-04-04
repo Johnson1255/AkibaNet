@@ -33,7 +33,8 @@ export default function AdditionalServicesPage() {
     return new Set(Array.from(reservation.selectedServices || []));
   });
 
-  const roomId = reservation.roomId?.toString() || "";
+  const roomId = reservation.roomId?.toString() || ""; // MongoDB _id
+  const roomDisplayId = reservation.roomDisplayId?.toString() || ""; // ID legible
   const baseHours = reservation.hours || 3;
   const hourlyRate = reservation.hourlyRate || 800;
   const baseRoomPrice = baseHours * hourlyRate;
@@ -123,11 +124,13 @@ export default function AdditionalServicesPage() {
     <>
       <div className="min-h-screen bg-background">
         <Header title={t("services.title")} showBackButton={true} />
+        {/* Usa roomDisplayId para mostrar si es necesario */}
         <RoomSummary
           reservation={enhancedReservation}
-          roomId={roomId}
+          roomId={roomDisplayId || roomId} // Muestra el ID legible si existe
           baseRoomPrice={baseRoomPrice}
         />
+        {/* ... (ServiceCategory, OrderSummary) ... */}
         <div className="p-4 space-y-8">
           <ServiceCategory
             title={t("services.categories.gaming")}
@@ -149,22 +152,35 @@ export default function AdditionalServicesPage() {
           />
         </div>
         <OrderSummary
-          roomId={roomId}
+          roomId={roomDisplayId || roomId} // Muestra el ID legible si existe
           baseRoomPrice={baseRoomPrice}
           selectedServices={getSelectedServices()}
           calculateTotal={calculateTotal}
         />
+        {/* --- MODIFICACIÓN EN LA LLAMADA handleConfirmAndPay --- */}
         <BottomActions
-          handleConfirmAndPay={() =>
+          handleConfirmAndPay={() => {
+            // Verificación adicional antes de llamar
+            if (!roomId || !roomDisplayId) {
+              console.error(
+                "Attempted handleWithServicesConfirm with missing IDs:",
+                { roomId, roomDisplayId }
+              );
+              alert(
+                "Error: Información esencial de la habitación no está disponible."
+              );
+              return;
+            }
             handleWithServicesConfirm({
-              reservation: enhancedReservation,
-              selectedServices,
-              roomId,
+              reservation: enhancedReservation, // Pasar el objeto reservation enriquecido
+              selectedServices, // Pasar el Set de servicios seleccionados
+              roomId, // Pasar el _id de MongoDB
+              roomDisplayId, // <-- Pasar el ID legible
               navigate,
               updateRoomDetails,
               t,
-            })
-          }
+            });
+          }}
         />
       </div>
     </>

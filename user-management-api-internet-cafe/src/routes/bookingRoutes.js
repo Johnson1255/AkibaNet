@@ -1,192 +1,126 @@
 import express from 'express';
-import { body, query, validationResult } from 'express-validator';
-import bookingsDatabase from '../utils/bookingsDatabase.js';
-import roomsDatabase from '../utils/roomsDatabase.js';
+import mongoose from 'mongoose';
+import Booking from '../models/Booking.js'; 
+import Room from '../models/Room.js';
 import { auth } from '../middleware/auth.js';
 import { logger } from '../utils/logger.js';
 
 const router = express.Router();
 
-// Crear una reserva
-router.post('/', auth, [
-  body('roomId').notEmpty().withMessage('Se requiere el ID de la sala'),
-  body('startTime').isISO8601().withMessage('Fecha de inicio inválida'),
-  body('duration').isInt({ min: 1 }).withMessage('Duración inválida')
-], async (req, res) => {
-  try {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ 
-        errors: errors.array(),
-        code: 'VALIDATION_ERROR'
-      });
+
+router.post('/create', auth, async (req, res) => {
+    try {
+        const { roomId, startTime, duration, services, products, basePrice } = req.body;
+        const userId = req.user.id;
+
+        if (!roomId || !startTime || !duration || !basePrice) {
+            await logger.log('ERROR', 'Faltan campos requeridos en la creación de reserva');
+            return res.status(400).send({
+                error: 'Todos los campos son requeridos',
+                code: 'MISSING_FIELDS'
+            });
+        }
+
+        // Validar que roomId sea un ObjectId válido
+        if (!mongoose.Types.ObjectId.isValid(roomId)) {
+            await logger.log('ERROR', 'ID de habitación inválido. roomId:', { roomId });
+            return res.status(400).send({
+                error: 'ID de habitación inválido',
+                code: 'INVALID_ROOM_ID'
+            });
+        }
+
+        const roomObjectId = new mongoose.Types.ObjectId(roomId);
+        const checkIn = new Date(startTime);
+        const checkOut = new Date(checkIn.getTime() + duration * 3600000);
+
+        const conflict = await Booking.findOne({
+            roomId: roomObjectId,
+            $or: [
+                { startTime: { $gte: checkIn, $lt: checkOut } },
+                { endTime: { $gt: checkIn, $lte: checkOut } }
+            ]
+        });
+        
+        if (conflict) {
+            await logger.log('WARN', 'Conflicto de reserva detectado', { roomId });
+            return res.status(409).send({
+                error: 'El cuarto no está disponible en el rango seleccionado',
+                code: 'NO_AVAILABILITY'
+            });
+        }
+
+        const booking = new Booking({
+            userId: userId,
+            roomId: roomObjectId,
+            startTime: checkIn,
+            duration,
+            endTime: checkOut,
+            services,
+            products,
+            basePrice
+        });
+
+        const savedBooking = await booking.save();
+        await logger.log('INFO', 'Reserva creada exitosamente', { bookingId: savedBooking._id });
+
+        res.status(201).send({
+            message: 'Reserva creada exitosamente',
+            code: 'BOOKING_CREATED',
+            data: { bookingId: savedBooking._id }
+        });
+    } catch (error) {
+        console.error('--- DETAILED BOOKING CREATION ERROR ---');
+        console.error(error); // Imprime el objeto de error completo
+        console.error('---------------------------------------');
+        
+        // Mejorar el mensaje de error para el cliente
+        const errorMessage = error.name === 'CastError' 
+            ? 'Formato de ID inválido'
+            : 'Error en el servidor durante la creación de la reserva';
+            
+        await logger.log('ERROR', 'Error al crear la reserva', { error: error.message });
+        res.status(500).send({
+            error: errorMessage,
+            code: error.name === 'CastError' ? 'INVALID_ID_FORMAT' : 'SERVER_ERROR'
+        });
     }
-
-    const room = await roomsDatabase.getRoomById(req.body.roomId);
-    if (!room) {
-      return res.status(404).json({
-        error: 'Sala no encontrada',
-        code: 'ROOM_NOT_FOUND'
-      });
-    }
-
-    const booking = await bookingsDatabase.createBooking({
-      ...req.body,
-      userId: req.user.id,
-      basePrice: room.hourlyRate * req.body.duration
-    });
-
-    if (!booking) {
-      return res.status(409).json({
-        error: 'La sala no está disponible para el horario seleccionado',
-        code: 'ROOM_NOT_AVAILABLE'
-      });
-    }
-
-    await logger.log('INFO', 'Booking created', { bookingId: booking.id });
-    res.status(201).json(booking);
-  } catch (error) {
-    await logger.log('ERROR', 'Error creating booking', { error: error.message });
-    res.status(500).json({
-      error: 'Error al crear la reserva',
-      code: 'SERVER_ERROR'
-    });
-  }
 });
 
-// Obtener reservas del usuario
-router.get('/my-bookings', auth, async (req, res) => {
-  try {
-    const bookings = await bookingsDatabase.getBookingsByUser(req.user.id);
-    res.json(bookings);
-  } catch (error) {
-    await logger.log('ERROR', 'Error getting user bookings', { error: error.message });
-    res.status(500).json({
-      error: 'Error al obtener las reservas',
-      code: 'SERVER_ERROR'
-    });
-  }
-});
 
-// Obtener historial de reservas del usuario
-router.get('/history', auth, async (req, res) => {
-  try {
-    const bookings = await bookingsDatabase.getBookingHistoryByUser(req.user.id);
-    res.json(bookings);
-  } catch (error) {
-    await logger.log('ERROR', 'Error getting booking history', { error: error.message });
-    res.status(500).json({
-      error: 'Error al obtener el historial de reservas',
-      code: 'SERVER_ERROR'
-    });
-  }
-});
-
-// Cancelar reserva
-router.post('/:id/cancel', auth, async (req, res) => {
-  try {
-    const booking = await bookingsDatabase.cancelBooking(req.params.id);
-    if (!booking) {
-      return res.status(400).json({
-        error: 'No se puede cancelar la reserva',
-        code: 'INVALID_CANCELLATION'
-      });
+router.get('/:id', auth, async (req, res) => {
+    try {
+        const booking = await Booking.findById(req.params.id);
+        if (!booking) {
+            await logger.log('WARN', 'Reserva no encontrada', { bookingId: req.params.id });
+            return res.status(404).send({
+                error: 'Reserva no encontrada',
+                code: 'BOOKING_NOT_FOUND'
+            });
+        }
+        res.send(booking);
+    } catch (error) {
+        await logger.log('ERROR', 'Error al obtener la reserva', { error: error.message });
+        res.status(500).send({
+            error: 'Error en el servidor al obtener la reserva',
+            code: 'SERVER_ERROR'
+        });
     }
-
-    await logger.log('INFO', 'Booking cancelled', { bookingId: booking.id });
-    res.json(booking);
-  } catch (error) {
-    await logger.log('ERROR', 'Error cancelling booking', { error: error.message });
-    res.status(500).json({
-      error: 'Error al cancelar la reserva',
-      code: 'SERVER_ERROR'
-    });
-  }
 });
 
-// Extender tiempo de reserva
-router.post('/:id/extend', auth, [
-  body('additionalHours').isInt({ min: 1 }).withMessage('Horas adicionales inválidas')
-], async (req, res) => {
-  try {
-    const booking = await bookingsDatabase.extendBooking(
-      req.params.id,
-      req.body.additionalHours
-    );
 
-    if (!booking) {
-      return res.status(400).json({
-        error: 'No se puede extender la reserva',
-        code: 'INVALID_EXTENSION'
-      });
+router.get('/user/:userId', auth, async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const bookings = await Booking.find({ userId: mongoose.Types.ObjectId(userId) });
+        res.send(bookings);
+    } catch (error) {
+        await logger.log('ERROR', 'Error al obtener las reservas del usuario', { error: error.message });
+        res.status(500).send({
+            error: 'Error en el servidor al obtener las reservas del usuario',
+            code: 'SERVER_ERROR'
+        });
     }
-
-    await logger.log('INFO', 'Booking extended', { 
-      bookingId: booking.id,
-      additionalHours: req.body.additionalHours
-    });
-    res.json(booking);
-  } catch (error) {
-    await logger.log('ERROR', 'Error extending booking', { error: error.message });
-    res.status(500).json({
-      error: 'Error al extender la reserva',
-      code: 'SERVER_ERROR'
-    });
-  }
-});
-
-// Añadir items a la reserva
-router.post('/:id/items', auth, async (req, res) => {
-  try {
-    const booking = await bookingsDatabase.addItemsToBooking(
-      req.params.id,
-      req.body
-    );
-
-    if (!booking) {
-      return res.status(400).json({
-        error: 'No se pueden añadir items a la reserva',
-        code: 'INVALID_ITEMS_ADDITION'
-      });
-    }
-
-    await logger.log('INFO', 'Items added to booking', { bookingId: booking.id });
-    res.json(booking);
-  } catch (error) {
-    await logger.log('ERROR', 'Error adding items to booking', { error: error.message });
-    res.status(500).json({
-      error: 'Error al añadir items a la reserva',
-      code: 'SERVER_ERROR'
-    });
-  }
-});
-
-// Obtener estadísticas de ocupación
-router.get('/stats/occupancy', auth, async (req, res) => {
-  try {
-    const { roomId, startDate, endDate } = req.query;
-    
-    if (!roomId || !startDate || !endDate) {
-      return res.status(400).json({
-        error: 'Se requieren roomId, startDate y endDate',
-        code: 'MISSING_PARAMS'
-      });
-    }
-
-    const stats = await bookingsDatabase.getRoomOccupancyStats(
-      roomId,
-      startDate,
-      endDate
-    );
-
-    res.json(stats);
-  } catch (error) {
-    await logger.log('ERROR', 'Error getting occupancy stats', { error: error.message });
-    res.status(500).json({
-      error: 'Error al obtener estadísticas',
-      code: 'SERVER_ERROR'
-    });
-  }
 });
 
 export default router;

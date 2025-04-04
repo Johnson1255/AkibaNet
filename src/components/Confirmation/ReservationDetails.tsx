@@ -15,7 +15,7 @@ export const ReservationDetails: React.FC<ReservationDetailsProps> = ({ reservat
       <div className="space-y-2">
         <div className="flex justify-between">
           <span className="text-muted-foreground">{t('confirmation.room')}:</span>
-          <span className="font-medium">#{reservation.roomId}</span>
+          <span className="font-medium">#{reservation.roomDisplayId}</span>
         </div>
         <div className="flex justify-between">
           <span className="text-muted-foreground">{t('confirmation.date')}:</span>

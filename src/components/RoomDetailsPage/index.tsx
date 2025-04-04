@@ -32,6 +32,8 @@ export default function RoomDetails() {
       : t("reservation.hours", "horas");
   };
 
+
+
   const roomCategory =
     room?.category ||
     (room?.id.startsWith("1")

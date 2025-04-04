@@ -6,10 +6,11 @@ export interface ProductCardProps {
 }
 
 export interface Product {
-  id: number; // Changed from string to number to match how it's used
+  id: string;
+  productId: string;
   name: string;
   price: number;
-  quantity: number;
+  category: string;
   description?: string; // Added missing property
 }
 

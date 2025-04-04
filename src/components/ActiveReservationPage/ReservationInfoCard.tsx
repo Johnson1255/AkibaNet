@@ -22,7 +22,7 @@ export const ReservationInfoCard: React.FC<ReservationInfoCardProps> = ({
     <Card className="p-4 mb-4 bg-card text-card-foreground">
 
       <h2 className="text-xl font-semibold mb-3">
-        {t("reservation.room")} #{reservation.roomId}
+        {t("reservation.room")} #{reservation.roomDisplayId}
       </h2>
       <div className="flex items-center mb-4">
         <Clock className="h-5 w-5 text-muted-foreground mr-2" />

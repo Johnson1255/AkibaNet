@@ -4,12 +4,10 @@ import { Clock, Plus } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import { handleDirectConfirm } from "@/utils/handleConfirmReservation";
+import { Room } from "@/types/room";
+
 interface BookingSectionProps {
-  room: {
-    minHours: number;
-    maxHours: number;
-    id: string;
-  };
+  room: Room;
   price: number;
   hours: number;
   sliderValue: number[];
@@ -102,7 +100,22 @@ export function BookingSection({
           variant="outline"
           className="w-full rounded-full h-12 bg-secondary hover:bg-secondary/80"
           onClick={() => {
-            onUpdateRoomDetails({ hours, price });
+            if (!room._id || !room.id) { // Verifica que ambos existan
+               console.error("Missing room _id or display id", room);
+               alert("Error al obtener identificadores de la habitación.");
+               return;
+            }
+            onUpdateRoomDetails({
+              roomId: room._id,
+              roomDisplayId: room.id, 
+              hours,                    
+              price,                
+              hourlyRate: room.hourlyRate,
+              minHours: room.minHours,
+              maxHours: room.maxHours,
+              selectedDate: reservation.selectedDate,
+              selectedTime: reservation.selectedTime,
+            });
             navigate("/additional-services");
           }}
         >
@@ -113,17 +126,25 @@ export function BookingSection({
         <Button
           variant="default"
           className="w-full rounded-full h-12 bg-primary text-primary-foreground hover:bg-primary/90"
-          onClick={() =>
+          onClick={() => {
+            if (!room || !room._id) { // Añade una verificación para room también
+                console.error("Error: Objeto room o MongoDB _id no encontrado:", room);
+                alert(t("reservation.errors.missingRoomId", "Error: No se pudo obtener el identificador único de la habitación."));
+                return;
+            }
+
             handleDirectConfirm({
-              reservation,
-              roomId: room.id,
-              hours,
-              price,
-              navigate,
-              updateRoomDetails: onUpdateRoomDetails,
-              t,
-            })
-          }
+                reservation,
+                roomId: room._id, // <-- USA EL _id DE MONGODB
+                roomDisplayId: room.id, // <-- El ID legible (ej: "108")
+                hours,
+                price,
+                navigate,
+                updateRoomDetails: onUpdateRoomDetails,
+                t,
+            });
+            // --- FIN DE LA MODIFICACIÓN ---
+        }}
         >
           {t("reservation.confirmAndPay", "Confirm and Pay")}
         </Button>

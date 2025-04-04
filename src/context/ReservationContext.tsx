@@ -12,7 +12,7 @@ export interface Service {
 }
 
 interface RoomDetails {
-  roomId?: number
+  roomId?: string
   selectedDate?: string
   selectedTime?: string
   hourlyRate?: number
@@ -59,7 +59,7 @@ export const ReservationProvider: React.FC<ReservationProviderProps> = ({ childr
   })
 
   // Función para actualizar detalles de la habitación
-  const updateRoomDetails = (details: Partial<RoomDetails>) => {
+  const updateRoomDetails = (details: RoomDetails) => {
     setReservation((prev) => ({
       ...prev,
       ...details,

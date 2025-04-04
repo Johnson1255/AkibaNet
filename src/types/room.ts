@@ -5,6 +5,7 @@ export interface Equipment {
 }
 
 export interface Room {
+  _id: string; // Aseguramos que _id es una propiedad obligatoria
   id: string;
   capacity: number;
   hourlyRate: number;

@@ -1,48 +1,50 @@
-{
-  "energyDrinks": [
-    {
-      "id": "en1",
-      "name": "XYZ Energy Drink",
-      "price": 3.5,
-      "stock": 20
-    }
-  ],
-  "fastFood": [
-    {
-      "id": "cr1",
-      "name": "Special Hamburger",
-      "price": 5.0,
-      "stock": 10
-    }
-  ],
-  "snacks": [
-    {
-      "id": "sn1",
-      "name": "French Fries",
-      "price": 2.0,
-      "stock": 15
-    }
-  ],
-  "drinks": [
-    {
-      "id": "bd1",
-      "name": "Espresso Coffee",
-      "price": 1.5,
-      "stock": 30
-    },
-    {
-      "id": "bd2",
-      "name": "Green Tea",
-      "price": 1.2,
-      "stock": 25
-    }
-  ],
-  "ramen": [
-    {
-      "id": "rm1",
-      "name": "Spicy Ramen",
-      "price": 4.5,
-      "stock": 5
-    }
-  ]
-}
+[
+  {
+    "name": "XYZ Energy Drink",
+    "description": "Migrated from food JSON",
+    "price": 3.5,
+    "category": "beverage",
+    "image": "",
+    "stock": 20
+  },
+  {
+    "name": "Special Hamburger",
+    "description": "Migrated from food JSON",
+    "price": 5.0,
+    "category": "other",
+    "image": "",
+    "stock": 10
+  },
+  {
+    "name": "French Fries",
+    "description": "Migrated from food JSON",
+    "price": 2.0,
+    "category": "snack",
+    "image": "",
+    "stock": 15
+  },
+  {
+    "name": "Espresso Coffee",
+    "description": "Migrated from food JSON",
+    "price": 1.5,
+    "category": "beverage",
+    "image": "",
+    "stock": 30
+  },
+  {
+    "name": "Green Tea",
+    "description": "Migrated from food JSON",
+    "price": 1.2,
+    "category": "beverage",
+    "image": "",
+    "stock": 25
+  },
+  {
+    "name": "Spicy Ramen",
+    "description": "Migrated from food JSON",
+    "price": 4.5,
+    "category": "other",
+    "image": "",
+    "stock": 5
+  }
+]
