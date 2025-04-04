@@ -21,7 +21,7 @@ export default function FoodPage() {
     snack: [],
     other: [],
   });
-  const [selectedProducts, setSelectedProducts] = useState<Map<string, number>>(new Map()); // <-- Cambia number a string
+  const [selectedProducts, setSelectedProducts] = useState<Map<string, number>>(new Map());
   const [showPolicyNotice, setShowPolicyNotice] = useState(true);
   const allProducts = Object.values(productData).flat();
   const { fetchFood } = useFetchFood(setFoodData);

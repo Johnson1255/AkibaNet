@@ -52,6 +52,7 @@ export const useFetchFood = (
             name: productDoc.name,
             description: productDoc.description,
             price: productDoc.price,
+            quantity: productDoc.quantity,
             category: productDoc.category,
             // Asegúrate que otros campos necesarios por 'Product' estén aquí
           };

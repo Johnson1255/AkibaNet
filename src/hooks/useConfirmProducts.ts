@@ -6,13 +6,13 @@ interface Reservation {
 }
 
 export const useConfirmProducts = (
-  selectedProducts: Map<number, number>,
+  selectedProducts: Map<string, number>,
   navigate: (to: string) => void,
   productsList: Product[] // Added parameter to access product details
 ) => {
   const confirmProducts = () => {
     const lastReservation = localStorage.getItem("lastReservation");
-    
+
     if (!lastReservation) {
       console.error("No reservation found in localStorage");
       alert("Falta información necesaria para la reserva.");
@@ -22,11 +22,11 @@ export const useConfirmProducts = (
 
     try {
       const reservation: Reservation = JSON.parse(lastReservation);
-      
+
       if (!reservation || !Array.isArray(reservation.products)) {
         throw new Error("Invalid reservation data");
       }
-      
+
       // Initialize products array if it doesn't exist
       reservation.products = reservation.products || [];
 
@@ -38,12 +38,14 @@ export const useConfirmProducts = (
           if (!productInfo) {
             throw new Error(`Product with id ${id} not found`);
           }
-          
+
           return {
             id: id,
             name: productInfo.name,
             price: productInfo.price,
-            quantity: quantity
+            quantity: quantity,
+            productId: productInfo.productId,
+            category: productInfo.category
           };
         });
 

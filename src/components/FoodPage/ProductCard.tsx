@@ -13,7 +13,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, selectedProdu
 
   return (
     <Card
-      key={product.id}
       className={`p-4 flex items-center justify-between ${
         selectedCount > 0 ? "bg-primary text-primary-foreground" : "bg-card text-card-foreground"
       }`}

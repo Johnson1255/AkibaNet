@@ -1,7 +1,7 @@
 export interface ProductCardProps {
   product: Product;
-  selectedProducts: Map<number, number>;
-  toggleProduct: (id: number) => void;
+  selectedProducts: Map<string, number>; // Ensure the map uses string keys
+  toggleProduct: (id: string) => void; // Ensure the function accepts a string ID
   showButton: boolean;
 }
 
@@ -11,6 +11,7 @@ export interface Product {
   name: string;
   price: number;
   category: string;
+  quantity: number;  
   description?: string; // Added missing property
 }
 
