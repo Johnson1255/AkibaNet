@@ -14,7 +14,6 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
   targetDate, 
   onComplete, 
   type,
-  roomId,
   formatDate
 }) => {
   const { t } = useTranslation();
@@ -55,7 +54,7 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({
 
   if (isCompleted && type === 'end') {
     return (
-      <div className="rounded-xl bg-card border border-border p-6 shadow-sm text-center bg-secondary">
+      <div className="rounded-xl border border-border p-6 shadow-sm text-center bg-secondary">
         <h2 className="text-2xl font-medium mb-3">{t('reservation.completed')}</h2>
         <p className="text-muted-foreground mb-5">{t('reservation.noPendingReservation')}</p>
         <button

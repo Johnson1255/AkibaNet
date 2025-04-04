@@ -153,7 +153,11 @@
     "noProducts": "No has pedido ningún producto aún.",
     "addProducts": "Añadir Productos",
     "policyNotice": "Aviso: Todos los pedidos de comida deben ser confirmados antes de finalizar la reserva.",
-    "confirmButton": "Confirmar Productos"
+    "confirmButton": "Confirmar Productos",
+    "title": "Comida",
+    "beverage": "Bebida",
+    "snack": "Snack",
+    "other": "Otro"
   },
   "room": {
     "name": "Elige una sala",

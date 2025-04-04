@@ -133,7 +133,11 @@
     "noProducts": "You have not ordered any products yet.",
     "addProducts": "Add Products",
     "policyNotice": "Notice: All food orders must be confirmed before ending the reservation.",
-    "confirmButton": "Confirm Products"
+    "confirmButton": "Confirm Products",
+    "title": "Food",
+    "beverage": "Beverage",
+    "snack": "Snack",
+    "other": "Other"
   },
   "room":{
     "name": "Select a room",

@@ -89,7 +89,7 @@ const useRoomSelection = () => {
     if (roomId) {
       const selectedRoom = rooms.find((r) => r.id === roomId);
       updateRoomDetails({
-        roomId: Number(roomId),
+        roomId: roomId,
         selectedDate: selectedDate?.toLocaleDateString(),
         selectedTime: selectedTime,
         hourlyRate: selectedRoom?.hourlyRate,

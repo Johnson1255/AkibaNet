@@ -48,8 +48,11 @@ export default function LoginForm() {
       <Card className="w-full max-w-sm border-0 shadow-none">
         <CardContent className="space-y-6 pt-8">
           <div className="flex justify-center">
-            {/* <img src="/logo.svg" alt="Papus Hotel" className="w-24 h-24" /> */}
-            <div className="w-24 h-24 rounded-full bg-gray-200" />
+            <img
+              src="/icon.png"
+              alt="Logo"
+              className="h-20 w-20 rounded-xl shadow-lg"
+            />
           </div>
 
           {success && (

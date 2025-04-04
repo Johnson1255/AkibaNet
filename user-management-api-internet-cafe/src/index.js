@@ -22,7 +22,7 @@ const port = process.env.PORT || 3000;
 // --- Resto de tu configuración de CORS y middleware ---
 // Configuración de CORS
 const corsOptions = {
-  origin: true, // O sé más específico según tus necesidades
+  origin: '*', // Permitir todos los orígenes
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], // Añadido PATCH
   allowedHeaders: ['Content-Type', 'Authorization'],
   exposedHeaders: ['Authorization'],
